@@ -1,4 +1,4 @@
-export interface ArticuloManofacturado {
+export interface ArticuloManufacturado {
     id?: number;
     estaActivo?: boolean;
     denominacion: string;
