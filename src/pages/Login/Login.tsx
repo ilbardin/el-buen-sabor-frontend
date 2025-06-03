@@ -1,84 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import {useNavigate} from "react-router-dom";
-import {UserRole} from "../../types/userRoles.ts";
-import {showAlert, showLoading} from "../../utils/alerts.ts";
-import Swal from "sweetalert2";
-import {useAuth} from "../../context/useAuth.ts";
-import styles from "./Login.module.css";
+import React from 'react';
+import {FaLock, FaUser} from 'react-icons/fa';
+import './Login.css';
 
-type Usuario = {
-    id: number;
-    nombreUsuario: string;
-    rol: UserRole;
-};
-
-type LoginProps = {
-    onLoginSuccess: (usuario: Usuario) => void;
-};
-
-const loginUrl = import.meta.env.VITE_API_URL + '/auth/login';
-
-const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
-    const [nombreUsuario, setNombreUsuario] = useState('');
-    const [clave, setClave] = useState('');
-    const navigate = useNavigate();
-    const {setIsLoggingOut} = useAuth();
-
-    useEffect(() => {
-        setIsLoggingOut(false);
-    }, [setIsLoggingOut]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            showLoading('Iniciando sesión...');
-
-            const response = await axios.post<Usuario>(
-                loginUrl,
-                {
-                    nombreUsuario,
-                    clave,
-                }
-            );
-
-            onLoginSuccess(response.data);
-            Swal.close();
-
-            navigate('/');
-        } catch (err: any) {
-            Swal.close();
-            console.error(err);
-            await showAlert('Error', 'error', 'Error al iniciar sesión.');
-        }
-    };
-
+const Login: React.FC = () => {
     return (
-        <body>
-        <div className={styles.wrapper}>
-            <form action="">
-                <h1>Login</h1>
-                <div className={styles.inputBox}>
-                    <input type="text" placeholder="Usuario"/>
-                    <i className="bx bxs-user"></i>
+        <div className="loginContainer">
+            <div className="login-wrapper">
+                <div className="wrapper">
+                    <form>
+                        <h1>Login</h1>
+                        <div className="input-box">
+                            <label>
+                                <input type="text" placeholder="Usuario"/>
+                            </label>
+                            <FaUser className="icon"/>
+                        </div>
+                        <div className="input-box">
+                            <label>
+                                <input type="password" placeholder="Contraseña"/>
+                            </label>
+                            <FaLock className="icon"/>
+                        </div>
+                        <div className="forgot-password">
+                            <a href="#">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        <button type="submit" className="btn">Log in</button>
+                        <div className="register-link">
+                            <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+                        </div>
+                    </form>
                 </div>
-                <div className={styles.inputBox}>
-                    <input type="password" placeholder="Password"/>
-                    <i className='bx bxs-lock-alt'></i>
-                </div>
-                <div className={styles.rememberForget}>
-                    <label><input type="checkbox"/>
-                        Recordarme</label>
-                    <a href="#">¿Olvidó su contraseña?</a>
-                </div>
-                <button type="submit" className={styles.btn}>Iniciar sesión</button>
-                <div className={styles.registerLink}>
-                    <p>¿No tienes una cuenta? <a href="#">Registrarse</a></p>
-                </div>
-            </form>
+            </div>
         </div>
-        </body>
     );
 };
 

@@ -1,58 +1,58 @@
-div {
-  padding: 20px;
-  background-color: #f0f6ff; /* azul muy claro de fondo */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+/*div {*/
+/*  padding: 20px;*/
+/*  background-color: #f0f6ff; !* azul muy claro de fondo *!*/
+/*  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+/*}*/
 
-h1 {
-  color: #004080; /* azul fuerte */
-  margin: 10px 0;
-}
+/*h1 {*/
+/*  color: #004080; !* azul fuerte *!*/
+/*  margin: 10px 0;*/
+/*}*/
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-}
+/*table {*/
+/*  width: 100%;*/
+/*  border-collapse: collapse;*/
+/*  background-color: #ffffff;*/
+/*  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.1);*/
+/*  border-radius: 8px;*/
+/*  overflow: hidden;*/
+/*}*/
 
-thead th {
-  background-color: #cce0ff;
-  color: #00264d;
-  padding: 15px;
-  text-align: left;
-  font-size: 16px;
-  border-bottom: 2px solid #b3d1ff;
-}
+/*thead th {*/
+/*  background-color: #cce0ff;*/
+/*  color: #00264d;*/
+/*  padding: 15px;*/
+/*  text-align: left;*/
+/*  font-size: 16px;*/
+/*  border-bottom: 2px solid #b3d1ff;*/
+/*}*/
 
-tbody td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #e0e0e0;
-  color: #003366;
-}
+/*tbody td {*/
+/*  padding: 12px 15px;*/
+/*  border-bottom: 1px solid #e0e0e0;*/
+/*  color: #003366;*/
+/*}*/
 
-tbody tr:hover {
-  background-color: #e6f2ff;
-}
+/*tbody tr:hover {*/
+/*  background-color: #e6f2ff;*/
+/*}*/
 
-button {
-  background-color: #3399ff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
+/*button {*/
+/*  background-color: #3399ff;*/
+/*  color: white;*/
+/*  border: none;*/
+/*  padding: 10px 15px;*/
+/*  margin: 5px;*/
+/*  border-radius: 5px;*/
+/*  cursor: pointer;*/
+/*  font-weight: bold;*/
+/*  transition: background-color 0.3s;*/
+/*}*/
 
-button:hover {
-  background-color: #267acc;
-}
+/*button:hover {*/
+/*  background-color: #267acc;*/
+/*}*/
 
-button:active {
-  background-color: #1a5e99;
-}
+/*button:active {*/
+/*  background-color: #1a5e99;*/
+/*}*/
