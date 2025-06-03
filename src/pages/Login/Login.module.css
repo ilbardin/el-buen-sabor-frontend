@@ -3,7 +3,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.login-wrapper {
+.loginWrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,9 +14,8 @@
 
 .wrapper {
     width: 420px;
-    background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(6px);
     color: #fff;
     border-radius: 10px;
@@ -28,14 +27,14 @@
     text-align: center;
 }
 
-.wrapper .input-box {
+.inputBox {
     position: relative;
     width: 100%;
     height: 50px;
     margin: 30px 0;
 }
 
-.input-box input {
+.inputBox input {
     width: 100%;
     height: 100%;
     background: transparent;
@@ -45,13 +44,18 @@
     font-size: 16px;
     color: #fff;
     padding: 20px 45px 20px 20px;
+    transition: border-color 0.3s;
 }
 
-.input-box input::placeholder {
+.inputBox input:focus {
+    border-color: #fff;
+}
+
+.inputBox input::placeholder {
     color: #fff;
 }
 
-.input-box .icon {
+.inputBox .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -60,59 +64,78 @@
     color: #fff;
 }
 
-.wrapper .forgot-password {
+.forgotPassword {
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
     font-size: 15px;
     margin: -15px 0 15px;
 }
 
-.forgot-password label input {
-    accent-color: #242323;
-    margin-right: 3px;
-}
-
-.forgot-password a {
+.forgotPassword a {
     color: #fff;
     text-decoration: none;
+    position: relative;
 }
 
-.forgot-password a:hover {
-    text-decoration: underline;
+.forgotPassword a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease;
 }
 
-.wrapper .btn {
+.forgotPassword a:hover::after {
+    width: 100%;
+}
+
+.btn {
     width: 100%;
     height: 45px;
     background: #fff;
     border: none;
-    outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     font-size: 16px;
     color: #333;
-    font-weight: 600;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    margin-top: 2vh;
 }
 
-.wrapper .btn:hover {
+.btn:hover {
     background: rgba(83, 73, 73, 0.5);
     color: white;
     border-color: #fff;
 }
 
-.wrapper .register-link {
+.registerLink {
     font-size: 15px;
     text-align: center;
-    margin: 20px 0 15px;
+    margin: 40px 0 15px;
 }
 
-.register-link p a {
+.registerLink p a {
     color: #fff;
     text-decoration: none;
     font-weight: 600;
+    position: relative;
 }
 
-.register-link p a:hover {
-    text-decoration: underline;
+.registerLink p a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.3s ease;
+}
+
+.registerLink p a:hover::after {
+    width: 100%;
 }
