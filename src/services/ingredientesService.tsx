@@ -1,10 +1,10 @@
-import type {ArticuloManufacturado} from "../interfaces/articuloManufacturado.ts";
+import type {ArticuloInsumo} from "../interfaces/articuloInsumo.ts";
 
 const API_URL = "http://localhost:8080/api/articulos-insumo";
 const API_URL_CATEGORIA = "http://localhost:8080/api/categorias-articulo";
 const API_URL_UNIDADES_MEDIDA = "http://localhost:8080/api/unidades-medida";
 
-export async function obtenerArticulos(): Promise<ArticuloManufacturado[]> {
+export async function obtenerArticulos(): Promise<ArticuloInsumo[]> {
     try {
         const response = await fetch(API_URL);
 
