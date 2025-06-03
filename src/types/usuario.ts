@@ -1,3 +1,5 @@
+import type {UserRole} from "./userRoles.ts";
+
 export type Usuario = {
     id: number;
     fechaAlta: Date | null;
@@ -6,4 +8,5 @@ export type Usuario = {
     username: string;
     clienteId: number;
     empleadoId: number;
+    rol?: UserRole;
 };
