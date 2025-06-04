@@ -1,3 +1,4 @@
+import axiosInstance from "../api/axiosInstance.ts";
 import type {ArticuloManufacturado} from "../interfaces/articuloManufacturado.ts";
 
 const API_URL = "http://localhost:8080/api/articulos-manufacturados";
@@ -5,36 +6,29 @@ const API_URL_CATEGORIA = "http://localhost:8080/api/categoria-articulos-manufac
 
 export async function obtenerArticulosManofacturados(): Promise<ArticuloManufacturado[]> {
     try {
-        const response = await fetch(API_URL + "/listar");
-        if (!response.ok) {
+        const response = await axiosInstance.get<ArticuloManufacturado[]>(`${API_URL}/listar`);
+
+        if (!response || !response.data) {
             throw new Error("Error al obtener los artículos manufacturados");
         }
-        return await response.json();
+
+        return response.data;
     } catch (error) {
         console.error("Error:", error);
         throw error;
     }
 }
 
-
 export async function crearCategoriaArticuloManofacturado(denominacion: string): Promise<void> {
     try {
         const categoria = {
             denominacion,
-            fechaAlta: new Date().toISOString(),
-            fechaBaja: null,
             estaActivo: true,
         };
 
-        const response = await fetch(API_URL_CATEGORIA, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(categoria),
-        });
+        const response = await axiosInstance.post(API_URL_CATEGORIA, categoria);
 
-        if (!response.ok) {
+        if (!response) {
             throw new Error("Error al crear la categoría de artículo manufacturado");
         }
 
