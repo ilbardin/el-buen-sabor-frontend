@@ -1,31 +1,32 @@
-import axios from "axios";
+import axios, {type InternalAxiosRequestConfig} from "axios";
+
+const LOGIN_PATH = "/login";
+
+const setAuthorizationHeader = (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem("jwt");
+
+    if (!token) {
+        console.error("NO HAY TOKEN.");
+        return config;
+    }
+
+    config.headers["Authorization"] = `Bearer ${token}`;
+    return config;
+};
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: import.meta.env.VITE_API_URL,
 });
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const loginPath = "/login";
-        if (config.url?.includes(loginPath)) {
+        if (config.url?.includes(LOGIN_PATH)) {
             return config;
         }
 
-        const token = localStorage.getItem("jwt");
-
-        if (!token) {
-            console.error('NO HAY TOKEN.');
-        }
-
-        if (token) {
-            config.headers["Authorization"] = `Bearer ${token}`;
-        }
-
-        return config;
+        return setAuthorizationHeader(config);
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export default axiosInstance;
