@@ -1,12 +1,19 @@
 import type {UserRole} from "./userRoles.ts";
+import type {Empleado} from "./empleado.ts";
+import type {Cliente} from './cliente.ts';
 
-export type Usuario = {
-    id: number;
-    fechaAlta: Date | null;
-    fechaBaja: Date | null;
+export interface UserData {
+    token:   string;
+    usuario: Usuario;
+}
+
+export interface Usuario {
     estaActivo: boolean;
-    username: string;
-    clienteId: number;
-    empleadoId: number;
-    rol?: UserRole;
-};
+    nombre:     string;
+    apellido:   string;
+    email:      string;
+    telefono:   string;
+    rol:        UserRole;
+    empleado:   Empleado;
+    cliente:    Cliente;
+}

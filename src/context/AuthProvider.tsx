@@ -1,14 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {AuthContext} from './authContext.ts';
-import type {Usuario} from '../types/usuario';
+import type {UserData, Usuario} from '../types/usuario';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
+    const [jwt, setJwt] = useState<string | null>(null);
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [loading, setLoading] = useState(true);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     useEffect(() => {
+        const jwt = localStorage.getItem('jwt');
         const savedUser = localStorage.getItem('usuario');
+
+        if (jwt) {
+            setJwt(JSON.parse(jwt));
+        }
 
         if (savedUser) {
             setUsuario(JSON.parse(savedUser));
@@ -16,15 +22,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
         setLoading(false);
     }, []);
 
-    const login = (user: Usuario) => {
-        // Validar rol al inicio de sesión (ya asignado durante el login).
-        if (!user.rol) {
+    const login = (userData: UserData) => {
+        if (!userData.usuario.rol) {
             console.error("Usuario sin rol asignado. No se puede iniciar sesión.");
             return;
         }
 
-        localStorage.setItem('usuario', JSON.stringify(user));
-        setUsuario(user);
+        localStorage.setItem('jwt', JSON.stringify(userData.token));
+        localStorage.setItem('usuario', JSON.stringify(userData.usuario));
+        setJwt(userData.token);
+        setUsuario(userData.usuario);
     };
 
     const logout = () => {
@@ -34,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
 
     return (
         <AuthContext.Provider value={{
+            jwt,
             usuario,
             login,
             logout,

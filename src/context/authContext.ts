@@ -1,9 +1,10 @@
 import {createContext} from 'react';
-import type {Usuario} from '../types/usuario.ts';
+import type {UserData, Usuario} from '../types/usuario.ts';
 
 type AuthContextType = {
+    jwt: string | null;
     usuario: Usuario | null;
-    login: (user: Usuario) => void;
+    login: (user: UserData) => void;
     logout: () => void;
     loading: boolean;
     isLoggingOut: boolean;
@@ -11,6 +12,7 @@ type AuthContextType = {
 };
 
 export const AuthContext = createContext<AuthContextType>({
+    jwt: null,
     usuario: null,
     login: () => {},
     logout: () => {},
