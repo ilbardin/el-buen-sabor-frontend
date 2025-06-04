@@ -13,7 +13,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
         const savedUser = localStorage.getItem('usuario');
 
         if (jwt) {
-            setJwt(JSON.parse(jwt));
+            setJwt(jwt);
         }
 
         if (savedUser) {
@@ -23,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
     }, []);
 
     const login = (userData: UserData) => {
+        // TODO: mejorar robustez de esto
         if (!userData.usuario.rol) {
             console.error("Usuario sin rol asignado. No se puede iniciar sesión.");
             return;
