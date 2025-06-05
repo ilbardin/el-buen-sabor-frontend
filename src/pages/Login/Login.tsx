@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FaLock, FaUser} from 'react-icons/fa';
-import type {Usuario} from "../../types/usuario.ts";
+import type {UserData} from "../../types/usuario.ts";
 import {LOGIN_URL} from "../../constants/constants.ts";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/useAuth.ts";
@@ -11,7 +11,7 @@ import type {GenericError} from "../../types/interfaces.ts";
 import styles from './Login.module.css';
 
 type LoginProps = {
-    onLoginSuccess: (usuario: Usuario) => void;
+    onLoginSuccess: (userData: UserData) => void;
 };
 
 const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
@@ -46,7 +46,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
         }
     };
 
-    const handleSuccess = (data: Usuario) => {
+    const handleSuccess = (data: UserData) => {
         onLoginSuccess(data);
         Swal.close();
         navigate('/');
@@ -57,7 +57,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
 
         try {
             showLoading('Iniciando sesión...');
-            const response = await axiosInstance.post<Usuario>(LOGIN_URL, {username, password});
+            const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
             handleSuccess(response.data);
         } catch (err) {
             await handleError(err);
