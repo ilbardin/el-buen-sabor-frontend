@@ -12,7 +12,7 @@ export default function ArticuloInsumoABM() {
     useEffect(() => {
         async function cargarArticulosInsumo() {
             try {
-                const articulos = await obtenerArticulos(); // articulo pasa a ser un objeto ArticuloManufacturado
+                const articulos = await obtenerArticulos();
                 console.log('articulos:', articulos);
                 setArticulos(articulos);
             } catch (error) {
@@ -33,7 +33,7 @@ export default function ArticuloInsumoABM() {
                     onClose={() => setMostrarModalCategoria(false)}
                 />
             )}
-            <h1>Productos</h1>
+            <h1>INSUMOS</h1>
             <button onClick={() => setMostrarModal(true)}>
                 Añadir nuevo Insumo
             </button>

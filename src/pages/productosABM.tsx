@@ -6,6 +6,7 @@ import {
 import type {ArticuloManufacturado} from "../interfaces/articuloManufacturado.ts";
 import FormularioArticulosManofacturados from "../components/formularioArticulosManofacturados";
 import AgregarCategoriaArticuloManufacturado from "../components/AgregarCategoriaArticuloManufacturado.tsx";
+import {showConfirm} from "../utils/alerts.ts";
 
 export default function ProductosABM() {
     const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
@@ -27,8 +28,16 @@ export default function ProductosABM() {
 
     async function handleEliminar(id: number) {
         try {
-            await eliminarArticuloManofacturado(id);
-            setArticulos(articulos.filter((articulo) => articulo.id !== id));
+            const confirmacion = await showConfirm(
+                "Confirmación",
+                "¿Está seguro de que desea eliminar el producto?"
+            );
+
+            if (confirmacion) {
+                await eliminarArticuloManofacturado(id);
+                setArticulos(articulos.filter((articulo) => articulo.id !== id));
+            }
+
         } catch (error) {
             console.error("Error al eliminar el artículo:", error);
         }

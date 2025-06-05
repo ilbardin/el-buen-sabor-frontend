@@ -1,56 +1,54 @@
-import type {ArticuloInsumo} from "../interfaces/articuloInsumo.ts";
+import type {ArticuloInsumo, ArticuloInsumoCreacion} from "../interfaces/articuloInsumo.ts";
+import axiosInstance from "../api/axiosInstance.ts";
+import {showAlert} from "../utils/alerts.ts";
+import type {CategoriaArticulo} from "../interfaces/categoriaArticulo.ts";
+import type {UnidadMedida} from "../interfaces/unidadMedida.ts";
 
-const API_URL = "http://localhost:8080/api/articulos-insumo";
-const API_URL_CATEGORIA = "http://localhost:8080/api/categorias-articulo";
-const API_URL_UNIDADES_MEDIDA = "http://localhost:8080/api/unidades-medida";
+const API_URL = import.meta.env.VITE_API_URL + "/articulos-insumo";
+const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categorias-articulo";
+const API_URL_UNIDADES_MEDIDA = import.meta.env.VITE_API_URL + "/unidades-medida";
 
 export async function obtenerArticulos(): Promise<ArticuloInsumo[]> {
     try {
-        const response = await fetch(API_URL);
+        const response = await axiosInstance.get(API_URL);
 
-        if (!response.ok) {
-            throw new Error("Error al obtener los artículos manufacturados");
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al obtener los artículos insumo.");
         }
 
-        return await response.json();
+        return await response.data;
     } catch (error) {
         console.error("Error:", error);
         throw error;
     }
 }
 
-export async function crearArticuloInsumo(articulo: any): Promise<void> {
+export async function crearArticuloInsumo(articulo: ArticuloInsumoCreacion): Promise<void> {
     try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(articulo),
-        });
+        const response = await axiosInstance.post(API_URL, articulo);
 
-        if (!response.ok) {
-            throw new Error("Error al crear el Artículo Insumo");
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al crear el Artículo Insumo");
+            return;
         }
 
-        console.log("Artículo Insumo creado correctamente");
+        await showAlert("Éxito", "success", "Artículo Insumo creado correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
     }
 }
 
-
-/*---CATEGORIA---*/
-
-export async function obtenerCategorias(): Promise<any[]> {
+export async function obtenerCategorias(): Promise<CategoriaArticulo[]> {
     try {
-        const response = await fetch(API_URL_CATEGORIA);
-        if (!response.ok) {
-            throw new Error("Error al obtener los artículos manufacturados");
+        const response = await axiosInstance.get(API_URL_CATEGORIA);
+
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al obtener categorías.");
+            return [];
         }
-        const data = await response.json();
-        return data;
+
+        return await response.data;
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -61,41 +59,32 @@ export async function crearCategoriaArticulo(denominacion: string, categoriaPadr
     try {
         const categoria = {
             denominacion,
-            fechaAlta: new Date().toISOString(),
-            fechaBaja: null,
             estaActivo: true,
             categoriaPadre: categoriaPadreId !== null ? {id: categoriaPadreId} : null
         };
 
-        const response = await fetch(API_URL_CATEGORIA, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(categoria),
-        });
+        const response = await axiosInstance.post(API_URL_CATEGORIA, categoria);
 
-        if (!response.ok) {
-            throw new Error("Error al crear la categoría de artículo manufacturado");
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al crear la categoría de artículo manufacturado.");
         }
 
-        console.log("Categoría creada correctamente");
+        await showAlert("Categoría creada correctamente", "success");
     } catch (error) {
         console.error("Error:", error);
         throw error;
     }
 }
 
-//---UNIDADES DE MEDIDA---//
-
-export async function obtenerUnidadesMedida(): Promise<any[]> {
+export async function obtenerUnidadesMedida(): Promise<UnidadMedida[]> {
     try {
-        const response = await fetch(API_URL_UNIDADES_MEDIDA);
-        if (!response.ok) {
-            throw new Error("Error al obtener las unidades de medida");
+        const response = await axiosInstance.get(API_URL_UNIDADES_MEDIDA);
+
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al obtener las unidades de medida.");
         }
-        const data = await response.json();
-        return data;
+
+        return await response.data;
     } catch (error) {
         console.error("Error:", error);
         throw error;
