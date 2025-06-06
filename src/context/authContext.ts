@@ -2,7 +2,8 @@ import {createContext} from 'react';
 import type {UserData, Usuario} from '../types/usuario.ts';
 
 type AuthContextType = {
-    jwt: string | null;
+    tokenJwt: string | null;
+    jwtExpirationDate: Date | null;
     usuario: Usuario | null;
     login: (user: UserData) => void;
     logout: () => void;
@@ -12,11 +13,15 @@ type AuthContextType = {
 };
 
 export const AuthContext = createContext<AuthContextType>({
-    jwt: null,
+    tokenJwt: null,
+    jwtExpirationDate: null,
     usuario: null,
-    login: () => {},
-    logout: () => {},
+    login: () => {
+    },
+    logout: () => {
+    },
     loading: true,
     isLoggingOut: false,
-    setIsLoggingOut: () => {},
+    setIsLoggingOut: () => {
+    },
 });

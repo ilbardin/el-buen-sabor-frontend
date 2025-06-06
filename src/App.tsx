@@ -8,7 +8,8 @@ import IngredientesABM from './pages/ingredientesABM';
 import Login from "./pages/Login/Login.tsx";
 import {useAuth} from "./context/useAuth.ts";
 import React from "react";
-
+import {UserRole} from "./types/userRoles.ts";
+import ProtectedRoute from "./context/ProtectedRoute.tsx";
 
 function App() {
 
@@ -16,13 +17,45 @@ function App() {
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/loginUsuario" element={<LoginUsuario/>}/>
-                    <Route path="/registerUsuario" element={<RegisterUsuario/>}/>
-                    <Route path="/productosABM" element={<ProductosABM/>}/>
-                    <Route path="/insumoABM" element={<IngredientesABM/>}/>
-                    <Route path="/products" element={<h1>Products</h1>}/>
-                    <Route path="/login" element={<LoginWrapper/>}/>
+                    <Route
+                        path="/"
+                        element={
+                            <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                                <Home/>
+                            </ProtectedRoute>
+                        }/>
+                    <Route
+                        path="/loginUsuario"
+                        element={
+                            <LoginUsuario/>
+                        }/>
+                    <Route
+                        path="/registerUsuario"
+                        element={
+                            <RegisterUsuario/>
+                        }/>
+                    <Route
+                        path="/productosABM"
+                        element={
+                            <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                                <ProductosABM/>
+                            </ProtectedRoute>
+                        }/>
+                    <Route
+                        path="/insumoABM"
+                        element={
+                            <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                                <IngredientesABM/>
+                            </ProtectedRoute>
+                        }/>
+                    <Route
+                        path="/products"
+                        element={
+                            <h1>Products</h1>
+                        }/>
+                    <Route
+                        path="/login"
+                        element={<LoginWrapper/>}/>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

@@ -6,12 +6,15 @@ const MySwal = withReactContent(Swal);
 export const showAlert = (
     title: string,
     icon: 'success' | 'error' | 'warning' | 'info' | 'question',
-    text?: string
+    text?: string,
+    allowExit?: boolean
 ) => {
     return MySwal.fire({
         title,
         icon,
-        html: text, // usarlo como html aunque el parámetro se llame text
+        html: text, // usarlo como html aunque el parámetro se llame text,
+        allowOutsideClick: allowExit,
+        allowEscapeKey: allowExit,
     });
 };
 

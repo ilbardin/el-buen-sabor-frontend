@@ -37,6 +37,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
 
     const handleError = async (err: unknown) => {
         Swal.close();
+
         if ((err as GenericError).response?.data) {
             const backendError = err as GenericError;
             console.error(backendError.response.data);
@@ -49,6 +50,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
     const handleSuccess = (data: UserData) => {
         onLoginSuccess(data);
         Swal.close();
+
         navigate('/');
     };
 
