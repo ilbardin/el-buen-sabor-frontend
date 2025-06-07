@@ -7,6 +7,7 @@ import {
     AgregarCategoriaArticuloManufacturado
 } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from './ProductosABM.module.css';
+// TODO: ajustar archivo de estilos
 
 export const ProductosABM = () => {
     const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
