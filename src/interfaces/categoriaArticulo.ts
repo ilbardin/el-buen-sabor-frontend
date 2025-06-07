@@ -1,6 +1,6 @@
 export interface CategoriaArticulo {
-    id:           number;
-    fechaAlta:    Date;
-    fechaBaja:    null;
+    id: number;
+    fechaAlta: Date;
+    fechaBaja: null;
     denominacion: string;
 }

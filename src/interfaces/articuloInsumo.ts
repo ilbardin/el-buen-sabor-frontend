@@ -29,12 +29,12 @@ export interface ArticuloInsumoCreacion {
     precioCompra:      number;
     precioVenta:       number;
     esParaElaborar:    boolean;
-    categoriaArticulo: CategoriaArticulo;
-    unidadMedida:      CategoriaArticulo;
+    categoriaArticulo: CategoriaArticuloCreacion;
+    unidadMedida:      CategoriaArticuloCreacion;
     imagenInsumo:      ImagenInsumo;
 }
 
-export interface CategoriaArticulo {
+export interface CategoriaArticuloCreacion {
     id: number;
 }
 
