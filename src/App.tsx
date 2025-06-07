@@ -1,6 +1,6 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from './context/AuthProvider';
-import {RegisterUsuario} from './pages/registerUsuario';
+import {RegistroUsuario} from './pages/RegistroUsuario/RegistroUsuario.tsx';
 import Login from "./pages/Login/Login.tsx";
 import {useAuth} from "./context/useAuth.ts";
 import React from "react";
@@ -24,19 +24,19 @@ function App() {
                             </ProtectedRoute>
                         }/>
                     <Route
-                        path="/registerUsuario"
+                        path="/registro-usuario"
                         element={
-                            <RegisterUsuario/>
+                            <RegistroUsuario/>
                         }/>
                     <Route
-                        path="/productosABM"
+                        path="/productos-abm"
                         element={
                             <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
                                 <ProductosABM/>
                             </ProtectedRoute>
                         }/>
                     <Route
-                        path="/insumoABM"
+                        path="/insumo-abm"
                         element={
                             <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
                                 <IngredientesABM/>
