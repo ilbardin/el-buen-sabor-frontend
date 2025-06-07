@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {obtenerArticulos} from "../services/ingredientesService";
 import type {ArticuloInsumo} from "../models/articuloInsumo";
-import FormularioArticulosInsumo from "../components/formularioArticuloInsumo";
 import {
     AgregarCategoriaArticuloManufacturado
 } from "../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
+import {FormularioArticulosInsumo} from "../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 
 export default function ArticuloInsumoABM() {
     const [articulos, setArticulos] = useState<ArticuloInsumo[]>([]);
@@ -22,7 +22,7 @@ export default function ArticuloInsumoABM() {
             }
         }
 
-        cargarArticulosInsumo();
+        void cargarArticulosInsumo();
     }, []);
 
     return (

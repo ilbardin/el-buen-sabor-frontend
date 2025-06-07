@@ -1,20 +1,17 @@
-import {crearArticuloInsumo, obtenerCategorias, obtenerUnidadesMedida} from "../services/ingredientesService";
+import {crearArticuloInsumo, obtenerCategorias, obtenerUnidadesMedida} from "../../services/ingredientesService.tsx";
 import React, {useEffect, useState} from "react";
-import type {CategoriaArticulo} from "../models/categoriaArticulo.ts";
-import type {UnidadMedida} from "../models/unidadMedida.ts";
+import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
+import type {UnidadMedida} from "../../models/unidadMedida.ts";
+import styles from './FormularioArticuloInsumo.module.css';
 
-export default function FormularioArticulosInsumo({onClose}: {
-    onClose: () => void;
-}) {
+export const FormularioArticulosInsumo = ({onClose}: { onClose: () => void }) => {
     const [denominacion, setDenominacion] = useState("");
     const [precioCompra, setPrecioCompra] = useState(0);
     const [precioVenta, setPrecioVenta] = useState(0);
     const [esParaElaborar, setEsParaElaborar] = useState(false);
     const [urlImagen, setUrlImagen] = useState("");
-
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
     const [categorias, setCategorias] = useState<CategoriaArticulo[]>([]);
-
     const [unidadSeleccionada, setUnidadSeleccionada] = useState("");
     const [unidades, setUnidades] = useState<UnidadMedida[]>([]);
 
@@ -31,7 +28,8 @@ export default function FormularioArticulosInsumo({onClose}: {
                 console.error("Error al cargar los artículos o unidades:", error);
             }
         }
-        cargarDatos();
+
+        void cargarDatos();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -78,19 +76,7 @@ export default function FormularioArticulosInsumo({onClose}: {
     };
 
     return (
-        <div
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0,0,0,0.5)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <div className={styles.divContenedor}>
             <div
                 style={{
                     backgroundColor: "white",
