@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {crearArticuloManufacturado, obtenerCategorias,} from "../../services/articuloManofacturadoService.tsx";
+import {crearArticuloManufacturado, obtenerCategorias,} from "../../services/articuloManufacturadoService.ts";
 import type {ArticuloManufacturadoCreacion} from "../../models/articuloManufacturado.ts";
 import {obtenerArticulos} from "../../services/ingredientesService.tsx";
 import styles from './FormularioArticulosManufacturados.module.css';

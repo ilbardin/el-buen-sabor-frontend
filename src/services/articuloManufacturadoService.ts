@@ -15,7 +15,7 @@ function handleInvalidResponse(response: AxiosResponse, errorMessage: string): b
     return false;
 }
 
-export async function obtenerArticulosManofacturados(): Promise<ArticuloManufacturado[]> {
+export async function getArticulosManufacturados(): Promise<ArticuloManufacturado[]> {
     try {
         const response = await axiosInstance.get<ArticuloManufacturado[]>(`${API_URL}/listar`);
 
@@ -77,7 +77,7 @@ export async function crearArticuloManufacturado(articulo: ArticuloManufacturado
     }
 }
 
-export async function eliminarArticuloManofacturado(id: number): Promise<void> {
+export async function eliminarArticuloManufacturado(id: number): Promise<void> {
     if (id === undefined) {
         console.error("El ID no puede ser undefined.");
         await showAlert("Error", "error", "El ID del artículo es inválido.");

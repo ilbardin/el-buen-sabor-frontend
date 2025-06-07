@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {eliminarArticuloManofacturado, obtenerArticulosManofacturados,} from "../../services/articuloManofacturadoService.tsx";
+import {eliminarArticuloManufacturado, getArticulosManufacturados,} from "../../services/articuloManufacturadoService.ts";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import FormularioArticulosManufacturados from "../../components/FormularioArticulosManufacturados/FormularioArticulosManufacturados.tsx";
 import {showConfirm} from "../../utils/alerts.ts";
@@ -15,7 +15,7 @@ export const ProductosABM = () => {
 
     const cargarArticulosManofacturados = async () => {
         try {
-            const articulos = await obtenerArticulosManofacturados();
+            const articulos = await getArticulosManufacturados();
             setArticulos(articulos);
         } catch (error) {
             console.error("Error al cargar los artículos manufacturados:", error);
@@ -34,7 +34,7 @@ export const ProductosABM = () => {
             );
 
             if (confirmacion) {
-                await eliminarArticuloManofacturado(id);
+                await eliminarArticuloManufacturado(id);
                 setArticulos(articulos.filter((articulo) => articulo.id !== id));
             }
 

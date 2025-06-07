@@ -1,4 +1,4 @@
-import {crearCategoriaArticuloManofacturado} from "../../services/articuloManofacturadoService.tsx";
+import {crearCategoriaArticuloManofacturado} from "../../services/articuloManufacturadoService.ts";
 import * as React from "react";
 import {useState} from "react";
 import styles from './AgregarCategoriaArticuloManufacturado.module.css';
