@@ -1,13 +1,9 @@
-import {crearCategoriaArticuloManofacturado} from "../services/articuloManofacturadoService";
+import {crearCategoriaArticuloManofacturado} from "../../services/articuloManofacturadoService.tsx";
 import * as React from "react";
 import {useState} from "react";
-import "../css/css.css"
+import styles from './AgregarCategoriaArticuloManufacturado.module.css';
 
-export default function AgregarCategoriaArticuloManufacturado({
-                                                                    onClose,
-                                                                }: {
-    onClose: () => void;
-}) {
+export const AgregarCategoriaArticuloManufacturado = ({onClose}: { onClose: () => void }) => {
     const [nombre, setNombre] = useState("");
 
     async function handleSubmit(e: React.FormEvent) {
@@ -21,19 +17,7 @@ export default function AgregarCategoriaArticuloManufacturado({
     }
 
     return (
-        <div
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0,0,0,0.5)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
+        <div className={styles.divUno}>
             <div
                 style={{
                     backgroundColor: "white",
@@ -63,4 +47,4 @@ export default function AgregarCategoriaArticuloManufacturado({
             </div>
         </div>
     );
-}
+};
