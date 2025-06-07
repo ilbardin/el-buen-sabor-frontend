@@ -9,7 +9,7 @@ import {useAuth} from "./context/useAuth.ts";
 import React from "react";
 import {UserRole} from "./models/usuario/userRoles.ts";
 import ProtectedRoute from "./context/ProtectedRoute.tsx";
-import {ProductosABM} from "./pages/ProductosABM.tsx";
+import {ProductosABM} from "./pages/ProductosABM/ProductosABM.tsx";
 
 function App() {
 
