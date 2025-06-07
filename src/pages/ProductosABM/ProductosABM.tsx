@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {eliminarArticuloManofacturado, obtenerArticulosManofacturados,} from "../services/articuloManofacturadoService";
-import type {ArticuloManufacturado} from "../models/articuloManufacturado.ts";
-import FormularioArticulosManofacturados from "../components/formularioArticulosManofacturados";
-import {showConfirm} from "../utils/alerts.ts";
+import {eliminarArticuloManofacturado, obtenerArticulosManofacturados,} from "../../services/articuloManofacturadoService.tsx";
+import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
+import FormularioArticulosManufacturados from "../../components/FormularioArticulosManufacturados/FormularioArticulosManufacturados.tsx";
+import {showConfirm} from "../../utils/alerts.ts";
 import {
     AgregarCategoriaArticuloManufacturado
-} from "../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
+} from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
+import styles from './ProductosABM.module.css';
 
 export const ProductosABM = () => {
     const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
@@ -45,7 +46,7 @@ export const ProductosABM = () => {
     return (
         <div>
             {mostrarModal && (
-                <FormularioArticulosManofacturados
+                <FormularioArticulosManufacturados
                     onClose={() => setMostrarModal(false)}
                     onCreateSuccess={cargarArticulosManofacturados}
                 />
@@ -56,7 +57,7 @@ export const ProductosABM = () => {
                 />
             )}
 
-            <h1>Productos Manufacturados</h1>
+            <h1 className={styles.h1}>Productos Manufacturados</h1>
 
             <button onClick={() => setMostrarModal(true)}>
                 Añadir nuevo Producto
