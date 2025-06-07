@@ -1,4 +1,4 @@
-import {crearArticuloInsumo, obtenerCategorias, obtenerUnidadesMedida} from "../../services/ingredientesService.tsx";
+import {crearArticuloInsumo, getCategoriasArticuloInsumo, getUnidadesDeMedida} from "../../services/ingredientesService.ts";
 import React, {useEffect, useState} from "react";
 import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
 import type {UnidadMedida} from "../../models/unidadMedida.ts";
@@ -19,10 +19,10 @@ export const FormularioArticulosInsumo = ({onClose}: { onClose: () => void }) =>
     useEffect(() => {
         async function cargarDatos() {
             try {
-                const categoriasObtenidas = await obtenerCategorias();
+                const categoriasObtenidas = await getCategoriasArticuloInsumo();
                 setCategorias(categoriasObtenidas);
 
-                const unidadesObtenidas = await obtenerUnidadesMedida();
+                const unidadesObtenidas = await getUnidadesDeMedida();
                 setUnidades(unidadesObtenidas);
             } catch (error) {
                 console.error("Error al cargar los artículos o unidades:", error);

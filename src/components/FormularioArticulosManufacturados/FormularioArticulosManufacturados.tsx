@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {crearArticuloManufacturado, obtenerCategorias,} from "../../services/articuloManufacturadoService.ts";
 import type {ArticuloManufacturadoCreacion} from "../../models/articuloManufacturado.ts";
-import {obtenerArticulos} from "../../services/ingredientesService.tsx";
+import {getArticulosInsumo} from "../../services/ingredientesService.ts";
 import styles from './FormularioArticulosManufacturados.module.css';
 import type {CategoriaArticuloManufacturado} from "../../models/categoriaArticuloManufacturado.ts";
 import type {ArticuloInsumo} from "../../models/articuloInsumo.ts";
@@ -29,7 +29,7 @@ export default function FormularioArticulosManufacturados({onClose, onCreateSucc
     useEffect(() => {
         async function cargarDatos() {
             const categorias = await obtenerCategorias();
-            const insumos = await obtenerArticulos();
+            const insumos = await getArticulosInsumo();
             setCategorias(categorias);
             setInsumos(insumos);
         }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {obtenerArticulos} from "../../services/ingredientesService.tsx";
+import {getArticulosInsumo} from "../../services/ingredientesService.ts";
 import type {ArticuloInsumo} from "../../models/articuloInsumo.ts";
 import {FormularioArticulosInsumo} from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import {AgregarCategoriaArticulo} from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
@@ -12,7 +12,7 @@ export const IngredientesABM = () => {
     useEffect(() => {
         async function cargarArticulosInsumo() {
             try {
-                const articulos = await obtenerArticulos();
+                const articulos = await getArticulosInsumo();
                 console.log('articulos:', articulos);
                 setArticulos(articulos);
             } catch (error) {

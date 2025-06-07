@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL + "/articulos-insumo";
 const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categorias-articulo";
 const API_URL_UNIDADES_MEDIDA = import.meta.env.VITE_API_URL + "/unidades-medida";
 
-export async function obtenerArticulos(): Promise<ArticuloInsumo[]> {
+export async function getArticulosInsumo(): Promise<ArticuloInsumo[]> {
     try {
         const response = await axiosInstance.get(API_URL);
 
@@ -39,7 +39,7 @@ export async function crearArticuloInsumo(articulo: ArticuloInsumoCreacion): Pro
     }
 }
 
-export async function obtenerCategorias(): Promise<CategoriaArticulo[]> {
+export async function getCategoriasArticuloInsumo(): Promise<CategoriaArticulo[]> {
     try {
         const response = await axiosInstance.get(API_URL_CATEGORIA);
 
@@ -55,7 +55,7 @@ export async function obtenerCategorias(): Promise<CategoriaArticulo[]> {
     }
 }
 
-export async function crearCategoriaArticulo(denominacion: string, categoriaPadreId: number | null): Promise<void> {
+export async function crearCategoriaArticuloInsumo(denominacion: string, categoriaPadreId: number | null): Promise<void> {
     try {
         const categoria = {
             denominacion,
@@ -76,7 +76,7 @@ export async function crearCategoriaArticulo(denominacion: string, categoriaPadr
     }
 }
 
-export async function obtenerUnidadesMedida(): Promise<UnidadMedida[]> {
+export async function getUnidadesDeMedida(): Promise<UnidadMedida[]> {
     try {
         const response = await axiosInstance.get(API_URL_UNIDADES_MEDIDA);
 

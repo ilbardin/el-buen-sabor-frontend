@@ -1,4 +1,4 @@
-import {crearCategoriaArticulo, obtenerCategorias,} from "../../services/ingredientesService.tsx";
+import {crearCategoriaArticuloInsumo, getCategoriasArticuloInsumo,} from "../../services/ingredientesService.ts";
 import React, {useEffect, useState} from "react";
 import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
 import styles from './AgregarCategoriaArticulo.module.css';
@@ -11,7 +11,7 @@ export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => 
     useEffect(() => {
         async function cargarCategorias() {
             try {
-                const categoriasObtenidas = await obtenerCategorias();
+                const categoriasObtenidas = await getCategoriasArticuloInsumo();
                 setCategorias(categoriasObtenidas);
             } catch (error) {
                 console.error("Error al cargar los artículos:", error);
@@ -33,7 +33,7 @@ export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => 
                 return;
             }
 
-            await crearCategoriaArticulo(nombre, categoriaObj.id);
+            await crearCategoriaArticuloInsumo(nombre, categoriaObj.id);
             onClose();
         } catch (error) {
             console.error("Error al guardar el producto:", error);
