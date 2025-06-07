@@ -1,65 +1,15 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import {AuthProvider} from './context/AuthProvider';
-import {RegistroUsuario} from './pages/RegistroUsuario/RegistroUsuario.tsx';
-import Login from "./pages/Login/Login.tsx";
-import {useAuth} from "./context/useAuth.ts";
-import React from "react";
-import {UserRole} from "./models/usuario/userRoles.ts";
-import ProtectedRoute from "./context/ProtectedRoute.tsx";
-import {ProductosABM} from "./pages/ProductosABM/ProductosABM.tsx";
-import {IngredientesABM} from "./pages/IngredientesABM/IngredientesABM.tsx";
-import {Home} from "./pages/Home/Home.tsx";
+import Router from './Router';
 
 function App() {
-
     return (
         <AuthProvider>
             <BrowserRouter>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                                <Home/>
-                            </ProtectedRoute>
-                        }/>
-                    <Route
-                        path="/registro-usuario"
-                        element={
-                            <RegistroUsuario/>
-                        }/>
-                    <Route
-                        path="/productos-abm"
-                        element={
-                            <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
-                                <ProductosABM/>
-                            </ProtectedRoute>
-                        }/>
-                    <Route
-                        path="/insumo-abm"
-                        element={
-                            <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
-                                <IngredientesABM/>
-                            </ProtectedRoute>
-                        }/>
-                    <Route
-                        path="/products"
-                        element={
-                            <h1>Products</h1>
-                        }/>
-                    <Route
-                        path="/login"
-                        element={<LoginWrapper/>}/>
-                </Routes>
+                <Router/>
             </BrowserRouter>
         </AuthProvider>
-
-    )
+    );
 }
 
-const LoginWrapper: React.FC = () => {
-    const {login} = useAuth();
-    return <Login onLoginSuccess={login}/>;
-};
-
-export default App
+export default App;

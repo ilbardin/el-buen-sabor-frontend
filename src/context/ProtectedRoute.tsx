@@ -3,6 +3,7 @@ import {Navigate} from "react-router-dom";
 import {useAuth} from "./useAuth";
 import {UserRole} from "../models/usuario/userRoles.ts";
 import {showAlert} from "../utils/alerts";
+import {ROUTES} from "../constants/routes.ts";
 
 interface ProtectedRouteProps {
     rolesPermitidos: UserRole[];
@@ -39,7 +40,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             "Debes iniciar sesión para acceder a esta página.",
             false);
 
-        return <Navigate to="/login" replace/>;
+        return <Navigate to={ROUTES.LOGIN} replace/>;
     }
 
     if (!isJwtValid()) {
@@ -49,7 +50,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
             false
         );
-        return <Navigate to="/login" replace/>;
+        return <Navigate to={ROUTES.LOGIN} replace/>;
     }
 
     if (!rolesPermitidos.includes(usuario?.rol as UserRole)) {
@@ -59,7 +60,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             "No tienes permiso para acceder a esta página.",
             false
         );
-        return <Navigate to="/" replace/>;
+        return <Navigate to={ROUTES.HOME} replace/>;
     }
 
     return <>{children}</>;

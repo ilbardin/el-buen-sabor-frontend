@@ -9,6 +9,7 @@ import {showAlert, showLoading} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
+import {ROUTES} from "../../constants/routes.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -51,7 +52,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
         onLoginSuccess(data);
         Swal.close();
 
-        navigate('/');
+        navigate(ROUTES.HOME);
     };
 
     const handleLoginSubmit = async (e: React.FormEvent) => {
