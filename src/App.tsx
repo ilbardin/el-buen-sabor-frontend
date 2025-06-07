@@ -1,6 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {AuthProvider} from './context/AuthProvider';
-import LoginUsuario from './pages/loginUsuario';
 import {RegisterUsuario} from './pages/registerUsuario';
 import Login from "./pages/Login/Login.tsx";
 import {useAuth} from "./context/useAuth.ts";
@@ -23,11 +22,6 @@ function App() {
                             <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                                 <Home/>
                             </ProtectedRoute>
-                        }/>
-                    <Route
-                        path="/loginUsuario"
-                        element={
-                            <LoginUsuario/>
                         }/>
                     <Route
                         path="/registerUsuario"
