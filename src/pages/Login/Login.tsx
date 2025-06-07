@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {FaLock, FaUser} from 'react-icons/fa';
-import type {UserData} from "../../types/usuario.ts";
+import type {UserData} from "../../models/usuario/usuario.ts";
 import {LOGIN_URL} from "../../constants/constants.ts";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/useAuth.ts";
 import Swal from "sweetalert2";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";
-import type {GenericError} from "../../types/interfaces.ts";
+import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
 
 type LoginProps = {

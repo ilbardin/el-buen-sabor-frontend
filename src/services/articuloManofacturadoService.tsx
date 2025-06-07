@@ -1,7 +1,7 @@
 import axiosInstance from "../api/axiosInstance.ts";
-import type {ArticuloManufacturado, ArticuloManufacturadoCreacion} from "../interfaces/articuloManufacturado.ts";
+import type {ArticuloManufacturado, ArticuloManufacturadoCreacion} from "../models/articuloManufacturado.ts";
 import {showAlert} from "../utils/alerts.ts";
-import type {CategoriaArticuloManufacturado} from "../interfaces/categoriaArticuloManufacturado.ts";
+import type {CategoriaArticuloManufacturado} from "../models/categoriaArticuloManufacturado.ts";
 import type {AxiosResponse} from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";

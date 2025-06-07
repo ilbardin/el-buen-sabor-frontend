@@ -1,7 +1,7 @@
 import React from "react";
 import {Navigate} from "react-router-dom";
 import {useAuth} from "./useAuth";
-import {UserRole} from "../types/userRoles.ts";
+import {UserRole} from "../models/usuario/userRoles.ts";
 import {showAlert} from "../utils/alerts";
 
 interface ProtectedRouteProps {

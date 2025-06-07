@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react";
-import {
-    obtenerArticulosManofacturados,
-    eliminarArticuloManofacturado,
-} from "../services/articuloManofacturadoService";
-import type {ArticuloManufacturado} from "../interfaces/articuloManufacturado.ts";
+import {eliminarArticuloManofacturado, obtenerArticulosManofacturados,} from "../services/articuloManofacturadoService";
+import type {ArticuloManufacturado} from "../models/articuloManufacturado.ts";
 import FormularioArticulosManofacturados from "../components/formularioArticulosManofacturados";
-import AgregarCategoriaArticuloManufacturado from "../components/AgregarCategoriaArticuloManufacturado.tsx";
 import {showConfirm} from "../utils/alerts.ts";
+import {
+    AgregarCategoriaArticuloManufacturado
+} from "../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 
-export default function ProductosABM() {
+export const ProductosABM = () => {
     const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
     const [mostrarModal, setMostrarModal] = useState(false);
     const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
@@ -23,7 +22,7 @@ export default function ProductosABM() {
     };
 
     useEffect(() => {
-        cargarArticulosManofacturados();
+        void cargarArticulosManofacturados();
     }, []);
 
     async function handleEliminar(id: number) {

@@ -1,7 +1,7 @@
 import {crearArticuloInsumo, obtenerCategorias, obtenerUnidadesMedida} from "../services/ingredientesService";
 import React, {useEffect, useState} from "react";
-import type {CategoriaArticulo} from "../interfaces/categoriaArticulo.ts";
-import type {UnidadMedida} from "../interfaces/unidadMedida.ts";
+import type {CategoriaArticulo} from "../models/categoriaArticulo.ts";
+import type {UnidadMedida} from "../models/unidadMedida.ts";
 
 export default function FormularioArticulosInsumo({onClose}: {
     onClose: () => void;

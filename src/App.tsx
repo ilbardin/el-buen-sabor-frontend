@@ -3,13 +3,13 @@ import {AuthProvider} from './context/AuthProvider';
 import Home from './pages/home';
 import LoginUsuario from './pages/loginUsuario';
 import {RegisterUsuario} from './pages/registerUsuario';
-import ProductosABM from './pages/productosABM';
 import IngredientesABM from './pages/ingredientesABM';
 import Login from "./pages/Login/Login.tsx";
 import {useAuth} from "./context/useAuth.ts";
 import React from "react";
-import {UserRole} from "./types/userRoles.ts";
+import {UserRole} from "./models/usuario/userRoles.ts";
 import ProtectedRoute from "./context/ProtectedRoute.tsx";
+import {ProductosABM} from "./pages/ProductosABM.tsx";
 
 function App() {
 

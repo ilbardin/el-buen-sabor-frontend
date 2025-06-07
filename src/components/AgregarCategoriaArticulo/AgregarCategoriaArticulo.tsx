@@ -1,6 +1,6 @@
 import {crearCategoriaArticulo, obtenerCategorias,} from "../../services/ingredientesService.tsx";
 import React, {useEffect, useState} from "react";
-import type {CategoriaArticulo} from "../../interfaces/categoriaArticulo.ts";
+import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
 import styles from './AgregarCategoriaArticulo.module.css';
 
 export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => {

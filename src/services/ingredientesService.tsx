@@ -1,8 +1,8 @@
-import type {ArticuloInsumo, ArticuloInsumoCreacion} from "../interfaces/articuloInsumo.ts";
+import type {ArticuloInsumo, ArticuloInsumoCreacion} from "../models/articuloInsumo.ts";
 import axiosInstance from "../api/axiosInstance.ts";
 import {showAlert} from "../utils/alerts.ts";
-import type {CategoriaArticulo} from "../interfaces/categoriaArticulo.ts";
-import type {UnidadMedida} from "../interfaces/unidadMedida.ts";
+import type {CategoriaArticulo} from "../models/categoriaArticulo.ts";
+import type {UnidadMedida} from "../models/unidadMedida.ts";
 
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-insumo";
 const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categorias-articulo";

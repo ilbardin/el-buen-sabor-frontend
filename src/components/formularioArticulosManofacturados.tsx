@@ -2,7 +2,7 @@ import "../css/formularioArticulosManofacturados.css";
 import React, {useEffect, useState} from "react";
 import {obtenerArticulos} from "../services/ingredientesService";
 import {crearArticuloManufacturado, obtenerCategorias,} from "../services/articuloManofacturadoService";
-import type {ArticuloManufacturadoCreacion} from "../interfaces/articuloManufacturado.ts";
+import type {ArticuloManufacturadoCreacion} from "../models/articuloManufacturado.ts";
 
 export default function FormularioArticulosManofacturados({onClose, onCreateSuccess}: {
     onClose: () => void;
