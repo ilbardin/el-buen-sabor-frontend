@@ -1,10 +1,12 @@
-import "../css/formularioArticulosManofacturados.css";
 import React, {useEffect, useState} from "react";
-import {obtenerArticulos} from "../services/ingredientesService";
-import {crearArticuloManufacturado, obtenerCategorias,} from "../services/articuloManofacturadoService";
-import type {ArticuloManufacturadoCreacion} from "../models/articuloManufacturado.ts";
+import {crearArticuloManufacturado, obtenerCategorias,} from "../../services/articuloManofacturadoService.tsx";
+import type {ArticuloManufacturadoCreacion} from "../../models/articuloManufacturado.ts";
+import {obtenerArticulos} from "../../services/ingredientesService.tsx";
+import styles from './FormularioArticulosManufacturados.module.css';
+import type {CategoriaArticuloManufacturado} from "../../models/categoriaArticuloManufacturado.ts";
+import type {ArticuloInsumo} from "../../models/articuloInsumo.ts";
 
-export default function FormularioArticulosManofacturados({onClose, onCreateSuccess}: {
+export default function FormularioArticulosManufacturados({onClose, onCreateSuccess}: {
     onClose: () => void;
     onCreateSuccess: () => void;
 }) {
@@ -15,11 +17,11 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
     const [imagenInsumo, setImagenInsumo] = useState("");
 
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
-    const [categorias, setCategorias] = useState<any[]>([]);
+    const [categorias, setCategorias] = useState<CategoriaArticuloManufacturado[]>([]);
 
     const [insumoSeleccionado, setInsumoSeleccionado] = useState("");
     const [cantidadInsumo, setCantidadInsumo] = useState(0);
-    const [insumos, setInsumos] = useState<any[]>([]);
+    const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
     const [detalles, setDetalles] = useState<{ insumo: any; cantidad: number }[]>(
         []
     );
@@ -32,7 +34,7 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
             setInsumos(insumos);
         }
 
-        cargarDatos();
+        void cargarDatos();
     }, []);
 
     const agregarInsumo = () => {
@@ -90,66 +92,66 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
     };
 
     return (
-        <div className="form-articulo-modal">
-            <div className="form-articulo-container">
+        <div className={styles.formArticuloModal}>
+            <div className={styles.formArticuloContainer}>
                 <h2>Nuevo Artículo Manufacturado</h2>
-                <form onSubmit={handleSubmit} className="form-articulo">
-                    <div className="form-articulo-columnas">
-                        <div className="form-articulo-columna izquierda">
-                            <label className="form-articulo-label">
+                <form onSubmit={handleSubmit} className={styles.formArticulo}>
+                    <div className={styles.formArticuloColumnas}>
+                        <div className={styles.formArticuloColumnaIzquierda}>
+                            <label className={styles.formArticuloLabel}>
                                 Nombre:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="text"
                                     value={denominacion}
                                     onChange={(e) => setDenominacion(e.target.value)}
                                 />
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Descripción:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="text"
                                     value={descripcion}
                                     onChange={(e) => setDescripcion(e.target.value)}
                                 />
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Precio Venta:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="number"
                                     value={precioVenta}
                                     onChange={(e) => setPrecioVenta(parseFloat(e.target.value))}
                                 />
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Tiempo estimado (min):
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="number"
                                     value={tiempoEstimado}
                                     onChange={(e) => setTiempoEstimado(parseInt(e.target.value))}
                                 />
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Imagen:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="text"
                                     value={imagenInsumo}
                                     onChange={(e) => setImagenInsumo(e.target.value)}
                                 />
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Categoría:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     list="categorias"
                                     value={categoriaSeleccionada}
                                     onChange={(e) => setCategoriaSeleccionada(e.target.value)}
@@ -162,11 +164,11 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
                             </label>
                         </div>
 
-                        <div className="form-articulo-columna derecha">
-                            <label className="form-articulo-label">
+                        <div className={styles.formArticuloColumnaDerecha}>
+                            <label className={styles.formArticuloLabel}>
                                 Insumo:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     list="insumos"
                                     value={insumoSeleccionado}
                                     onChange={(e) => setInsumoSeleccionado(e.target.value)}
@@ -178,10 +180,10 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
                                 </datalist>
                             </label>
 
-                            <label className="form-articulo-label">
+                            <label className={styles.formArticuloLabel}>
                                 Cantidad de insumo:
                                 <input
-                                    className="form-articulo-input"
+                                    className={styles.formArticuloInput}
                                     type="number"
                                     value={cantidadInsumo}
                                     onChange={(e) => setCantidadInsumo(parseInt(e.target.value))}
@@ -191,12 +193,12 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
                             <button
                                 type="button"
                                 onClick={agregarInsumo}
-                                className="form-articulo-button"
+                                className={styles.formArticuloButton}
                             >
                                 Añadir Insumo
                             </button>
 
-                            <div className="form-articulo-insumos">
+                            <div className={styles.formArticuloInsumos}>
                                 <h4>Insumos añadidos:</h4>
                                 <ul>
                                     {detalles.map((d, index) => (
@@ -209,16 +211,16 @@ export default function FormularioArticulosManofacturados({onClose, onCreateSucc
                         </div>
                     </div>
 
-                    <div className="form-articulo-acciones">
+                    <div className={styles.formArticuloAcciones}>
                         <button
                             type="button"
                             onClick={onClose}
-                            className="form-articulo-button form-articulo-cancelar"
+                            className={`${styles.formArticuloButton} ${styles.formArticuloCancelar}`}
                         >
                             Cancelar
                         </button>
 
-                        <button type="submit" className="form-articulo-button">
+                        <button type="submit" className={styles.formArticuloButton}>
                             Guardar
                         </button>
                     </div>
