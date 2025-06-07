@@ -3,7 +3,7 @@ import {AuthProvider} from './context/AuthProvider';
 import Home from './pages/home';
 import LoginUsuario from './pages/loginUsuario';
 import {RegisterUsuario} from './pages/registerUsuario';
-import IngredientesABM from './pages/ingredientesABM';
+import IngredientesABM from './pages/IngredientesABM/IngredientesABM.tsx';
 import Login from "./pages/Login/Login.tsx";
 import {useAuth} from "./context/useAuth.ts";
 import React from "react";

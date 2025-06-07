@@ -1,12 +1,10 @@
 import {useEffect, useState} from "react";
-import {obtenerArticulos} from "../services/ingredientesService";
-import type {ArticuloInsumo} from "../models/articuloInsumo";
-import {
-    AgregarCategoriaArticuloManufacturado
-} from "../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
-import {FormularioArticulosInsumo} from "../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
+import {obtenerArticulos} from "../../services/ingredientesService.tsx";
+import type {ArticuloInsumo} from "../../models/articuloInsumo.ts";
+import {FormularioArticulosInsumo} from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
+import {AgregarCategoriaArticulo} from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
 
-export default function ArticuloInsumoABM() {
+export const IngredientesABM = () => {
     const [articulos, setArticulos] = useState<ArticuloInsumo[]>([]);
     const [mostrarModal, setMostrarModal] = useState(false);
     const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
@@ -31,7 +29,7 @@ export default function ArticuloInsumoABM() {
                 <FormularioArticulosInsumo onClose={() => setMostrarModal(false)}/>
             )}
             {mostrarModalCategoria && (
-                <AgregarCategoriaArticuloManufacturado
+                <AgregarCategoriaArticulo
                     onClose={() => setMostrarModalCategoria(false)}
                 />
             )}
