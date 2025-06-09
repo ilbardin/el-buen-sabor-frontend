@@ -91,7 +91,7 @@ export async function eliminarArticuloManufacturado(id: number): Promise<void> {
             return;
         }
 
-        await showAlert("Éxito", "success", "Artículo manufacturado eliminado correctamente.");
+        await showAlert("Éxito", "success", response.data);
     } catch (error) {
         console.error("Error:", error);
         throw error;
