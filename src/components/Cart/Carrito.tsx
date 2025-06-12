@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaShoppingCart, FaCartPlus} from 'react-icons/fa';
+import {FaCartPlus, FaMinus, FaPlus, FaShoppingCart} from 'react-icons/fa';
 import {MdDelete} from "react-icons/md";
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
 import styles from "./Carrito.module.css";
@@ -10,11 +10,13 @@ interface CartItem extends ArticuloManufacturado {
 
 interface CartProps {
     items: CartItem[];
+    onIncrease: (id: number | undefined) => void;
+    onDecrease: (id: number | undefined) => void;
     onSave: () => void;
     onClear: () => void;
 }
 
-export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
+export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onSave, onClear}) => {
     const total = items.reduce((sum, it) => sum + it.precioVenta * it.cantidad, 0);
 
     return (
@@ -33,7 +35,24 @@ export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
                             <li key={id} className={styles.cartItem}>
                                 <div className={styles.itemInfo}>
                                     <span className={styles.itemName}>{denominacion}</span>
-                                    <span className={styles.itemQty}>Cantidad: {cantidad}</span>
+
+                                    <div className={styles.itemQty}>
+                                        <button
+                                            className={`${styles.qtyBtn} ${styles.minusBtn}`}
+                                            onClick={() => onDecrease(id)}
+                                        >
+                                            <FaMinus/>
+                                        </button>
+
+                                        <span className={styles.qtyLabel}>{cantidad}</span>
+
+                                        <button
+                                            className={`${styles.qtyBtn} ${styles.plusBtn}`}
+                                            onClick={() => onIncrease(id)}
+                                        >
+                                            <FaPlus/>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className={styles.itemTotal}>
                                     ${(precioVenta * cantidad).toFixed(2)}

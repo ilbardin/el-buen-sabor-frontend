@@ -54,6 +54,29 @@ const Productos: React.FC = () => {
         });
     };
 
+    const handleIncrease = (id: number | undefined) => {
+        setCart((prev) =>
+            prev.map((item) =>
+                item.id === id ? {...item, cantidad: item.cantidad + 1} : item
+            )
+        );
+    };
+
+    const handleDecrease = (id: number | undefined) => {
+        setCart((prev) =>
+            prev.reduce((acc, item) => {
+                if (item.id === id) {
+                    if (item.cantidad > 1) {
+                        acc.push({...item, cantidad: item.cantidad - 1});
+                    }
+                } else {
+                    acc.push(item);
+                }
+                return acc;
+            }, [] as CartItem[])
+        );
+    };
+
     const handleSave = async () => {
         console.log("Cart items:", cart);
 
@@ -123,7 +146,13 @@ const Productos: React.FC = () => {
             </div>
 
             <div className={styles.sidebar}>
-                <Carrito items={cart} onSave={handleSave} onClear={handleClearCart}/>
+                <Carrito
+                    items={cart}
+                    onIncrease={handleIncrease}
+                    onDecrease={handleDecrease}
+                    onSave={handleSave}
+                    onClear={handleClearCart}
+                />
             </div>
         </div>
     );
