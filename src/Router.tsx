@@ -55,7 +55,6 @@ const Router = () => {
                     }
                 />
             </Route>
-            <Route path={ROUTES.PRODUCTS} element={<h1>Products</h1>}/>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
         </Routes>
     );
