@@ -3,7 +3,9 @@ import type {ArticuloManufacturado, ArticuloManufacturadoCreacion} from "../mode
 import {showAlert} from "../utils/alerts.ts";
 import type {CategoriaArticuloManufacturado} from "../models/categoriaArticuloManufacturado.ts";
 import type {AxiosResponse} from "axios";
+import type { PedidoRequest } from "../models/PedidoRequest.tsx";
 
+const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
 const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categoria-articulos-manufacturados";
 
@@ -94,6 +96,22 @@ export async function eliminarArticuloManufacturado(id: number): Promise<void> {
         await showAlert("Éxito", "success", response.data);
     } catch (error) {
         console.error("Error:", error);
+        throw error;
+    }
+}
+
+
+export async function savePedido(pedido: PedidoRequest) {
+    try {
+        const response = await axiosInstance.post(`${API_URL_PEDIDOS}`, pedido);
+
+        if (handleInvalidResponse(response, "Error al guardar el pedido.")) {
+            return;
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error al guardar el pedido:", error);
         throw error;
     }
 }

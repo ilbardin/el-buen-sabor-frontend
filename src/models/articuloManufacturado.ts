@@ -27,3 +27,7 @@ export interface Detalle {
     cantidad: number;
     insumo:   Categoria;
 }
+
+export interface ImagenManofacturado {
+    denominacion: string;
+}

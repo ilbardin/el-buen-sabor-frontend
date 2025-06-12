@@ -9,6 +9,7 @@ import {Home} from './pages/Home/Home';
 import ProtectedRoute from './context/ProtectedRoute';
 import {UserRole} from './models/usuario/userRoles';
 import {ROUTES} from './constants/routes';
+import Productos from './pages/Productos/Productos';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -23,6 +24,14 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                         <Home/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={ROUTES.PRODUCTS}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                        <Productos/>
                     </ProtectedRoute>
                 }
             />

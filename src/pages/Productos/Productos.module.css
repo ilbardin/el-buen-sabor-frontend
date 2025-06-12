@@ -1,0 +1,81 @@
+.homepageLayout {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 1rem 1rem;
+  position: relative;
+}
+
+.mainContent {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.gridContainer {
+  max-width: calc(100% - 120px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.sidebar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  position: sticky;
+  top: 1rem;
+  height: fit-content;
+}
+
+.settingsDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.agregarButton {
+  background-color: #43df46;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agregarButton:hover {
+  background-color: #38c13a;
+}
+
+.statsButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statsButton:hover {
+  background-color: #0e6c83;
+}
