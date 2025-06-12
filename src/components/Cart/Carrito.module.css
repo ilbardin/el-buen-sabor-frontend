@@ -1,0 +1,123 @@
+.cart {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+
+.carritoTitulo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cart label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.empty {
+    color: #999;
+    font-style: italic;
+    margin: 12px 0;
+    text-align: center;
+}
+
+.cartList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cartItem {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.itemInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.itemName {
+    font-weight: bold;
+    color: #34495e;
+}
+
+.itemQty {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.itemTotal {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.cartSummary {
+    margin-top: 16px;
+    text-align: right;
+}
+
+.cartTotal {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.btnSave {
+    background: #27ae60;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btnSave:hover {
+    background: #219150;
+}
+
+.btnSave:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btnClear {
+    background: #ff4d4f;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    margin-top: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btnClear:hover {
+    background-color: #d9363e;
+}
+
+@media (max-width: 768px) {
+    .cart {
+        width: 90%;
+        right: 5%;
+        top: 80px;
+    }
+}
