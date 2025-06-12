@@ -10,6 +10,7 @@ import ProtectedRoute from './context/ProtectedRoute';
 import {UserRole} from './models/usuario/userRoles';
 import {ROUTES} from './constants/routes';
 import Productos from './pages/Productos/Productos';
+import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -19,39 +20,41 @@ const Router = () => {
 
     return (
         <Routes>
-            <Route
-                path={ROUTES.HOME}
-                element={
-                    <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                        <Home/>
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path={ROUTES.PRODUCTS}
-                element={
-                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
-                        <Productos/>
-                    </ProtectedRoute>
-                }
-            />
-            <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
-            <Route
-                path={ROUTES.PRODUCTOS_ABM}
-                element={
-                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
-                        <ProductosABM/>
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path={ROUTES.INSUMOS_ABM}
-                element={
-                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
-                        <IngredientesABM/>
-                    </ProtectedRoute>
-                }
-            />
+            <Route element={<BarraSuperior/>}>
+                <Route
+                    path={ROUTES.HOME}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <Home/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.PRODUCTS}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                            <Productos/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
+                <Route
+                    path={ROUTES.PRODUCTOS_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                            <ProductosABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.INSUMOS_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Empleado]}>
+                            <IngredientesABM/>
+                        </ProtectedRoute>
+                    }
+                />
+            </Route>
             <Route path={ROUTES.PRODUCTS} element={<h1>Products</h1>}/>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
         </Routes>
