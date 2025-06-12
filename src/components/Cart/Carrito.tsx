@@ -43,6 +43,7 @@ export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
                     </ul>
 
                     <div className={styles.cartSummary}>
+                        <hr className={styles.divider}/>
                         <p className={styles.cartTotal}>
                             Total: <strong>${total.toFixed(2)}</strong>
                         </p>
@@ -52,8 +53,7 @@ export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
                             onClick={onSave}
                         >
                             <FaCartPlus size={20}/>
-                            &nbsp;
-                            Guardar carrito
+                            <span className={styles.btnText}>Guardar carrito</span>
                         </button>
                         <button
                             className={`${styles.boton} ${styles.btnClear}`}
@@ -61,8 +61,7 @@ export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
                             onClick={onClear}
                         >
                             <MdDelete size={20}/>
-                            &nbsp;
-                            Vaciar carrito
+                            <span className={styles.btnText}>Vaciar carrito</span>
                         </button>
                     </div>
                 </>

@@ -65,31 +65,52 @@
 }
 
 .cartSummary {
-    margin-top: 16px;
-    text-align: right;
+    margin-top: 24px;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
 }
 
 .cartTotal {
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-    text-align: left;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.divider {
+    margin-bottom: 20px;
+    border: none;
+    border-top: 1px solid #eee;
 }
 
 .boton {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    width: auto;
-    min-width: 250px;
+    gap: 8px;
+    font-weight: 600;
+    width: 100%;
     max-width: 300px;
-    padding: 10px;
+    padding: 12px 16px;
     font-size: 1rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
-    margin: 1rem auto auto;
+    transition: background 0.3s, transform 0.2s;
+    margin: 12px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.boton:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.btnText {
+    display: inline-block;
 }
 
 .btnSave {
@@ -97,7 +118,7 @@
     color: #fff;
 }
 
-.btnSave:hover {
+.btnSave:hover:not(:disabled) {
     background: #219150;
 }
 
@@ -111,8 +132,13 @@
     color: #fff;
 }
 
-.btnClear:hover {
+.btnClear:hover:not(:disabled) {
     background-color: #d9363e;
+}
+
+.btnClear:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
