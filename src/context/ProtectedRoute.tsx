@@ -1,5 +1,5 @@
 import React from "react";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {useAuth} from "./useAuth";
 import {UserRole} from "../models/usuario/userRoles.ts";
 import {showAlert} from "../utils/alerts";
@@ -11,9 +11,15 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, children}) => {
-    const {tokenJwt, jwtExpirationDate, usuario, loading, isLoggingOut} = useAuth();
+    const {tokenJwt, jwtExpirationDate, usuario, loading, logout, isLoggingOut} = useAuth();
+    const navigate = useNavigate();
 
-    const isJwtValid = () => {
+    const handleLogout = () => {
+        logout();
+        navigate(ROUTES.LOGIN);
+    };
+
+    const isJwtValid = (): boolean => {
         if (!tokenJwt || !jwtExpirationDate) {
             return false;
         }
@@ -30,7 +36,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
     };
 
     if (loading || isLoggingOut) {
-        return null;
+        return <></>;
     }
 
     if (!usuario) {
@@ -38,7 +44,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             "Acceso denegado",
             "error",
             "Debes iniciar sesión para acceder a esta página.",
-            false);
+            false
+        );
 
         return <Navigate to={ROUTES.LOGIN} replace/>;
     }
@@ -50,7 +57,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
             false
         );
-        return <Navigate to={ROUTES.LOGIN} replace/>;
+        handleLogout();
+        return <></>;
     }
 
     if (!rolesPermitidos.includes(usuario?.rol as UserRole)) {
