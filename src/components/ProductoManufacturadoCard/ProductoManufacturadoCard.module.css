@@ -16,7 +16,7 @@
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.02);
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -36,12 +36,12 @@
 
 .subtitle {
   font-size: 0.9rem;
-  color: #666;
+  color: #545454;
   margin: 2px 0;
-  height: 2em;
+  height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: wrap;
 }
 
 .price {

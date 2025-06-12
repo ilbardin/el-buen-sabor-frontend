@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
 import {MdAddShoppingCart} from 'react-icons/md';
-import styles from './ProductoManufacturado.module.css';
+import styles from './ProductoManufacturadoCard.module.css';
 import {useNavigate} from 'react-router-dom';
 
 interface Props {
