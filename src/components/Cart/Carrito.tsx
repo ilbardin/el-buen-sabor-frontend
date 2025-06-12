@@ -1,5 +1,6 @@
 import React from 'react';
-import {FaShoppingCart} from 'react-icons/fa';
+import {FaShoppingCart, FaCartPlus} from 'react-icons/fa';
+import {MdDelete} from "react-icons/md";
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
 import styles from "./Carrito.module.css";
 
@@ -46,18 +47,22 @@ export const Carrito: React.FC<CartProps> = ({items, onSave, onClear}) => {
                             Total: <strong>${total.toFixed(2)}</strong>
                         </p>
                         <button
-                            className={styles.btnSave}
+                            className={`${styles.boton} ${styles.btnSave}`}
                             disabled={items.length === 0}
                             onClick={onSave}
                         >
-                            Guardar Carrito
+                            <FaCartPlus size={20}/>
+                            &nbsp;
+                            Guardar carrito
                         </button>
                         <button
-                            className={styles.btnClear}
+                            className={`${styles.boton} ${styles.btnClear}`}
                             disabled={items.length === 0}
                             onClick={onClear}
                         >
-                            Vaciar Carrito
+                            <MdDelete size={20}/>
+                            &nbsp;
+                            Vaciar carrito
                         </button>
                     </div>
                 </>
