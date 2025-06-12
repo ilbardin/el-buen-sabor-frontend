@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import type { ArticuloManufacturado } from '../../models/articuloManufacturado';
-import "./Cart.css"
+import "./Carrito.css"
 
 interface CartItem extends ArticuloManufacturado {
   cantidad: number;
