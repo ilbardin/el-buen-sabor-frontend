@@ -32,6 +32,21 @@ export async function getArticulosManufacturados(): Promise<ArticuloManufacturad
     }
 }
 
+export async function getDetallesArticuloManufacturado(id: string): Promise<ArticuloManufacturado | undefined> {
+    try {
+        const response = await axiosInstance.get<ArticuloManufacturado>(`${API_URL}/detalle/${id}`);
+
+        if (handleInvalidResponse(response, "Error al obtener los artículos manufacturados.")) {
+            return;
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 export async function crearCategoriaArticuloManofacturado(denominacion: string): Promise<void> {
     try {
         const categoria = {denominacion, estaActivo: true};
