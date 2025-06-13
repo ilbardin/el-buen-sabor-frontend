@@ -25,7 +25,6 @@ export const ArticuloManufacturadoCard: React.FC<Props> = ({producto, onAdd}) =>
 
     return (
         <div className={styles.card} onClick={handleDetails}>
-
             <div className={styles.cardImgWrapper}>
                 <img
                     src={imgSrc}
@@ -33,8 +32,7 @@ export const ArticuloManufacturadoCard: React.FC<Props> = ({producto, onAdd}) =>
                     className={styles.cardImg}
                     onError={() =>
                         setImgSrc(`https://placehold.co/300x200?text=${encodeURIComponent(producto.denominacion)}`)
-                    }
-                />
+                    }/>
             </div>
             <h3>{producto.denominacion}</h3>
             <p className={styles.subtitle}>{producto.descripcion}</p>
