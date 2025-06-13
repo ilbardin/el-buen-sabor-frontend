@@ -3,8 +3,8 @@ import {getArticulosManufacturados} from "../../services/articuloManufacturadoSe
 import {ArticuloManufacturadoCard} from "../../components/ProductoManufacturadoCard/ProductoManufacturadoCard.tsx";
 import styles from "./Productos.module.css";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
-import {useCart} from "../../context/CarritoContext.tsx";
 import {Carrito} from "../../components/Carrito/Carrito.tsx";
+import {useCart} from "../../context/carrito/useCart.ts";
 
 const Productos: React.FC = () => {
     const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);

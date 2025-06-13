@@ -1,6 +1,6 @@
 import React from "react";
 import {Navigate, useNavigate} from "react-router-dom";
-import {useAuth} from "./useAuth";
+import {useAuth} from "./auth/useAuth.ts";
 import {UserRole} from "../models/usuario/userRoles.ts";
 import {showAlert} from "../utils/alerts";
 import {ROUTES} from "../constants/routes.ts";

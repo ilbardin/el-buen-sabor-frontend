@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import styles from './ProductoManufacturadoCard.module.css';
 import {ROUTES} from "../../constants/routes.ts";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
-import {useCart} from "../../context/CarritoContext.tsx";
+import {useCart} from "../../context/carrito/useCart.ts";
 
 interface Props {
     producto: ArticuloManufacturado;

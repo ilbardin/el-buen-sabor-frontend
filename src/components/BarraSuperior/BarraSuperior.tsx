@@ -1,5 +1,5 @@
 import {Link, Outlet, useNavigate} from 'react-router-dom';
-import {useAuth} from '../../context/useAuth.ts';
+import {useAuth} from '../../context/auth/useAuth.ts';
 import {UserRole} from "../../models/usuario/userRoles.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import styles from './BarraSuperior.module.css';

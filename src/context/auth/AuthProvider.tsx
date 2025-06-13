@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {AuthContext} from './authContext.ts';
-import type {UserData, Usuario} from '../models/usuario/usuario.ts';
+import type {UserData, Usuario} from '../../models/usuario/usuario.ts';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [tokenJwt, setJwt] = useState<string | null>(null);

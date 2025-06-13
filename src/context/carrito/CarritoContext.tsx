@@ -1,7 +1,8 @@
-import React, {createContext, type ReactNode, useContext, useState} from 'react';
-import type {ArticuloManufacturado} from '../models/articuloManufacturado';
-import {savePedido} from '../services/articuloManufacturadoService.ts';
-import {showAlert} from '../utils/alerts';
+import React, {type ReactNode, useState} from 'react';
+import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
+import {savePedido} from '../../services/articuloManufacturadoService.ts';
+import {showAlert} from '../../utils/alerts.ts';
+import { CartContext } from './cartContext.ts';
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
@@ -20,7 +21,7 @@ interface PedidoRequest {
     }[];
 }
 
-interface CartContextProps {
+export interface CartContextProps {
     cart: CartItem[];
     addToCart: (producto: ArticuloManufacturado) => void;
     removeFromCart: (id: number) => void;
@@ -29,8 +30,6 @@ interface CartContextProps {
     clearCart: () => void;
     saveCart: () => Promise<void>;
 }
-
-const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [cart, setCart] = useState<CartItem[]>(() => {
@@ -138,12 +137,4 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             {children}
         </CartContext.Provider>
     );
-};
-
-export const useCart = (): CartContextProps => {
-    const context = useContext(CartContext);
-    if (!context) {
-        throw new Error('useCart debe usarse dentro de un CartProvider');
-    }
-    return context;
 };

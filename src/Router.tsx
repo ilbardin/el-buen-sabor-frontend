@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import {RegistroUsuario} from './pages/RegistroUsuario/RegistroUsuario';
 import Login from './pages/Login/Login';
-import {useAuth} from './context/useAuth';
+import {useAuth} from './context/auth/useAuth.ts';
 import {ProductosABM} from './pages/ProductosABM/ProductosABM';
 import {IngredientesABM} from './pages/IngredientesABM/IngredientesABM';
 import {Home} from './pages/Home/Home';

@@ -5,13 +5,13 @@ import {FaArrowLeft} from "react-icons/fa6";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import {getDetallesArticuloManufacturado} from "../../services/articuloManufacturadoService.ts";
-import {useCart} from "../../context/CarritoContext.tsx"; // Importa el contexto del carrito
+import {useCart} from "../../context/carrito/useCart.ts";
 
 export const ProductoDetalle = () => {
     const {id} = useParams();
     const [producto, setProducto] = useState<ArticuloManufacturado | undefined>(undefined);
     const navigate = useNavigate();
-    const {addToCart} = useCart(); // Obtén la función para agregar al carrito desde el contexto
+    const {addToCart} = useCart();
 
     const cargarProducto = async (id: string | undefined) => {
         if (id) {
@@ -28,7 +28,7 @@ export const ProductoDetalle = () => {
     }, [id]);
 
     if (!producto) {
-        return null; // Asegura retornar algún valor válido si el producto no se encuentra
+        return null;
     }
 
     const handleGoBack = () => {

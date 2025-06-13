@@ -3,7 +3,7 @@ import {FaLock, FaUser} from 'react-icons/fa';
 import type {UserData} from "../../models/usuario/usuario.ts";
 import {LOGIN_URL} from "../../constants/constants.ts";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../../context/useAuth.ts";
+import {useAuth} from "../../context/auth/useAuth.ts";
 import Swal from "sweetalert2";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";

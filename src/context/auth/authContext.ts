@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import type {UserData, Usuario} from '../models/usuario/usuario.ts';
+import type {UserData, Usuario} from '../../models/usuario/usuario.ts';
 
 type AuthContextType = {
     tokenJwt: string | null;
