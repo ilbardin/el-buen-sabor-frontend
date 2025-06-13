@@ -10,8 +10,8 @@ interface CartItem extends ArticuloManufacturado {
 
 interface CartProps {
     items: CartItem[];
-    onIncrease: (id: number | undefined) => void;
-    onDecrease: (id: number | undefined) => void;
+    onIncrease: (id: number) => void;
+    onDecrease: (id: number) => void;
     onSave: () => void;
     onClear: () => void;
 }
@@ -39,7 +39,7 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
                                     <div className={styles.itemQty}>
                                         <button
                                             className={`${styles.qtyBtn} ${styles.minusBtn}`}
-                                            onClick={() => onDecrease(id)}
+                                            onClick={() => id !== undefined && onDecrease(id)}
                                         >
                                             <FaMinus/>
                                         </button>
@@ -48,7 +48,7 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
 
                                         <button
                                             className={`${styles.qtyBtn} ${styles.plusBtn}`}
-                                            onClick={() => onIncrease(id)}
+                                            onClick={() => id !== undefined && onIncrease(id)}
                                         >
                                             <FaPlus/>
                                         </button>

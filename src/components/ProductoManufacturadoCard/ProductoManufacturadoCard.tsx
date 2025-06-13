@@ -1,23 +1,23 @@
 import React, {useState} from 'react';
-import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
 import {MdAddShoppingCart} from 'react-icons/md';
-import styles from './ProductoManufacturadoCard.module.css';
 import {useNavigate} from 'react-router-dom';
+import styles from './ProductoManufacturadoCard.module.css';
 import {ROUTES} from "../../constants/routes.ts";
+import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
+import {useCart} from "../../context/CarritoContext.tsx";
 
 interface Props {
     producto: ArticuloManufacturado;
-    onAdd: (producto: ArticuloManufacturado) => void;
-    onDelete: (id: number) => void;
 }
 
-export const ArticuloManufacturadoCard: React.FC<Props> = ({producto, onAdd}) => {
+export const ArticuloManufacturadoCard: React.FC<Props> = ({producto}) => {
     const [imgSrc, setImgSrc] = useState('https://placehold.co/300x200?text=Producto');
+    const {addToCart} = useCart();
     const navigate = useNavigate();
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.stopPropagation();
-        onAdd(producto);
+        addToCart(producto);
     };
 
     const handleDetails = () => {

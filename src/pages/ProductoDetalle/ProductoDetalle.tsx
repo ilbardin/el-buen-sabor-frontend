@@ -5,11 +5,13 @@ import {FaArrowLeft} from "react-icons/fa6";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import {getDetallesArticuloManufacturado} from "../../services/articuloManufacturadoService.ts";
+import {useCart} from "../../context/CarritoContext.tsx"; // Importa el contexto del carrito
 
 export const ProductoDetalle = () => {
     const {id} = useParams();
     const [producto, setProducto] = useState<ArticuloManufacturado | undefined>(undefined);
     const navigate = useNavigate();
+    const {addToCart} = useCart(); // Obtén la función para agregar al carrito desde el contexto
 
     const cargarProducto = async (id: string | undefined) => {
         if (id) {
@@ -20,19 +22,22 @@ export const ProductoDetalle = () => {
     useEffect(() => {
         const fetch = async () => {
             const producto = await cargarProducto(id);
-            console.log(producto);
             setProducto(producto);
         };
         void fetch();
     }, [id]);
 
     if (!producto) {
-        return;
+        return null; // Asegura retornar algún valor válido si el producto no se encuentra
     }
 
     const handleGoBack = () => {
         navigate(ROUTES.PRODUCTOS);
-    }
+    };
+
+    const handleAddToCart = () => {
+        addToCart(producto); // Agrega el producto al carrito usando el contexto
+    };
 
     return (
         <div className={styles.detalleContainer}>
@@ -45,7 +50,11 @@ export const ProductoDetalle = () => {
                 <FaArrowLeft/>
             </button>
             <div className={styles.detalleLeft}>
-                <img src={'https://placehold.co/300x200?text=Producto'} alt={producto.denominacion} className={styles.detalleImagen}/>
+                <img
+                    src={'https://placehold.co/300x200?text=Producto'}
+                    alt={producto.denominacion}
+                    className={styles.detalleImagen}
+                />
                 <div className={styles.detalleDescripcion}>
                     <h3>Descripción:</h3>
                     <p>{producto.descripcion}</p>
@@ -54,7 +63,13 @@ export const ProductoDetalle = () => {
 
             <div className={styles.detalleRight}>
                 <h2 className={styles.detalleNombre}>{producto.denominacion}</h2>
-                <p className={styles.detallePrecio}>$ {producto.precioVenta}</p>
+                <p className={styles.detallePrecio}>$ {producto.precioVenta.toFixed(2)}</p>
+                <button
+                    className={styles.addToCartButton}
+                    onClick={handleAddToCart}
+                >
+                    Agregar al carrito
+                </button>
             </div>
         </div>
     );
