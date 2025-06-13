@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import styles from './ProductoDetalle.module.css';
 import {FaArrowLeft} from "react-icons/fa6";
@@ -6,7 +6,7 @@ import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts"
 import {ROUTES} from "../../constants/routes.ts";
 import {getDetallesArticuloManufacturado} from "../../services/articuloManufacturadoService.ts";
 
-const ProductoDetalle: React.FC = () => {
+export const ProductoDetalle = () => {
     const {id} = useParams();
     const [producto, setProducto] = useState<ArticuloManufacturado | undefined>(undefined);
     const navigate = useNavigate();
@@ -59,5 +59,3 @@ const ProductoDetalle: React.FC = () => {
         </div>
     );
 };
-
-export default ProductoDetalle;

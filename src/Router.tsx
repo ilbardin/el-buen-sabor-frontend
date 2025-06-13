@@ -11,7 +11,7 @@ import {UserRole} from './models/usuario/userRoles';
 import {ROUTES} from './constants/routes';
 import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
-import ProductoDetalle from "./pages/ProductoDetalle/ProductoDetalle.tsx";
+import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
