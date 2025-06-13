@@ -25,7 +25,7 @@ export const BarraSuperior = () => {
                     {usuario?.rol === UserRole.Admin && (
                         <>
                             <li>
-                                <Link to={ROUTES.PRODUCTS}>Productos</Link>
+                                <Link to={ROUTES.PRODUCTOS}>Productos</Link>
                             </li>
                         </>
                     )}

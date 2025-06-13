@@ -3,6 +3,6 @@ export const ROUTES = {
     REGISTRO_USUARIO: '/registro-usuario',
     PRODUCTOS_ABM: '/productos-abm',
     INSUMOS_ABM: '/insumo-abm',
-    PRODUCTS: '/products',
+    PRODUCTOS: '/productos',
     LOGIN: '/login',
 };
