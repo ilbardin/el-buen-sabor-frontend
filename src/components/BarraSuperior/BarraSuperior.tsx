@@ -3,6 +3,7 @@ import {useAuth} from '../../context/useAuth.ts';
 import {UserRole} from "../../models/usuario/userRoles.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import styles from './BarraSuperior.module.css';
+import {BiSolidLogOut} from "react-icons/bi";
 
 export const BarraSuperior = () => {
     const {logout, setIsLoggingOut, usuario} = useAuth();
@@ -35,6 +36,7 @@ export const BarraSuperior = () => {
                             Estás logueado como usuario: <strong>{usuario.rol}</strong>
                         </p>
                         <button className={styles.logoutButton} onClick={handleLogout}>
+                            <BiSolidLogOut size={18} style={{marginRight: 2}}/>
                             Cerrar sesión
                         </button>
                     </>
