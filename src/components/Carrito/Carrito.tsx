@@ -22,8 +22,8 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
     return (
         <div className={styles.cart}>
             <div className={styles.carritoTitulo}>
-                <FaShoppingCart size={20} style={{color: "var(--color-primario)"}}/>
-                &nbsp;<label>Carrito</label>
+                <FaShoppingCart size={20} style={{color: "var(--color-primario)", marginBottom: "4px"}}/>
+                <label>Carrito</label>
             </div>
 
             {items.length === 0 ? (

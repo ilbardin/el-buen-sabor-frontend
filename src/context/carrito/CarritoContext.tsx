@@ -2,7 +2,7 @@ import React, {type ReactNode, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
 import {showAlert} from '../../utils/alerts.ts';
-import { CartContext } from './cartContext.ts';
+import {CartContext} from './cartContext.ts';
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
@@ -29,6 +29,7 @@ export interface CartContextProps {
     decreaseQuantity: (id: number) => void;
     clearCart: () => void;
     saveCart: () => Promise<void>;
+    isItemInCart: (id: number) => boolean;
 }
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
@@ -55,6 +56,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             saveCartToLocalStorage(newCart);
             return newCart;
         });
+    };
+
+    const isItemInCart = (id: number) => {
+        return cart.some((item) => item.id === id);
     };
 
     const removeFromCart = (id: number) => {
@@ -99,10 +104,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     const saveCart = async () => {
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        const gastosEnvio = 500; // Fijo, modifica según sea necesario
+        const gastosEnvio = 500;
         const total = subtotal + gastosEnvio;
 
-        // Crea los detalles del pedido
         const detalles = cart.map((item) => ({
             cantidad: item.cantidad,
             subTotal: item.precio * item.cantidad,
@@ -124,7 +128,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
                 'success',
                 `El pedido con ID ${response?.data.id} fue guardado correctamente.`
             );
-            clearCart(); // Limpia el carrito después de guardar
+            clearCart();
         } catch (error) {
             console.error('Error al guardar el pedido:', error);
             await showAlert('Error', 'error', 'No se pudo guardar el pedido.');
@@ -133,7 +137,15 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     return (
         <CartContext.Provider
-            value={{cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, saveCart}}>
+            value={{
+                cart,
+                addToCart,
+                removeFromCart,
+                increaseQuantity,
+                decreaseQuantity,
+                clearCart,
+                saveCart,
+                isItemInCart}}>
             {children}
         </CartContext.Provider>
     );
