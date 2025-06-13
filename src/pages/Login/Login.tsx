@@ -10,6 +10,7 @@ import axiosInstance from "../../api/axiosInstance.ts";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
 import {ROUTES} from "../../constants/routes.ts";
+import type {AxiosError} from "axios";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -36,7 +37,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
         },
     };
 
-    const handleError = async (err: unknown) => {
+    const handleError = async (err: AxiosError | never) => {
         Swal.close();
 
         if ((err as GenericError).response?.data) {
@@ -45,6 +46,9 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
             await showAlert('Error', 'error', backendError.response.data);
         } else {
             console.error(err);
+            if (err.isAxiosError) {
+                await showAlert('Error', 'error', 'Error de red.');
+            }
         }
     };
 
@@ -62,7 +66,8 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
             showLoading('Iniciando sesión...');
             const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
             handleSuccess(response.data);
-        } catch (err) {
+        } catch (err: unknown) {
+            // @ts-expect-error tipado
             await handleError(err);
         }
     };

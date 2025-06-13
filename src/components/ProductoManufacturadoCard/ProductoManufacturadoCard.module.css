@@ -65,7 +65,7 @@
 }
 
 .btnAdd {
-  background: #3498db;
+  background: var(--color-primario);
   color: #fff;
   margin-top: 1rem;
   margin-bottom: 0.5rem;

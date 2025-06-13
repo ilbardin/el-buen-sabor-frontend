@@ -60,7 +60,7 @@
 }
 
 .statsButton {
-  background-color: #3498db;
+  background-color: var(--color-primario);
   color: white;
   border: none;
   padding: 0.5rem 1rem;

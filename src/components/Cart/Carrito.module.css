@@ -81,7 +81,7 @@
 }
 
 .minusBtn {
-    color: #e74c3c;
+    color: var(--color-primario);
 }
 
 .plusBtn {
