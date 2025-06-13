@@ -3,6 +3,7 @@ import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
 import {MdAddShoppingCart} from 'react-icons/md';
 import styles from './ProductoManufacturadoCard.module.css';
 import {useNavigate} from 'react-router-dom';
+import {ROUTES} from "../../constants/routes.ts";
 
 interface Props {
     producto: ArticuloManufacturado;
@@ -20,7 +21,7 @@ export const ArticuloManufacturadoCard: React.FC<Props> = ({producto, onAdd}) =>
     };
 
     const handleDetails = () => {
-        navigate(`/productos/${producto.id}`);
+        navigate(`${ROUTES.PRODUCTOS}/${producto.id}`);
     };
 
     return (
