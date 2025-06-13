@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {getArticulosManufacturados, savePedido,} from "../../services/articuloManufacturadoService";
 import {ArticuloManufacturadoCard} from "../../components/ProductoManufacturadoCard/ProductoManufacturadoCard.tsx";
-import {Carrito} from "../../components/Cart/Carrito.tsx";
+import {Carrito} from "../../components/Carrito/Carrito.tsx";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado";
 import type {PedidoRequest} from "../../models/pedidoRequest.ts";
 import {showAlert} from "../../utils/alerts";

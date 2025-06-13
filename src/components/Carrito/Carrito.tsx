@@ -1,7 +1,7 @@
 import React from 'react';
 import {FaCartPlus, FaMinus, FaPlus, FaShoppingCart} from 'react-icons/fa';
 import {MdDelete} from "react-icons/md";
-import type {ArticuloManufacturado} from '../../models/articuloManufacturado';
+import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import styles from "./Carrito.module.css";
 
 interface CartItem extends ArticuloManufacturado {
