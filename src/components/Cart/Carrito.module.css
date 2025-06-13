@@ -36,7 +36,7 @@
 }
 
 .cartItem {
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid #eee;
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
@@ -85,7 +85,7 @@
 }
 
 .plusBtn {
-    color: #27ae60;
+    color: var(--color-primario);
 }
 
 .qtyLabel {
@@ -105,22 +105,16 @@
     padding: 16px;
     border-radius: 12px;
     background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
 .cartTotal {
     font-size: 1.4rem;
     font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 20px;
+    color: var(--color-secundario);
+    margin-bottom: 2rem;
     text-align: center;
-}
-
-.divider {
-    margin-bottom: 20px;
-    border: none;
-    border-top: 1px solid #eee;
 }
 
 .boton {
@@ -155,7 +149,7 @@
 }
 
 .btnSave:hover:not(:disabled) {
-    background: #219150;
+    background: darkgreen;
 }
 
 .btnSave:disabled {
@@ -164,12 +158,12 @@
 }
 
 .btnClear {
-    background: #ff4d4f;
+    background: var(--color-primario);
     color: #fff;
 }
 
 .btnClear:hover:not(:disabled) {
-    background-color: #d9363e;
+    background-color: darkred;
 }
 
 .btnClear:disabled {

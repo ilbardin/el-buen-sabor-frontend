@@ -22,7 +22,7 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
     return (
         <div className={styles.cart}>
             <div className={styles.carritoTitulo}>
-                <FaShoppingCart size={20}/>
+                <FaShoppingCart size={20} style={{color: "var(--color-primario)"}}/>
                 &nbsp;<label>Carrito</label>
             </div>
 
@@ -62,7 +62,6 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
                     </ul>
 
                     <div className={styles.cartSummary}>
-                        <hr className={styles.divider}/>
                         <p className={styles.cartTotal}>
                             Total: <strong>${total.toFixed(2)}</strong>
                         </p>
