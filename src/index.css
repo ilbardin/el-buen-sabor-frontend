@@ -1,3 +1,9 @@
+:root {
+    --color-primario: #e74c3c;
+    --color-secundario: #f1c40f;
+    --color-terciario: #2c3e50;
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
