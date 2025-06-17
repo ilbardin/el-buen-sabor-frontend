@@ -1,6 +1,6 @@
 import axios, {type InternalAxiosRequestConfig} from "axios";
 
-const LOGIN_PATH = "/login";
+const UBICACIONES_EXCLUIDAS = ["/login", "/paises", "/provincias", "/localidades"];
 
 const setAuthorizationHeader = (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("jwt");
@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        if (config.url?.includes(LOGIN_PATH)) {
+        if (UBICACIONES_EXCLUIDAS.some(path => config.url?.includes(path))) {
             return config;
         }
 
