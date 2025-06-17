@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaAddressBook, FaIdCard, FaUser} from 'react-icons/fa';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
@@ -10,11 +10,16 @@ import {MdEmail, MdLocationCity} from "react-icons/md";
 import {BsTelephoneFill} from "react-icons/bs";
 import {registrarUsuario} from "../../services/registroUsuarioService.ts";
 import {FaLocationDot} from "react-icons/fa6";
+import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
+import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
+    const [paises, setPaises] = useState<Pais[]>([]);
+    const [provincias, setProvincias] = useState<Provincia[]>([]);
+    const [localidades, setLocalidades] = useState<Localidad[]>([]);
     const [paisId, setPaisId] = useState<number | null>(null);
     const [provinciaId, setProvinciaId] = useState<number | null>(null);
     const [localidadId, setLocalidadId] = useState<number | null>(null);
@@ -28,6 +33,69 @@ export const RegistroUsuario: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
+
+    const fetchPaises = async () => {
+        const cachedPaises = localStorage.getItem('paises');
+
+        if (cachedPaises) {
+            setPaises(JSON.parse(cachedPaises));
+        } else {
+            try {
+                const data = await getPaises();
+                setPaises(data);
+                localStorage.setItem('paises', JSON.stringify(data));
+            } catch (err) {
+                console.error("Error al obtener países", err);
+                await showAlert("Error", "error", "Error al cargar países.");
+            }
+        }
+    };
+
+    const fetchProvincias = async () => {
+        const cachedProvincias = localStorage.getItem('provincias');
+
+        if (cachedProvincias) {
+            setProvincias(JSON.parse(cachedProvincias));
+        } else {
+            if (!paisId) {
+                return;
+            }
+
+            try {
+                const data = await getProvinciasPorPais(paisId);
+                setProvincias(data);
+                localStorage.setItem('provincias', JSON.stringify(data));
+            } catch (err) {
+                console.error("Error al obtener provincias", err);
+                await showAlert("Error", "error", "Error al cargar provincias.");
+            }
+        }
+    };
+
+    const fetchLocalidades = async () => {
+        const cachedLocalidades = localStorage.getItem('localidades');
+
+        if (cachedLocalidades) {
+            setLocalidades(JSON.parse(cachedLocalidades));
+        } else {
+            if (!provinciaId) {
+                return;
+            }
+
+            try {
+                const data = await getLocalidadesPorProvincia(provinciaId);
+                setLocalidades(data);
+                localStorage.setItem('localidades', JSON.stringify(data));
+            } catch (err) {
+                console.error("Error al obtener localidades", err);
+                await showAlert("Error", "error", "Error al cargar localidades.");
+            }
+        }
+    };
+
+    useEffect(() => {
+        void fetchPaises();
+    }, []);
 
     function handleNumberChange(
         value: string,
