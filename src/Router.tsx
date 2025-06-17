@@ -65,6 +65,7 @@ const Router = () => {
                 />
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
+            <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
         </Routes>
     );
 };

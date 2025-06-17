@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {FaLock, FaUser} from 'react-icons/fa';
 import type {UserData} from "../../models/usuario/usuario.ts";
 import {LOGIN_URL} from "../../constants/constants.ts";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import Swal from "sweetalert2";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
@@ -109,7 +109,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
                         </div>
                         <button type="submit" className={styles.btn}>Iniciar sesión</button>
                         <div className={styles.registerLink}>
-                            <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+                            <p>¿No tienes cuenta? <Link to={ROUTES.REGISTRO_USUARIO}>Regístrate</Link></p>
                         </div>
                     </form>
                 </div>
