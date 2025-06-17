@@ -46,7 +46,6 @@ const Router = () => {
                         </ProtectedRoute>
                     }
                 />
-                <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
                 <Route
                     path={ROUTES.PRODUCTOS_ABM}
                     element={
