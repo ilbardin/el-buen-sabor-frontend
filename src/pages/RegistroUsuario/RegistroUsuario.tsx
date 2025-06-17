@@ -51,44 +51,34 @@ export const RegistroUsuario: React.FC = () => {
         }
     };
 
-    const fetchProvincias = async () => {
-        const cachedProvincias = localStorage.getItem('provincias');
-
+    const fetchProvincias = async (idPais: number) => {
+        const cachedProvincias = localStorage.getItem(`provincias_${idPais}`);
         if (cachedProvincias) {
             setProvincias(JSON.parse(cachedProvincias));
         } else {
-            if (!paisId) {
-                return;
-            }
-
             try {
-                const data = await getProvinciasPorPais(paisId);
+                const data = await getProvinciasPorPais(idPais);
                 setProvincias(data);
-                localStorage.setItem('provincias', JSON.stringify(data));
+                localStorage.setItem(`provincias_${idPais}`, JSON.stringify(data));
             } catch (err) {
                 console.error("Error al obtener provincias", err);
-                await showAlert("Error", "error", "Error al cargar provincias.");
+                await showAlert("Error", "error", "No se pudieron cargar las provincias.");
             }
         }
     };
 
-    const fetchLocalidades = async () => {
-        const cachedLocalidades = localStorage.getItem('localidades');
-
+    const fetchLocalidades = async (idProvincia: number) => {
+        const cachedLocalidades = localStorage.getItem(`localidades_${idProvincia}`);
         if (cachedLocalidades) {
             setLocalidades(JSON.parse(cachedLocalidades));
         } else {
-            if (!provinciaId) {
-                return;
-            }
-
             try {
-                const data = await getLocalidadesPorProvincia(provinciaId);
+                const data = await getLocalidadesPorProvincia(idProvincia);
                 setLocalidades(data);
-                localStorage.setItem('localidades', JSON.stringify(data));
+                localStorage.setItem(`localidades_${idProvincia}`, JSON.stringify(data));
             } catch (err) {
                 console.error("Error al obtener localidades", err);
-                await showAlert("Error", "error", "Error al cargar localidades.");
+                await showAlert("Error", "error", "No se pudieron cargar las localidades.");
             }
         }
     };
@@ -96,6 +86,22 @@ export const RegistroUsuario: React.FC = () => {
     useEffect(() => {
         void fetchPaises();
     }, []);
+
+    const handlePaisChange = (id: number) => {
+        setPaisId(id);
+        setProvinciaId(null);
+        setLocalidadId(null);
+        setProvincias([]);
+        setLocalidades([]);
+        fetchProvincias(id);
+    };
+
+    const handleProvinciaChange = (id: number) => {
+        setProvinciaId(id);
+        setLocalidadId(null);
+        setLocalidades([]);
+        fetchLocalidades(id);
+    };
 
     function handleNumberChange(
         value: string,
@@ -201,6 +207,55 @@ export const RegistroUsuario: React.FC = () => {
                                     placeholder="Pérez"
                                     required
                                 />
+                            </div>
+                        </div>
+
+                        <div className={styles.row}>
+                            <div className={styles.inputBox}>
+                                <label htmlFor="pais">País:</label>
+                                <select
+                                    id="pais"
+                                    value={paisId ?? ''}
+                                    onChange={(e) => handlePaisChange(Number(e.target.value))}
+                                    required
+                                >
+                                    <option value="" disabled>Seleccionar país</option>
+                                    {paises.map((pais) => (
+                                        <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className={styles.inputBox}>
+                                <label htmlFor="provincia">Provincia:</label>
+                                <select
+                                    id="provincia"
+                                    value={provinciaId ?? ''}
+                                    onChange={(e) => handleProvinciaChange(Number(e.target.value))}
+                                    disabled={!paisId}
+                                    required
+                                >
+                                    <option value="" disabled>Seleccionar provincia</option>
+                                    {provincias.map((provincia) => (
+                                        <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className={styles.inputBox}>
+                                <label htmlFor="localidad">Localidad:</label>
+                                <select
+                                    id="localidad"
+                                    value={localidadId ?? ''}
+                                    onChange={(e) => setLocalidadId(Number(e.target.value))}
+                                    disabled={!provinciaId}
+                                    required
+                                >
+                                    <option value="" disabled>Seleccionar localidad</option>
+                                    {localidades.map((localidad) => (
+                                        <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
 
