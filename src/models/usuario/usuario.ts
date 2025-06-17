@@ -30,8 +30,14 @@ export interface UsuarioCreacion {
     paisId: number;
     provinciaId: number;
     localidadId: number;
-    direccion: string;
+    direccion: DireccionUsuario;
     telefono: string;
     username: string;
     password: string;
+}
+
+export interface DireccionUsuario {
+    calle: string;
+    numeroCalle: number;
+    codigoPostal: number;
 }

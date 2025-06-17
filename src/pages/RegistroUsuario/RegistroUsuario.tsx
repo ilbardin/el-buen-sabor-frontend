@@ -1,30 +1,48 @@
 import React, {useState} from 'react';
-import {FaIdCard, FaUser} from 'react-icons/fa';
+import {FaAddressBook, FaIdCard, FaUser} from 'react-icons/fa';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import styles from './RegistroUsuario.module.css';
 import {ROUTES} from '../../constants/routes';
 import {showAlert, showLoading} from '../../utils/alerts';
-import {MdEmail} from "react-icons/md";
+import {MdEmail, MdLocationCity} from "react-icons/md";
 import {BsTelephoneFill} from "react-icons/bs";
 import {registrarUsuario} from "../../services/registroUsuarioService.ts";
+import {FaLocationDot} from "react-icons/fa6";
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
-    const [paisId, setPaisId] = useState(0);
-    const [provinciaId, setProvinciaId] = useState(0);
-    const [localidadId, setLocalidadId] = useState(0);
-    const [direccion, setDireccion] = useState('');
-    const [telefono, setTelefono] = useState('');
+    const [paisId, setPaisId] = useState<number | null>(null);
+    const [provinciaId, setProvinciaId] = useState<number | null>(null);
+    const [localidadId, setLocalidadId] = useState<number | null>(null);
+    const [calle, setCalle] = useState('');
+    const [numeroCalle, setNumeroCalle] = useState<number | null>(null);
+    const [codigoPostal, setCodigoPostal] = useState<number | null>(null);
+    const [telefono, setTelefono] = useState<string>('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
+
+    function handleNumberChange(
+        value: string,
+        setState: (val: number | null) => void,
+        max: number
+    ): void {
+        if (value === '') {
+            setState(null);
+        } else {
+            const parsedValue = Number(value);
+            if (parsedValue <= max) {
+                setState(parsedValue);
+            }
+        }
+    }
 
     const handleShowPassword = (field: 'password' | 'confirmPassword') => {
         if (field === 'password') {
@@ -42,6 +60,18 @@ export const RegistroUsuario: React.FC = () => {
             return;
         }
 
+        if (!numeroCalle) {
+            return;
+        }
+
+        if (!codigoPostal) {
+            return;
+        }
+
+        if (!paisId || !provinciaId || !localidadId) {
+            return;
+        }
+
         try {
             const datosNuevoUsuario = {
                 nombre,
@@ -50,11 +80,12 @@ export const RegistroUsuario: React.FC = () => {
                 paisId,
                 provinciaId,
                 localidadId,
-                direccion,
+                direccion: {calle, numeroCalle, codigoPostal},
                 telefono,
                 username,
                 password,
             };
+
             showLoading('Creando cuenta...');
             await registrarUsuario(datosNuevoUsuario);
             Swal.close();
@@ -81,6 +112,8 @@ export const RegistroUsuario: React.FC = () => {
                                 <input
                                     type="text"
                                     id="nombre"
+                                    minLength={4}
+                                    maxLength={50}
                                     value={nombre}
                                     onChange={(e) => setNombre(e.target.value)}
                                     placeholder="Juan"
@@ -89,15 +122,58 @@ export const RegistroUsuario: React.FC = () => {
                             </div>
                             <div className={styles.inputBox}>
                                 <label htmlFor="apellido">Apellido:</label>
+                                <FaIdCard className={styles.icon}/>
                                 <input
                                     type="text"
                                     id="apellido"
+                                    minLength={4}
+                                    maxLength={50}
                                     value={apellido}
                                     onChange={(e) => setApellido(e.target.value)}
                                     placeholder="Pérez"
                                     required
                                 />
-                                <FaIdCard className={styles.icon}/>
+                            </div>
+                        </div>
+
+                        <div className={styles.row}>
+                            <div className={styles.inputBox}>
+                                <label htmlFor="calle">Calle:</label>
+                                <FaLocationDot className={styles.icon}/>
+                                <input
+                                    type="text"
+                                    id="calle"
+                                    minLength={4}
+                                    maxLength={50}
+                                    value={calle}
+                                    onChange={(e) => setCalle(e.target.value)}
+                                    placeholder="Nombre de la calle"
+                                    required
+                                />
+                            </div>
+                            <div className={styles.inputBox}>
+                                <label htmlFor="numero-calle">Número:</label>
+                                <MdLocationCity className={styles.icon}/>
+                                <input
+                                    type="number"
+                                    id="numero-calle"
+                                    value={numeroCalle ?? ''}
+                                    onChange={(e) => handleNumberChange(e.target.value, setNumeroCalle, 9999)}
+                                    placeholder="123"
+                                    required
+                                />
+                            </div>
+                            <div className={styles.inputBox}>
+                                <label htmlFor="codigo-postal">Código Postal:</label>
+                                <FaAddressBook className={styles.icon}/>
+                                <input
+                                    type="number"
+                                    id="codigo-postal"
+                                    value={codigoPostal ?? ''}
+                                    onChange={(e) => handleNumberChange(e.target.value, setCodigoPostal, 99999)}
+                                    placeholder="5500"
+                                    required
+                                />
                             </div>
                         </div>
 
@@ -107,6 +183,7 @@ export const RegistroUsuario: React.FC = () => {
                                 <input
                                     type="email"
                                     id="email"
+                                    maxLength={50}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="mail@example.com"
@@ -119,6 +196,7 @@ export const RegistroUsuario: React.FC = () => {
                                 <input
                                     type="tel"
                                     id="telefono"
+                                    maxLength={10}
                                     value={telefono}
                                     onChange={(e) => setTelefono(e.target.value)}
                                     placeholder="2612345678"
