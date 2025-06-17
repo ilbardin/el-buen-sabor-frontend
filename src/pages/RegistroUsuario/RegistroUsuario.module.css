@@ -15,7 +15,7 @@
 }
 
 .wrapper {
-    width: 420px;
+    width: 1000px;
     border: 2px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(6px);
@@ -30,11 +30,18 @@
     color: #f4f6f8;
 }
 
+.row {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
 .inputBox {
     position: relative;
     width: 100%;
     height: 50px;
     margin: 40px 0;
+    flex: 1;
 }
 
 .inputBox label {
@@ -50,7 +57,7 @@
     border-radius: 40px;
     font-size: 16px;
     color: #fff;
-    padding: 20px 45px 20px 20px;
+    padding: 20px 45px 20px 50px;
     transition: border-color 0.3s;
     margin-top: 5px;
 }
@@ -60,32 +67,34 @@
 }
 
 .inputBox input::placeholder {
-    color: #fff;
+    color: gray;
 }
 
 .inputBox .icon {
     position: absolute;
-    right: 20px;
-    top: 80%;
+    left: 20px;
+    top: 100%;
+    transform: translateY(-50%);
     font-size: 20px;
     color: #fff;
 }
 
-.btn {
-    width: 100%;
-    height: 45px;
+.botonRegistro {
+    width: 40%;
+    height: 50px;
     background: #fff;
     border: none;
     border-radius: 40px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     color: #333;
     font-weight: 700;
     transition: background-color 0.3s ease;
-    margin-top: 2vh;
+    margin: 5vh auto 0 auto;
+    display: block;
 }
 
-.btn:hover {
+.botonRegistro:hover {
     background: rgba(83, 73, 73, 0.5);
     color: white;
     border-color: #fff;
