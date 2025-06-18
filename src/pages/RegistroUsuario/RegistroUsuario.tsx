@@ -127,6 +127,11 @@ export const RegistroUsuario: React.FC = () => {
         }
     };
 
+    const isEmailValid = (email: string): boolean => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    };
+
     const handleRegistroSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -144,6 +149,13 @@ export const RegistroUsuario: React.FC = () => {
         }
 
         if (!paisId || !provinciaId || !localidadId) {
+            return;
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            await showAlert('Error', 'error', 'Por favor, ingresa un correo electrónico válido.');
             return;
         }
 
@@ -198,8 +210,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={nombre}
                                     onChange={(e) => setNombre(e.target.value)}
                                     placeholder="Juan"
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={styles.inputBox}>
                                 <label htmlFor="apellido">Apellido:</label>
@@ -212,8 +223,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={apellido}
                                     onChange={(e) => setApellido(e.target.value)}
                                     placeholder="Pérez"
-                                    required
-                                />
+                                    required/>
                             </div>
                         </div>
 
@@ -224,8 +234,7 @@ export const RegistroUsuario: React.FC = () => {
                                     id="pais"
                                     value={paisId ?? ''}
                                     onChange={(e) => handlePaisChange(Number(e.target.value))}
-                                    required
-                                >
+                                    required>
                                     <option value="" disabled>Seleccionar país</option>
                                     {paises.map((pais) => (
                                         <option key={pais.id} value={pais.id}>{pais.nombre}</option>
@@ -240,8 +249,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={provinciaId ?? ''}
                                     onChange={(e) => handleProvinciaChange(Number(e.target.value))}
                                     disabled={!paisId}
-                                    required
-                                >
+                                    required>
                                     <option value="" disabled>Seleccionar provincia</option>
                                     {provincias.map((provincia) => (
                                         <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
@@ -256,8 +264,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={localidadId ?? ''}
                                     onChange={(e) => setLocalidadId(Number(e.target.value))}
                                     disabled={!provinciaId}
-                                    required
-                                >
+                                    required>
                                     <option value="" disabled>Seleccionar localidad</option>
                                     {localidades.map((localidad) => (
                                         <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
@@ -278,8 +285,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={calle}
                                     onChange={(e) => setCalle(e.target.value)}
                                     placeholder="Nombre de la calle"
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={styles.inputBox}>
                                 <label htmlFor="numero-calle">Número:</label>
@@ -290,8 +296,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={numeroCalle ?? ''}
                                     onChange={(e) => handleNumberChange(e.target.value, setNumeroCalle, 9999)}
                                     placeholder="123"
-                                    required
-                                />
+                                    required/>
                             </div>
                             <div className={styles.inputBox}>
                                 <label htmlFor="codigo-postal">Código Postal:</label>
@@ -302,8 +307,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={codigoPostal ?? ''}
                                     onChange={(e) => handleNumberChange(e.target.value, setCodigoPostal, 99999)}
                                     placeholder="5500"
-                                    required
-                                />
+                                    required/>
                             </div>
                         </div>
 
@@ -317,8 +321,10 @@ export const RegistroUsuario: React.FC = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="mail@example.com"
-                                    required
-                                />
+                                    required/>
+                                {!isEmailValid(email) && email && (
+                                    <span className={styles.errorText}>Email inválido</span>
+                                )}
                                 <MdEmail className={styles.icon}/>
                             </div>
                             <div className={styles.inputBox}>
@@ -330,8 +336,7 @@ export const RegistroUsuario: React.FC = () => {
                                     value={telefono}
                                     onChange={(e) => setTelefono(e.target.value)}
                                     placeholder="2612345678"
-                                    required
-                                />
+                                    required/>
                                 <BsTelephoneFill className={styles.icon}/>
                             </div>
                         </div>
@@ -341,11 +346,12 @@ export const RegistroUsuario: React.FC = () => {
                             <input
                                 type="text"
                                 id="username"
+                                minLength={4}
+                                maxLength={20}
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 placeholder="usuario"
-                                required
-                            />
+                                required/>
                             <FaUser className={styles.icon}/>
                         </div>
 
@@ -355,16 +361,16 @@ export const RegistroUsuario: React.FC = () => {
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     id="password"
+                                    minLength={6}
+                                    maxLength={20}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="********"
-                                    required
-                                />
+                                    required/>
                                 <div
                                     className={`${styles.icon} ${styles.eyeIcon}`}
-                                    onClick={() => handleShowPassword('password')}
-                                >
-                                    {showPassword ? <AiFillEyeInvisible/> : <AiFillEye/>}
+                                    onClick={() => handleShowPassword('password')}>
+                                    {showPassword ? <AiFillEyeInvisible size={22}/> : <AiFillEye size={22}/>}
                                 </div>
                             </div>
 
@@ -373,16 +379,16 @@ export const RegistroUsuario: React.FC = () => {
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     id="confirmar-password"
+                                    minLength={6}
+                                    maxLength={20}
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     placeholder="********"
-                                    required
-                                />
+                                    required/>
                                 <div
                                     className={`${styles.icon} ${styles.eyeIcon}`}
-                                    onClick={() => handleShowPassword('confirmPassword')}
-                                >
-                                    {showConfirmPassword ? <AiFillEyeInvisible/> : <AiFillEye/>}
+                                    onClick={() => handleShowPassword('confirmPassword')}>
+                                    {showConfirmPassword ? <AiFillEyeInvisible size={22}/> : <AiFillEye size={22}/>}
                                 </div>
                             </div>
                         </div>
