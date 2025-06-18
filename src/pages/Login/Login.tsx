@@ -104,9 +104,6 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
                             </label>
                             <FaLock className={styles.icon}/>
                         </div>
-                        <div className={styles.forgotPassword}>
-                            <a href="#">¿Olvidaste tu contraseña?</a>
-                        </div>
                         <button type="submit" className={styles.btn}>Iniciar sesión</button>
                         <div className={styles.registerLink}>
                             <p>¿No tienes cuenta? <Link to={ROUTES.REGISTRO_USUARIO}>Regístrate</Link></p>
