@@ -30,7 +30,8 @@ export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => 
 
             if (!categoriaObj) {
                 console.error("Categoría no encontrada");
-                return;
+                await crearCategoriaArticuloInsumo(nombre, null);
+                return
             }
 
             await crearCategoriaArticuloInsumo(nombre, categoriaObj.id);
