@@ -22,3 +22,22 @@ export interface Usuario {
     empleado: Empleado;
     cliente: Cliente;
 }
+
+export interface UsuarioCreacion {
+    nombre: string;
+    apellido: string;
+    email: string;
+    paisId: number;
+    provinciaId: number;
+    localidadId: number;
+    direccion: DireccionUsuario;
+    telefono: string;
+    username: string;
+    password: string;
+}
+
+export interface DireccionUsuario {
+    calle: string;
+    numeroCalle: number;
+    codigoPostal: number;
+}
