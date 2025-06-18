@@ -115,7 +115,7 @@ input[type="number"] {
     position: absolute;
     left: 20px;
     top: 100%;
-    transform: translateY(-50%);
+    transform: translateY(-40%);
     font-size: 20px;
     color: #fff;
 }
