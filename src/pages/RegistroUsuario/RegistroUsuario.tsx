@@ -12,6 +12,7 @@ import {registrarUsuario} from "../../services/registroUsuarioService.ts";
 import {FaLocationDot} from "react-icons/fa6";
 import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
 import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
+import {AxiosError} from "axios";
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
@@ -87,20 +88,20 @@ export const RegistroUsuario: React.FC = () => {
         void fetchPaises();
     }, []);
 
-    const handlePaisChange = (id: number) => {
+    const handlePaisChange = async (id: number) => {
         setPaisId(id);
         setProvinciaId(null);
         setLocalidadId(null);
         setProvincias([]);
         setLocalidades([]);
-        fetchProvincias(id);
+        await fetchProvincias(id);
     };
 
-    const handleProvinciaChange = (id: number) => {
+    const handleProvinciaChange = async (id: number) => {
         setProvinciaId(id);
         setLocalidadId(null);
         setLocalidades([]);
-        fetchLocalidades(id);
+        await fetchLocalidades(id);
     };
 
     function handleNumberChange(
@@ -161,14 +162,20 @@ export const RegistroUsuario: React.FC = () => {
             };
 
             showLoading('Creando cuenta...');
-            await registrarUsuario(datosNuevoUsuario);
+
+            const response = await registrarUsuario(datosNuevoUsuario);
+
             Swal.close();
-            await showAlert('Éxito', 'success', 'Cuenta creada exitosamente');
+
+            await showAlert('Éxito', 'success', response.data.mensaje);
+
             navigate(ROUTES.LOGIN);
-        } catch (error) {
+        } catch (error: unknown) {
             Swal.close();
-            console.error(error);
-            await showAlert('Error', 'error', 'Error al crear la cuenta');
+
+            if (error instanceof AxiosError) {
+                await showAlert('Error', 'error', error?.response?.data);
+            }
         }
     };
 
