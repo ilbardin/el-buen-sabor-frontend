@@ -27,11 +27,8 @@ export interface UsuarioCreacion {
     nombre: string;
     apellido: string;
     email: string;
-    paisId: number;
-    provinciaId: number;
-    localidadId: number;
-    direccion: DireccionUsuario;
     telefono: string;
+    direccion: DireccionUsuario;
     username: string;
     password: string;
 }
@@ -40,4 +37,5 @@ export interface DireccionUsuario {
     calle: string;
     numeroCalle: number;
     codigoPostal: number;
+    localidadId: number;
 }

@@ -152,9 +152,7 @@ export const RegistroUsuario: React.FC = () => {
             return;
         }
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!emailRegex.test(email)) {
+        if (!isEmailValid(email)) {
             await showAlert('Error', 'error', 'Por favor, ingresa un correo electrónico válido.');
             return;
         }
@@ -164,11 +162,8 @@ export const RegistroUsuario: React.FC = () => {
                 nombre,
                 apellido,
                 email,
-                paisId,
-                provinciaId,
-                localidadId,
-                direccion: {calle, numeroCalle, codigoPostal},
                 telefono,
+                direccion: {calle, numeroCalle, codigoPostal, localidadId},
                 username,
                 password,
             };
@@ -322,9 +317,6 @@ export const RegistroUsuario: React.FC = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="mail@example.com"
                                     required/>
-                                {!isEmailValid(email) && email && (
-                                    <span className={styles.errorText}>Email inválido</span>
-                                )}
                                 <MdEmail className={styles.icon}/>
                             </div>
                             <div className={styles.inputBox}>
