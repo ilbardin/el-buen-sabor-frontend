@@ -1,58 +1,80 @@
-/*div {*/
-/*    padding: 20px;*/
-/*    background-color: #f0f6ff;*/
-/*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-/*}*/
+:root {
+    --color-primario: #e74c3c;
+    --color-secundario: #f1c40f;
+    --color-terciario: #2c3e50;
+}
 
-/*.h1 {*/
-/*    color: #004080;*/
-/*    margin: 10px 0;*/
-/*}*/
+.container {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
 
-/*table {*/
-/*    width: 100%;*/
-/*    border-collapse: collapse;*/
-/*    background-color: #ffffff;*/
-/*    box-shadow: 0 4px 8px rgba(0, 64, 128, 0.1);*/
-/*    border-radius: 8px;*/
-/*    overflow: hidden;*/
-/*}*/
+.h1 {
+    font-size: 2rem;
+    color: var(--color-terciario);
+    margin-bottom: 1.5rem;
+}
 
-/*thead th {*/
-/*    background-color: #cce0ff;*/
-/*    color: #00264d;*/
-/*    padding: 15px;*/
-/*    text-align: left;*/
-/*    font-size: 16px;*/
-/*    border-bottom: 2px solid #b3d1ff;*/
-/*}*/
+.botonesContainer {
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
 
-/*tbody td {*/
-/*    padding: 12px 15px;*/
-/*    border-bottom: 1px solid #e0e0e0;*/
-/*    color: #003366;*/
-/*}*/
+.boton {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
 
-/*tbody tr:hover {*/
-/*    background-color: #e6f2ff;*/
-/*}*/
+.boton:hover {
+    background-color: #c0392b;
+}
 
-/*button {*/
-/*    background-color: #3399ff;*/
-/*    color: white;*/
-/*    border: none;*/
-/*    padding: 10px 15px;*/
-/*    margin: 5px;*/
-/*    border-radius: 5px;*/
-/*    cursor: pointer;*/
-/*    font-weight: bold;*/
-/*    transition: background-color 0.3s;*/
-/*}*/
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 
-/*button:hover {*/
-/*    background-color: #267acc;*/
-/*}*/
+.tabla th,
+.tabla td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: var(--color-terciario);
+}
 
-/*button:active {*/
-/*    background-color: #1a5e99;*/
-/*}*/
+.tabla th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.tabla tr:hover {
+    background-color: #f1f1f1;
+}
+
+.accionesBotones {
+    display: flex;
+    gap: 8px;
+}
+
+.botonSecundario {
+    background-color: var(--color-secundario);
+    color: var(--color-terciario);
+}
+
+.botonSecundario:hover {
+    background-color: #d4ac0d;
+}

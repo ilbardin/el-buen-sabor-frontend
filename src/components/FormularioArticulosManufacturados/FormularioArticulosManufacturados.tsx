@@ -174,45 +174,50 @@ export default function FormularioArticulosManufacturados({
             </div>
 
             <div className={styles.formArticuloColumnaDerecha}>
-              <input
-                className={styles.formArticuloInput}
-                list="insumos"
-                value={insumoSeleccionado}
-                onChange={(e) => {
-                  const seleccion = e.target.value;
-                  setInsumoSeleccionado(seleccion);
-                  const insumo = insumos.find(
-                    (ins) => ins.denominacion === seleccion
-                  );
-                  if (insumo) {
-                    setUnidadMedida(insumo.unidadMedida.denominacion);
-                  } else {
-                    setUnidadMedida("");
-                  }
-                }}
-              />
-              <datalist id="insumos">
-                {insumos.map((ins) => (
-                  <option key={ins.id} value={ins.denominacion} />
-                ))}
-              </datalist>
-
-                <div>
               <label className={styles.formArticuloLabel}>
-                Cantidad de insumo:
+                Insumo:
                 <input
                   className={styles.formArticuloInput}
-                  type="number"
-                  value={cantidadInsumo}
-                  onChange={(e) => setCantidadInsumo(parseInt(e.target.value))}
+                  list="insumos"
+                  value={insumoSeleccionado}
+                  onChange={(e) => {
+                    const seleccion = e.target.value;
+                    setInsumoSeleccionado(seleccion);
+                    const insumo = insumos.find(
+                      (ins) => ins.denominacion === seleccion
+                    );
+                    if (insumo) {
+                      setUnidadMedida(insumo.unidadMedida.denominacion);
+                    } else {
+                      setUnidadMedida("");
+                    }
+                  }}
                 />
+                <datalist id="insumos">
+                  {insumos.map((ins) => (
+                    <option key={ins.id} value={ins.denominacion} />
+                  ))}
+                </datalist>
               </label>
-
-              {unidadMedida && (
-                <span className={styles.unidadMedidaLabel}>
-                {unidadMedida}
-                </span>
-              )}
+              <div className={styles.formArticuloCantidadContainer}>
+                <label className={styles.formArticuloLabel}>
+                  Cantidad de insumo:
+                </label>
+                <div className={styles.formArticuloCantidadInputGroup}>
+                  <input
+                    className={styles.formArticuloInput}
+                    type="number"
+                    value={cantidadInsumo}
+                    onChange={(e) =>
+                      setCantidadInsumo(parseInt(e.target.value))
+                    }
+                  />
+                  {unidadMedida && (
+                    <span className={styles.unidadMedidaLabel}>
+                      {unidadMedida}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <button
@@ -225,13 +230,18 @@ export default function FormularioArticulosManufacturados({
 
               <div className={styles.formArticuloInsumos}>
                 <h4>Insumos añadidos:</h4>
-                <ul>
+                <div className={styles.insumoLista}>
                   {detalles.map((d, index) => (
-                    <li key={index}>
-                      {d.insumo.denominacion} - {d.cantidad}
-                    </li>
+                    <div key={index} className={styles.insumoItem}>
+                      <span className={styles.insumoNombre}>
+                        {d.insumo.denominacion}
+                      </span>
+                      <span className={styles.insumoCantidad}>
+                        {d.cantidad} {d.insumo.unidadMedida.denominacion}
+                      </span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </div>
           </div>
