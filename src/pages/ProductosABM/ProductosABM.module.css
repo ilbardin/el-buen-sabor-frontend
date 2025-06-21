@@ -78,3 +78,9 @@
 .botonSecundario:hover {
     background-color: #d4ac0d;
 }
+
+.tabla td:last-child,
+.tabla th:last-child {
+    width: 1%;
+    white-space: nowrap;
+}

@@ -16,21 +16,21 @@ export const AgregarCategoriaArticuloManufacturado = ({
       await crearCategoriaArticuloManofacturado(nombre);
       onClose();
     } catch (error) {
-      console.error("Error al guardar el producto:", error);
+      console.error("Error al guardar la Categoria:", error);
     }
   }
 
   return (
     <div className={styles.divUno}>
       <div className={styles.modalContainer}>
-        <h2>Nuevo Producto</h2>
+        <h2>Nueva Categoria</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.inputWrapper}>
             <input
               className={styles.input}
               type="text"
               name="nombre"
-              placeholder="Nombre del producto"
+              placeholder="Nombre de la categoria"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
             />
