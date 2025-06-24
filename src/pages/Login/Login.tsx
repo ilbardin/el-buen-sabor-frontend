@@ -11,6 +11,7 @@ import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
 import {ROUTES} from "../../constants/routes.ts";
 import type {AxiosError} from "axios";
+import {UserRole} from "../../models/usuario/userRoles.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -53,10 +54,24 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
     };
 
     const handleSuccess = (data: UserData) => {
-        onLoginSuccess(data);
         Swal.close();
+        onLoginSuccess(data);
 
-        navigate(ROUTES.HOME);
+        const navigateByRole = (role: UserRole) => {
+            switch (role) {
+                case UserRole.Admin:
+                    navigate(ROUTES.HOME);
+                    break;
+                case UserRole.Cliente:
+                    navigate(ROUTES.PRODUCTOS);
+                    break;
+                default:
+                    console.warn(`Rol sin programar: ${role}`);
+                    navigate(ROUTES.PRODUCTOS);
+            }
+        };
+
+        navigateByRole(data.user.rol);
     };
 
     const handleLoginSubmit = async (e: React.FormEvent) => {
