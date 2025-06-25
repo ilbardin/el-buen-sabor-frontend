@@ -12,6 +12,7 @@ import {ROUTES} from './constants/routes';
 import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
+import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -65,6 +66,7 @@ const Router = () => {
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
+            <Route path="*" element={<Pagina404/>}/>
         </Routes>
     );
 };
