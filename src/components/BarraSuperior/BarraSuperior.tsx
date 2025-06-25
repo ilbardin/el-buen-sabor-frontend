@@ -22,7 +22,7 @@ export const BarraSuperior = () => {
                     <li>
                         <Link to={ROUTES.HOME}>Home</Link>
                     </li>
-                    {usuario?.rol === UserRole.Admin && (
+                    {(usuario?.rol === UserRole.Admin || usuario?.rol === UserRole.Cliente) && (
                         <>
                             <li>
                                 <Link to={ROUTES.PRODUCTOS}>Productos</Link>
