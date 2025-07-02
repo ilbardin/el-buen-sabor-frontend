@@ -9,35 +9,50 @@ export const IngredientesABM = () => {
   const [articulos, setArticulos] = useState<ArticuloInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
+  const [articuloParaEditar, setArticuloParaEditar] = useState<ArticuloInsumo | null>(null);
+
+  const cargarArticulosInsumo = async () => {
+    try {
+      const articulos = await getArticulosInsumo();
+      console.log("articulos:", articulos);
+      setArticulos(articulos);
+    } catch (error) {
+      console.error("Error al cargar los artículos:", error);
+    }
+  };
 
   useEffect(() => {
-    async function cargarArticulosInsumo() {
-      try {
-        const articulos = await getArticulosInsumo();
-        console.log("articulos:", articulos);
-        setArticulos(articulos);
-      } catch (error) {
-        console.error("Error al cargar los artículos:", error);
-      }
-    }
-
     void cargarArticulosInsumo();
   }, []);
 
   return (
     <div className={styles.container}>
       {mostrarModal && (
-        <FormularioArticulosInsumo onClose={() => setMostrarModal(false)} />
+        <FormularioArticulosInsumo
+          onClose={async () => {
+            setMostrarModal(false);
+            setArticuloParaEditar(null);
+            await cargarArticulosInsumo();
+          }}
+          articuloParaEditar={articuloParaEditar}
+        />
       )}
       {mostrarModalCategoria && (
         <AgregarCategoriaArticulo
           onClose={() => setMostrarModalCategoria(false)}
         />
       )}
+
       <h1 className={styles.titulo}>Insumos</h1>
 
       <div className={styles.botonesContainer}>
-        <button className={styles.boton} onClick={() => setMostrarModal(true)}>
+        <button
+          className={styles.boton}
+          onClick={() => {
+            setMostrarModal(true);
+            setArticuloParaEditar(null);
+          }}
+        >
           Añadir nuevo Insumo
         </button>
         <button
@@ -47,6 +62,7 @@ export const IngredientesABM = () => {
           Añadir nueva Categoría
         </button>
       </div>
+
       <table className={styles.tabla}>
         <thead>
           <tr>
@@ -65,19 +81,19 @@ export const IngredientesABM = () => {
               <td>{articulo.categoriaArticulo.denominacion}</td>
               <td>{articulo.precioCompra}</td>
               <td>{articulo.precioVenta}</td>
-              <td>{articulo.estaActivo ? "Esta activo" : "Dado de baja"}</td>
+              <td>{articulo.estaActivo ? "Está activo" : "Dado de baja"}</td>
               <td>
                 <div className={styles.acciones}>
                   <button
                     className={`${styles.boton} ${styles.botonSecundario}`}
+                    onClick={() => {
+                      setArticuloParaEditar(articulo);
+                      setMostrarModal(true);
+                    }}
                   >
                     Modificar
                   </button>
-                  <button
-                  className={styles.boton}
-                  >
-                    Eliminar
-                  </button>
+                  <button className={styles.boton}>Eliminar</button>
                 </div>
               </td>
             </tr>

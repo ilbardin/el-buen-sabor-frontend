@@ -39,6 +39,22 @@ export async function crearArticuloInsumo(articulo: ArticuloInsumoCreacion): Pro
     }
 }
 
+export async function editarArticuloInsumo(articulo: ArticuloInsumoCreacion): Promise<void> {
+    try {
+        const response = await axiosInstance.post(API_URL, articulo);
+
+        if (!response || !response.data) {
+            await showAlert("Error", "error", "Error al crear el Artículo Insumo");
+            return;
+        }
+
+        await showAlert("Éxito", "success", "Artículo Insumo creado correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 export async function getCategoriasArticuloInsumo(): Promise<CategoriaArticulo[]> {
     try {
         const response = await axiosInstance.get(API_URL_CATEGORIA);
