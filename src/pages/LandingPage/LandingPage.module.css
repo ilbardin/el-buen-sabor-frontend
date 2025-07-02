@@ -1,0 +1,122 @@
+.container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logoIcon {
+    font-size: 1.5rem;
+}
+
+.navLinks a {
+    margin: 0 1rem;
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.navLinks a:first-child {
+    color: red;
+}
+
+.actions .icon {
+    margin-left: 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+.left {
+    flex: 1;
+    position: relative;
+}
+
+.subtitle {
+    color: #000;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 4rem;
+    color: red;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+}
+
+.since {
+    position: absolute;
+    left: 180px;
+    top: 70px;
+    font-size: 2rem;
+    color: #ccc;
+    transform: rotate(-90deg);
+    font-weight: bold;
+}
+
+.description {
+    color: #888;
+    margin: 1.5rem 0;
+    line-height: 1.6;
+}
+
+.orderButton {
+    background-color: red;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.right {
+    flex: 1;
+    text-align: center;
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+}
+
+.footer {
+    margin-top: 2rem;
+}
+
+.dishOfTheWeek h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+}
+
+.dishPrices {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-weight: bold;
+}
