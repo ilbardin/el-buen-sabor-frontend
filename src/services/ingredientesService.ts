@@ -3,10 +3,20 @@ import axiosInstance from "../api/axiosInstance.ts";
 import {showAlert} from "../utils/alerts.ts";
 import type {CategoriaArticulo} from "../models/categoriaArticulo.ts";
 import type {UnidadMedida} from "../models/unidadMedida.ts";
+import type {AxiosResponse} from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-insumo";
 const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categorias-articulo";
 const API_URL_UNIDADES_MEDIDA = import.meta.env.VITE_API_URL + "/unidades-medida";
+
+
+function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
+    if (!response || !response.data) {
+        void showAlert("Error", "error", errorMessage);
+        return true;
+    }
+    return false;
+}
 
 export async function getArticulosInsumo(): Promise<ArticuloInsumo[]> {
     try {
@@ -49,6 +59,27 @@ export async function editarArticuloInsumo(articulo: ArticuloInsumoCreacion): Pr
         }
 
         await showAlert("Éxito", "success", "Artículo Insumo creado correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function eliminarArticuloInsumo(id: number): Promise<void> {
+    if (id === undefined) {
+        console.error("El ID no puede ser undefined.");
+        await showAlert("Error", "error", "El ID del artículo es inválido.");
+        return;
+    }
+
+    try {
+        const response = await axiosInstance.delete(`${API_URL}/${id}`);
+
+        if (handleInvalidResponse(response, "Error al eliminar el artículo manufacturado.")) {
+            return;
+        }
+
+        await showAlert("Éxito", "success", response.data);
     } catch (error) {
         console.error("Error:", error);
         throw error;

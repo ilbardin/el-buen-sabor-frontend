@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { getArticulosInsumo } from "../../services/ingredientesService.ts";
+import { eliminarArticuloInsumo, 
+  getArticulosInsumo, } from "../../services/ingredientesService.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import { AgregarCategoriaArticulo } from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
 import styles from "./IngredientesABM.module.css";
+import { showConfirm } from "../../utils/alerts.ts";
 
 export const IngredientesABM = () => {
   const [articulos, setArticulos] = useState<ArticuloInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
-  const [articuloParaEditar, setArticuloParaEditar] = useState<ArticuloInsumo | null>(null);
+  const [articuloParaEditar, setArticuloParaEditar] =
+    useState<ArticuloInsumo | null>(null);
 
   const cargarArticulosInsumo = async () => {
     try {
@@ -24,6 +27,22 @@ export const IngredientesABM = () => {
   useEffect(() => {
     void cargarArticulosInsumo();
   }, []);
+
+  async function handleEliminar(id: number) {
+    try {
+      const confirmacion = await showConfirm(
+        "Confirmación",
+        "¿Está seguro de que desea eliminar el producto?"
+      );
+
+      if (confirmacion) {
+        await eliminarArticuloInsumo(id);
+        setArticulos(articulos.filter((articulo) => articulo.id !== id));
+      }
+    } catch (error) {
+      console.error("Error al eliminar el artículo:", error);
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -93,7 +112,16 @@ export const IngredientesABM = () => {
                   >
                     Modificar
                   </button>
-                  <button className={styles.boton}>Eliminar</button>
+                  <button
+                    className={styles.boton}
+                    onClick={async () => {
+                      if (articulo.id !== undefined) {
+                        await handleEliminar(articulo.id);
+                      }
+                    }}
+                  >
+                    Eliminar
+                  </button>
                 </div>
               </td>
             </tr>
