@@ -5,7 +5,7 @@ import Login from './pages/Login/Login';
 import {useAuth} from './context/auth/useAuth.ts';
 import {ProductosABM} from './pages/ProductosABM/ProductosABM';
 import {IngredientesABM} from './pages/IngredientesABM/IngredientesABM';
-import {Home} from './pages/Home/Home';
+import {HomeAdmin} from './pages/Home/HomeAdmin.tsx';
 import ProtectedRoute from './context/ProtectedRoute';
 import {UserRole} from './models/usuario/userRoles';
 import {ROUTES} from './constants/routes';
@@ -13,6 +13,7 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
+import LandingPage from "./pages/LandingPage/LandingPage.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -24,10 +25,10 @@ const Router = () => {
         <Routes>
             <Route element={<BarraSuperior/>}>
                 <Route
-                    path={ROUTES.HOME}
+                    path={ROUTES.HOME_ADMIN}
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                            <Home/>
+                            <HomeAdmin/>
                         </ProtectedRoute>
                     }
                 />
@@ -66,6 +67,8 @@ const Router = () => {
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
+            <Route path={ROUTES.HOME} element={<LandingPage/>}/>
+            <Route path="/" element={<LandingPage/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
     );
