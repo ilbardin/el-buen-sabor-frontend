@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   crearArticuloManufacturado,
   obtenerCategorias,
+  editarArticuloManufacturado,
 } from "../../services/articuloManufacturadoService.ts";
-import type { ArticuloManufacturadoCreacion } from "../../models/articuloManufacturado.ts";
+import type { ArticuloManufacturadoCreacion, ArticuloManufacturado } from "../../models/articuloManufacturado.ts";
 import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import styles from "./FormularioArticulosManufacturados.module.css";
 import type { CategoriaArticuloManufacturado } from "../../models/categoriaArticuloManufacturado.ts";
@@ -12,9 +13,11 @@ import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 export default function FormularioArticulosManufacturados({
   onClose,
   onCreateSuccess,
+  articuloParaEditar,
 }: {
   onClose: () => void;
   onCreateSuccess: () => void;
+  articuloParaEditar?: ArticuloManufacturado | null;
 }) {
   const [denominacion, setDenominacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -45,6 +48,23 @@ export default function FormularioArticulosManufacturados({
 
     void cargarDatos();
   }, []);
+
+  useEffect(() => {
+    if (articuloParaEditar) {
+      setDenominacion(articuloParaEditar.denominacion);
+      setDescripcion(articuloParaEditar.descripcion);
+      setPrecioVenta(articuloParaEditar.precioVenta);
+      setTiempoEstimado(articuloParaEditar.tiempoEstimado);
+      setImagenInsumo(articuloParaEditar.imagenInsumo || "");
+      setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
+      setDetalles(
+        articuloParaEditar.detalles.map((d) => ({
+          insumo: d.insumo,
+          cantidad: d.cantidad,
+        }))
+      );
+    }
+  }, [articuloParaEditar]);
 
   const agregarInsumo = () => {
     const insumoObj = insumos.find(
@@ -92,18 +112,26 @@ export default function FormularioArticulosManufacturados({
     };
 
     try {
-      await crearArticuloManufacturado(articulo);
+      if (articuloParaEditar) {
+        await editarArticuloManufacturado({
+          ...articulo,
+          id: articuloParaEditar.id,
+        });
+      } else {
+        await crearArticuloManufacturado(articulo);
+      }
+
       onCreateSuccess();
       onClose();
     } catch (error) {
-      console.error("Error al crear artículo:", error);
+      console.error("Error al guardar artículo:", error);
     }
   };
 
   return (
     <div className={styles.formArticuloModal}>
       <div className={styles.formArticuloContainer}>
-        <h2>Nuevo Artículo Manufacturado</h2>
+        <h2>{articuloParaEditar ? "Modificar" : "Nuevo"} Artículo Manufacturado</h2>
         <form onSubmit={handleSubmit} className={styles.formArticulo}>
           <div className={styles.formArticuloColumnas}>
             <div className={styles.formArticuloColumnaIzquierda}>

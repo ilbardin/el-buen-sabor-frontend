@@ -8,12 +8,12 @@ import FormularioArticulosManufacturados from "../../components/FormularioArticu
 import { showConfirm } from "../../utils/alerts.ts";
 import { AgregarCategoriaArticuloManufacturado } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from "./ProductosABM.module.css";
-// TODO: ajustar archivo de estilos
 
 export const ProductosABM = () => {
   const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
+  const [articuloParaEditar, setArticuloParaEditar] = useState<ArticuloManufacturado | null>(null);
 
   const cargarArticulosManofacturados = async () => {
     try {
@@ -48,8 +48,12 @@ export const ProductosABM = () => {
     <div>
       {mostrarModal && (
         <FormularioArticulosManufacturados
-          onClose={() => setMostrarModal(false)}
+          onClose={() => {
+            setMostrarModal(false);
+            setArticuloParaEditar(null);
+          }}
           onCreateSuccess={cargarArticulosManofacturados}
+          articuloParaEditar={articuloParaEditar}
         />
       )}
       {mostrarModalCategoria && (
@@ -100,6 +104,10 @@ export const ProductosABM = () => {
                   <div className={styles.accionesBotones}>
                     <button
                       className={`${styles.boton} ${styles.botonSecundario}`}
+                      onClick={() => {
+                        setArticuloParaEditar(articulo);
+                        setMostrarModal(true);
+                      }}
                     >
                       Modificar
                     </button>

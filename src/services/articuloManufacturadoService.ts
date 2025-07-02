@@ -94,6 +94,21 @@ export async function crearArticuloManufacturado(articulo: ArticuloManufacturado
     }
 }
 
+export async function editarArticuloManufacturado(articulo: ArticuloManufacturadoCreacion): Promise<void> {
+    try {
+        const response = await axiosInstance.post(API_URL, articulo);
+
+        if (handleInvalidResponse(response, "Error al editar artículo manufacturado.")) {
+            return;
+        }
+
+        await showAlert("Éxito", "success", "Artículo manufacturado creado correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 export async function eliminarArticuloManufacturado(id: number): Promise<void> {
     if (id === undefined) {
         console.error("El ID no puede ser undefined.");
