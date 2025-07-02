@@ -16,14 +16,10 @@
 
 .logo {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 3rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-.logoIcon {
-    font-size: 1.5rem;
 }
 
 .navLinks a {
@@ -71,8 +67,8 @@
 
 .since {
     position: absolute;
-    left: 180px;
-    top: 70px;
+    left: 200px;
+    top: 65px;
     font-size: 2rem;
     color: #ccc;
     transform: rotate(-90deg);
