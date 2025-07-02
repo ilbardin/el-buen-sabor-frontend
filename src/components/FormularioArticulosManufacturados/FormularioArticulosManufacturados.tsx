@@ -4,7 +4,10 @@ import {
   obtenerCategorias,
   editarArticuloManufacturado,
 } from "../../services/articuloManufacturadoService.ts";
-import type { ArticuloManufacturadoCreacion, ArticuloManufacturado } from "../../models/articuloManufacturado.ts";
+import type {
+  ArticuloManufacturadoCreacion,
+  ArticuloManufacturado,
+} from "../../models/articuloManufacturado.ts";
 import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import styles from "./FormularioArticulosManufacturados.module.css";
 import type { CategoriaArticuloManufacturado } from "../../models/categoriaArticuloManufacturado.ts";
@@ -128,10 +131,18 @@ export default function FormularioArticulosManufacturados({
     }
   };
 
+  const eliminarInsumo = (index: number) => {
+    const nuevosDetalles = [...detalles];
+    nuevosDetalles.splice(index, 1);
+    setDetalles(nuevosDetalles);
+  };
+
   return (
     <div className={styles.formArticuloModal}>
       <div className={styles.formArticuloContainer}>
-        <h2>{articuloParaEditar ? "Modificar" : "Nuevo"} Artículo Manufacturado</h2>
+        <h2>
+          {articuloParaEditar ? "Modificar" : "Nuevo"} Artículo Manufacturado
+        </h2>
         <form onSubmit={handleSubmit} className={styles.formArticulo}>
           <div className={styles.formArticuloColumnas}>
             <div className={styles.formArticuloColumnaIzquierda}>
@@ -267,6 +278,13 @@ export default function FormularioArticulosManufacturados({
                       <span className={styles.insumoCantidad}>
                         {d.cantidad} {d.insumo.unidadMedida.denominacion}
                       </span>
+                      <button
+                        type="button"
+                        onClick={() => eliminarInsumo(index)}
+                        className={`${styles.formArticuloButton} ${styles.formArticuloCancelarInsumo}`}
+                      >
+                        X
+                      </button>
                     </div>
                   ))}
                 </div>
