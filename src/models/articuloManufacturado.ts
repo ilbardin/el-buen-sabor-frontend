@@ -16,7 +16,7 @@ export interface ArticuloManufacturadoCreacion {
     tiempoEstimado: number;
     categoria:      Categoria;
     detalles:       Detalle[];
-    imagenInsumo:   string;
+    imagenArticuloManofacturado:   string;
 }
 
 export interface Categoria {

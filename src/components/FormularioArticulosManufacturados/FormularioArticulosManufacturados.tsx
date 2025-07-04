@@ -3,6 +3,7 @@ import {
   crearArticuloManufacturado,
   obtenerCategorias,
   editarArticuloManufacturado,
+  subirImagen,
 } from "../../services/articuloManufacturadoService.ts";
 import type {
   ArticuloManufacturadoCreacion,
@@ -26,7 +27,7 @@ export default function FormularioArticulosManufacturados({
   const [descripcion, setDescripcion] = useState("");
   const [precioVenta, setPrecioVenta] = useState(0);
   const [tiempoEstimado, setTiempoEstimado] = useState(0);
-  const [imagenInsumo, setImagenInsumo] = useState("");
+  const [imagenArticuloManofacturado, setImagenArticuloManofacturado] = useState("");
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [categorias, setCategorias] = useState<
@@ -58,7 +59,7 @@ export default function FormularioArticulosManufacturados({
       setDescripcion(articuloParaEditar.descripcion);
       setPrecioVenta(articuloParaEditar.precioVenta);
       setTiempoEstimado(articuloParaEditar.tiempoEstimado);
-      setImagenInsumo(articuloParaEditar.imagenInsumo || "");
+      setImagenArticuloManofacturado(articuloParaEditar.imagenArticuloManofacturado || "");
       setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
       setDetalles(
         articuloParaEditar.detalles.map((d) => ({
@@ -111,7 +112,7 @@ export default function FormularioArticulosManufacturados({
           id: d.insumo.id,
         },
       })),
-      imagenInsumo,
+      imagenArticuloManofacturado,
     };
 
     try {
@@ -135,6 +136,17 @@ export default function FormularioArticulosManufacturados({
     const nuevosDetalles = [...detalles];
     nuevosDetalles.splice(index, 1);
     setDetalles(nuevosDetalles);
+  };
+
+  const handleImagenUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const nombreArchivo = await subirImagen(file);
+    if (nombreArchivo) {
+      const urlCompleta = `http://localhost:8080/uploads/images/${nombreArchivo}`;
+      setImagenArticuloManofacturado(urlCompleta);
+    }
   };
 
   return (
@@ -191,10 +203,23 @@ export default function FormularioArticulosManufacturados({
                 <input
                   className={styles.formArticuloInput}
                   type="text"
-                  value={imagenInsumo}
-                  onChange={(e) => setImagenInsumo(e.target.value)}
+                  value={imagenArticuloManofacturado}
+                  onChange={(e) => setImagenArticuloManofacturado(e.target.value)}
                 />
               </label>
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImagenUpload}
+              />
+              {imagenArticuloManofacturado && (
+                <img
+                  src={imagenArticuloManofacturado}
+                  alt="Vista previa"
+                  style={{ maxWidth: "200px", marginTop: "10px" }}
+                />
+              )}
 
               <label className={styles.formArticuloLabel}>
                 Categoría:
