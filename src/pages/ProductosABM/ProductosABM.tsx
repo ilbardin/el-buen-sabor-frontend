@@ -13,7 +13,8 @@ export const ProductosABM = () => {
   const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
-  const [articuloParaEditar, setArticuloParaEditar] = useState<ArticuloManufacturado | null>(null);
+  const [articuloParaEditar, setArticuloParaEditar] =
+    useState<ArticuloManufacturado | null>(null);
 
   const cargarArticulosManofacturados = async () => {
     try {
@@ -90,6 +91,7 @@ export const ProductosABM = () => {
               <th>Precio Costo</th>
               <th>Estado</th>
               <th>Acciones</th>
+              <th>Imagen</th>
             </tr>
           </thead>
           <tbody>
@@ -100,6 +102,17 @@ export const ProductosABM = () => {
                 <td>{articulo.tiempoEstimado}</td>
                 <td>{articulo.precioCosto}</td>
                 <td>{articulo.estaActivo ? "Activo" : "Inactivo"}</td>
+                <td>
+                  {articulo.imagenes && articulo.imagenes.length > 0 ? (
+                    <img
+                      src={`http://localhost:8080/uploads/images/${articulo.imagenes[0].denominacion}`}
+                      alt="Producto"
+                      style={{ width: "80px", height: "auto" }}
+                    />
+                  ) : (
+                    "Sin imagen"
+                  )}
+                </td>
                 <td>
                   <div className={styles.accionesBotones}>
                     <button

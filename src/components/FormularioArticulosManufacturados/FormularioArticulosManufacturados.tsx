@@ -27,7 +27,8 @@ export default function FormularioArticulosManufacturados({
   const [descripcion, setDescripcion] = useState("");
   const [precioVenta, setPrecioVenta] = useState(0);
   const [tiempoEstimado, setTiempoEstimado] = useState(0);
-  const [imagenArticuloManofacturado, setImagenArticuloManofacturado] = useState("");
+  const [imagenArticuloManofacturado, setImagenArticuloManofacturado] =
+    useState("");
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [categorias, setCategorias] = useState<
@@ -59,7 +60,9 @@ export default function FormularioArticulosManufacturados({
       setDescripcion(articuloParaEditar.descripcion);
       setPrecioVenta(articuloParaEditar.precioVenta);
       setTiempoEstimado(articuloParaEditar.tiempoEstimado);
-      setImagenArticuloManofacturado(articuloParaEditar.imagenArticuloManofacturado || "");
+      setImagenArticuloManofacturado(
+        articuloParaEditar.imagenArticuloManofacturado || ""
+      );
       setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
       setDetalles(
         articuloParaEditar.detalles.map((d) => ({
@@ -112,7 +115,11 @@ export default function FormularioArticulosManufacturados({
           id: d.insumo.id,
         },
       })),
-      imagenArticuloManofacturado,
+      imagenes: [
+        {
+          denominacion: imagenArticuloManofacturado.split("/").pop() ?? "",
+        },
+      ],
     };
 
     try {
@@ -204,7 +211,9 @@ export default function FormularioArticulosManufacturados({
                   className={styles.formArticuloInput}
                   type="text"
                   value={imagenArticuloManofacturado}
-                  onChange={(e) => setImagenArticuloManofacturado(e.target.value)}
+                  onChange={(e) =>
+                    setImagenArticuloManofacturado(e.target.value)
+                  }
                 />
               </label>
 
