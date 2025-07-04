@@ -1,8 +1,12 @@
 import React from 'react';
+import {Link, useNavigate} from 'react-router-dom';
 import styles from './LandingPage.module.css';
 import imagenPizza from '/pizza.png';
+import {ROUTES} from "../../constants/routes.ts";
 
 const LandingPage: React.FC = () => {
+    const navigate = useNavigate();
+
     return (
         <div className={styles.container}>
             <header className={styles.navbar}>
@@ -10,9 +14,9 @@ const LandingPage: React.FC = () => {
                     <span>EL BUEN SABOR™</span>
                 </div>
                 <nav className={styles.navLinks}>
-                    <a href="#">Menú</a>
-                    <a href="#">Nuestros especiales</a>
-                    <a href="#">Sucursales</a>
+                    <Link to={ROUTES.PRODUCTOS}>Menú</Link>
+                    <Link to="/especiales">Nuestros especiales</Link>
+                    <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
                     <span className={styles.icon}>🔍</span>
@@ -33,11 +37,15 @@ const LandingPage: React.FC = () => {
                         Así es como consideramos la comida. La comida tiene una cultura. Tiene una historia.
                         Tiene una narración. Tiene el Buen Sabor.
                     </p>
-                    <button className={styles.orderButton}>PEDIR</button>
+                    <button
+                        className={styles.orderButton}
+                        onClick={() => navigate(ROUTES.PRODUCTOS)}>
+                        PEDIR
+                    </button>
                 </div>
 
                 <div className={styles.right}>
-                    <img src={imagenPizza} alt="Sombrero and maracas" className={styles.image}/>
+                    <img src={imagenPizza} alt="Pizza" className={styles.image}/>
                 </div>
             </main>
 
