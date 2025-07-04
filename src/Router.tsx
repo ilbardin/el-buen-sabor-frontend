@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {RegistroUsuario} from './pages/RegistroUsuario/RegistroUsuario';
 import Login from './pages/Login/Login';
 import {useAuth} from './context/auth/useAuth.ts';
@@ -68,7 +68,7 @@ const Router = () => {
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
             <Route path={ROUTES.HOME} element={<LandingPage/>}/>
-            <Route path="/" element={<LandingPage/>}/>
+            <Route path="/" element={<Navigate to={ROUTES.HOME} replace/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
     );
