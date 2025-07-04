@@ -1,8 +1,9 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import styles from './LandingPage.module.css';
-import imagenPizza from '/pizza.png';
 import {ROUTES} from "../../constants/routes.ts";
+import imagenPizza from '/pizza.png';
+import styles from './LandingPage.module.css';
+import {FaSearch, FaShoppingCart, FaUser} from "react-icons/fa";
 
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -19,9 +20,9 @@ const LandingPage: React.FC = () => {
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    <span className={styles.icon}>🔍</span>
-                    <span className={styles.icon}>🛒</span>
-                    <span className={styles.icon}>👤</span>
+                    <span className={styles.icon}><FaSearch/></span>
+                    <span className={styles.icon}><FaShoppingCart/></span>
+                    <span className={styles.icon}><FaUser/></span>
                 </div>
             </header>
 

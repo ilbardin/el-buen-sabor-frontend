@@ -19,11 +19,12 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: var(--color-terciario);
 }
 
 .navLinks a {
     margin: 0 1rem;
-    color: #000;
+    color: var(--color-terciario);
     text-decoration: none;
     font-weight: 500;
 }
@@ -33,9 +34,15 @@
 }
 
 .actions .icon {
-    margin-left: 1rem;
-    font-size: 1.2rem;
+    margin-left: 1.5rem;
+    font-size: 1.5rem;
     cursor: pointer;
+    color: var(--color-terciario);
+    transition: color 0.3s;
+}
+
+.actions .icon:hover {
+    color: var(--color-primario);
 }
 
 .main {
