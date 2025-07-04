@@ -212,7 +212,9 @@ export default function FormularioArticulosManufacturados({
                   type="text"
                   value={imagenArticuloManofacturado}
                   onChange={(e) =>
-                    setImagenArticuloManofacturado(e.target.value)
+                    setImagenArticuloManofacturado(
+                      e.target.value.split("/").pop() || ""
+                    )
                   }
                 />
               </label>

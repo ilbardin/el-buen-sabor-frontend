@@ -166,7 +166,7 @@ export async function subirImagen(file: File): Promise<string | null> {
             return null;
         }
 
-        const fileName = response.data.split(": ").pop()?.trim() ?? null;
+        const fileName = response.data.denominacion;
         console.log("Imagen subida exitosamente:", fileName);
         return fileName;
     } catch (error) {
