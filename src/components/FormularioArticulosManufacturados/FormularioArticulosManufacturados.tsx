@@ -42,6 +42,7 @@ export default function FormularioArticulosManufacturados({
     []
   );
   const [unidadMedida, setUnidadMedida] = useState("");
+  const [formularioValidado, setFormularioValidado] = useState(false);
 
   useEffect(() => {
     async function cargarDatos() {
@@ -91,6 +92,19 @@ export default function FormularioArticulosManufacturados({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setFormularioValidado(true);
+
+    // * no envia el formulario si falta algo obligatorio
+    if (
+      !denominacion.trim() ||
+      !descripcion.trim() ||
+      !categoriaSeleccionada.trim() ||
+      !imagenArticuloManofacturado.trim()
+    ) {
+      //.trim() para evitar espacios en blanco
+      return;
+    }
 
     const categoriaObj = categorias.find(
       (cat) => cat.denominacion === categoriaSeleccionada
@@ -167,22 +181,43 @@ export default function FormularioArticulosManufacturados({
             <div className={styles.formArticuloColumnaIzquierda}>
               <label className={styles.formArticuloLabel}>
                 Nombre:
-                <input
-                  className={styles.formArticuloInput}
-                  type="text"
-                  value={denominacion}
-                  onChange={(e) => setDenominacion(e.target.value)}
-                />
+                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
+                {formularioValidado && !denominacion.trim() && (
+                  <p className={styles.error}>Este campo es obligatorio</p>
+                )}
+                <div className={styles.inputConIcono}>
+                  <input
+                    className={styles.formArticuloInput}
+                    type="text"
+                    value={denominacion}
+                    onChange={(e) => setDenominacion(e.target.value)}
+                  />
+
+                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
+                  {formularioValidado && !denominacion.trim() && (
+                    <span className={styles.iconoInput}>❗</span>
+                  )}
+                </div>
               </label>
 
               <label className={styles.formArticuloLabel}>
                 Descripción:
-                <input
-                  className={styles.formArticuloInput}
-                  type="text"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                />
+                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
+                {formularioValidado && !descripcion.trim() && (
+                  <p className={styles.error}>Este campo es obligatorio</p>
+                )}
+                <div className={styles.inputConIcono}>
+                  <input
+                    className={styles.formArticuloInput}
+                    type="text"
+                    value={descripcion}
+                    onChange={(e) => setDescripcion(e.target.value)}
+                  />
+                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
+                  {formularioValidado && !descripcion.trim() && (
+                    <span className={styles.iconoInput}>❗</span>
+                  )}
+                </div>
               </label>
 
               <label className={styles.formArticuloLabel}>
@@ -206,24 +241,58 @@ export default function FormularioArticulosManufacturados({
               </label>
 
               <label className={styles.formArticuloLabel}>
-                Imagen:
+                Categoría:
+                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
+                {formularioValidado && !categoriaSeleccionada.trim() && (
+                  <p className={styles.error}>Este campo es obligatorio</p>
+                )}
+                <div className={styles.inputConIcono}>
+                  <input
+                    className={styles.formArticuloInput}
+                    list="categorias"
+                    value={categoriaSeleccionada}
+                    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                  />
+                  <datalist id="categorias">
+                    {categorias.map((cat) => (
+                      <option key={cat.id} value={cat.denominacion} />
+                    ))}
+                  </datalist>
+                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
+                  {formularioValidado && !descripcion.trim() && (
+                    <span className={styles.iconoInput}>❗</span>
+                  )}
+                </div>
+              </label>
+
+              <label className={styles.formArticuloLabel}>
+                {/* Muestra el mensaje de error si se apretó "Guardar" y no hay imagen */}
+                {formularioValidado && !imagenArticuloManofacturado.trim() && (
+                  <p className={styles.error}>Este campo es obligatorio</p>
+                )}
+                <div className={styles.inputConIcono}>
+                  <label
+                    htmlFor="imagenUpload"
+                    className={`${styles.formArticuloButton} ${styles.botonConMargenInferior}`}
+                  >
+                    Subir Imagen
+                  </label>
+
+                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
+                  {formularioValidado &&
+                    !imagenArticuloManofacturado.trim() && (
+                      <span className={styles.iconoInput}>❗</span>
+                    )}
+                </div>
                 <input
-                  className={styles.formArticuloInput}
-                  type="text"
-                  value={imagenArticuloManofacturado}
-                  onChange={(e) =>
-                    setImagenArticuloManofacturado(
-                      e.target.value.split("/").pop() || ""
-                    )
-                  }
+                  type="file"
+                  id="imagenUpload"
+                  accept="image/*"
+                  onChange={handleImagenUpload}
+                  style={{ display: "none" }}
                 />
               </label>
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImagenUpload}
-              />
               {imagenArticuloManofacturado && (
                 <img
                   src={imagenArticuloManofacturado}
@@ -231,21 +300,6 @@ export default function FormularioArticulosManufacturados({
                   style={{ maxWidth: "200px", marginTop: "10px" }}
                 />
               )}
-
-              <label className={styles.formArticuloLabel}>
-                Categoría:
-                <input
-                  className={styles.formArticuloInput}
-                  list="categorias"
-                  value={categoriaSeleccionada}
-                  onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                />
-                <datalist id="categorias">
-                  {categorias.map((cat) => (
-                    <option key={cat.id} value={cat.denominacion} />
-                  ))}
-                </datalist>
-              </label>
             </div>
 
             <div className={styles.formArticuloColumnaDerecha}>

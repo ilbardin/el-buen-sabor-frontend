@@ -1,3 +1,4 @@
+
 .formArticuloModal {
     position: fixed;
     top: 0;
@@ -176,3 +177,35 @@
     font-weight: 500;
 }
 
+.botonConMargenInferior {
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* //? Estilos para error de llenado del formulario */
+/* #region*/
+.error {
+  color: red;
+  font-size: 0.6rem;
+  margin: 0 0;
+}
+
+.inputConIcono {
+  position: relative;
+  width: 100%;
+}
+
+.inputConIcono .formArticuloInput {
+  padding-right: 36px; /* espacio para el ícono */
+}
+
+.iconoInput {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* el ícono no bloquea el input */
+  font-size: 16px;
+  color: #999;
+}
+/* #endregion */
