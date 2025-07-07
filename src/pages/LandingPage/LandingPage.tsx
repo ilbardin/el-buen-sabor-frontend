@@ -4,12 +4,22 @@ import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
 import {FaSearch, FaShoppingCart, FaUser} from 'react-icons/fa';
+import {showAlert, showLoading} from "../../utils/alerts.ts";
+import axiosInstance from "../../api/axiosInstance.ts";
+import type {UserData} from "../../models/usuario/usuario.ts";
+import {LOGIN_URL} from "../../constants/constants.ts";
+import Swal from "sweetalert2";
+import {UserRole} from "../../models/usuario/userRoles.ts";
+import type {AxiosError} from "axios";
+import type {GenericError} from "../../models/errorResponseModel.ts";
 
-const LandingPage: React.FC = () => {
+const LandingPage: React.FC = ({onLoginSuccess}) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const [showLogin, setShowLogin] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
-    const user = null; // Cambiar por el estado real de autenticación más adelante
+    const user = null;
     const loginRef = useRef<HTMLDivElement>(null);
 
     const toggleLogin = useCallback(() => {
@@ -24,10 +34,53 @@ const LandingPage: React.FC = () => {
         }
     }, [showLogin]);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: lógica real de login
-        console.log('Iniciar sesión...');
+
+        try {
+            showLoading('Iniciando sesión...');
+            const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
+            handleSuccess(response.data);
+        } catch (err: unknown) {
+            // @ts-expect-error tipado
+            await handleError(err);
+        }
+    };
+
+    const handleSuccess = (data: UserData) => {
+        Swal.close();
+        onLoginSuccess(data);
+
+        const navigateByRole = (role: UserRole) => {
+            switch (role) {
+                case UserRole.Admin:
+                    navigate(ROUTES.HOME);
+                    break;
+                case UserRole.Cliente:
+                    navigate(ROUTES.PRODUCTOS);
+                    break;
+                default:
+                    console.warn(`Rol sin programar: ${role}`);
+                    navigate(ROUTES.PRODUCTOS);
+            }
+        };
+
+        navigateByRole(data.user.rol);
+    };
+
+    const handleError = async (err: AxiosError | never) => {
+        Swal.close();
+
+        if ((err as GenericError).response?.data) {
+            const backendError = err as GenericError;
+            console.error(backendError.response.data);
+            await showAlert('Error', 'error', backendError.response.data);
+        } else {
+            console.error(err);
+            if (err.isAxiosError) {
+                await showAlert('Error', 'error', 'Error de red.');
+            }
+        }
     };
 
     useEffect(() => {
@@ -77,11 +130,19 @@ const LandingPage: React.FC = () => {
                             <form onSubmit={handleLogin}>
                                 <input
                                     type="text"
+                                    maxLength={20}
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    required
                                     placeholder="Usuario"
                                     className={styles.loginInput}
                                 />
                                 <input
                                     type="password"
+                                    maxLength={20}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
                                     placeholder="Contraseña"
                                     className={styles.loginInput}
                                 />

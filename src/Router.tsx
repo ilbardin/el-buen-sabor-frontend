@@ -21,6 +21,11 @@ const Router = () => {
         return <Login onLoginSuccess={login}/>;
     };
 
+    const LandingLoginWrapper: React.FC = () => {
+        const {login} = useAuth();
+        return <LandingPage onLoginSuccess={login}/>;
+    }
+
     return (
         <Routes>
             <Route element={<BarraSuperior/>}>
@@ -67,7 +72,7 @@ const Router = () => {
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
-            <Route path={ROUTES.HOME} element={<LandingPage/>}/>
+            <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
             <Route path="/" element={<Navigate to={ROUTES.HOME} replace/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
