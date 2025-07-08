@@ -1,6 +1,8 @@
 import React, {forwardRef, useContext} from 'react';
 import {AuthContext} from "../../context/auth/authContext.ts";
 import styles from './LoginCard.module.css';
+import {Link} from "react-router-dom";
+import {ROUTES} from "../../constants/routes.ts";
 
 type LoginCardProps = {
     showLogin: boolean;
@@ -54,7 +56,7 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
                 {usuario ? (
                     <div>
                         <h3 className={styles.loginTitle}>
-                            ¿Qué vas a comer hoy {usuario.nombre}?
+                            ¿Qué te antoja hoy {usuario.nombre}?
                         </h3>
                         <button
                             onClick={handleLogout}
@@ -92,6 +94,9 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
                             <button type="submit" className={`${styles.buttonBase} ${styles.loginButton}`}>
                                 Iniciar sesión
                             </button>
+                            <div className={styles.registerLink}>
+                                <p>¿No tienes cuenta? <Link to={ROUTES.REGISTRO_USUARIO}>Regístrate</Link></p>
+                            </div>
                         </form>
                     </>
                 )}
