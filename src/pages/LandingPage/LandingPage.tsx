@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import {UserRole} from "../../models/usuario/userRoles.ts";
 import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
+import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -21,7 +22,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
-    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
     const [showLogin, setShowLogin] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const navigate = useNavigate();
@@ -124,7 +125,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             const rect = userIconRef.current.getBoundingClientRect();
             const top = rect.bottom + window.scrollY + 8;
             const left = rect.right + window.scrollX - 320;
-            setLoginCardPosition({ top, left });
+            setLoginCardPosition({top, left});
         }
     }, [showLogin, isClosing]);
 
@@ -151,42 +152,17 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                             <FaUser/>
                         )}
                     </span>
-                    {(showLogin || isClosing) && true && (
-                        <div
-                            className={`${styles.loginCard} ${isClosing ? styles.fadeOut : styles.fadeIn}`}
-                            style={{
-                                top: `${loginCardPosition.top}px`,
-                                left: `${loginCardPosition.left}px`,
-                                position: 'absolute',
-                            }}
-                            ref={loginRef}
-                        >
-                            <h3 className={styles.loginTitle}>Iniciar sesión</h3>
-                            <form onSubmit={handleLogin}>
-                                <input
-                                    type="text"
-                                    maxLength={20}
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required
-                                    placeholder="Usuario"
-                                    className={styles.loginInput}
-                                />
-                                <input
-                                    type="password"
-                                    maxLength={20}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    placeholder="Contraseña"
-                                    className={styles.loginInput}
-                                />
-                                <button type="submit" className={styles.loginButton}>
-                                    Iniciar sesión
-                                </button>
-                            </form>
-                        </div>
-                    )}
+                    <LoginCard
+                        showLogin={showLogin}
+                        isClosing={isClosing}
+                        loginCardPosition={loginCardPosition}
+                        handleLogin={handleLogin}
+                        username={username}
+                        password={password}
+                        setUsername={setUsername}
+                        setPassword={setPassword}
+                        ref={loginRef}
+                    />
                 </div>
             </header>
 
@@ -234,4 +210,3 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         </div>
     );
 };
-
