@@ -3,16 +3,16 @@ import {FaAddressBook, FaIdCard, FaUser} from 'react-icons/fa';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
-import styles from './RegistroUsuario.module.css';
 import {ROUTES} from '../../constants/routes';
 import {showAlert, showLoading} from '../../utils/alerts';
-import {MdEmail, MdLocationCity} from "react-icons/md";
+import {MdEmail, MdKeyboardArrowDown, MdLocationCity} from "react-icons/md";
 import {BsTelephoneFill} from "react-icons/bs";
 import {registrarUsuario} from "../../services/registroUsuarioService.ts";
 import {FaLocationDot} from "react-icons/fa6";
 import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
 import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
 import {AxiosError} from "axios";
+import styles from './RegistroUsuario.module.css';
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
@@ -176,7 +176,7 @@ export const RegistroUsuario: React.FC = () => {
 
             await showAlert('Éxito', 'success', response.data.mensaje);
 
-            navigate(ROUTES.LOGIN);
+            navigate(ROUTES.HOME);
         } catch (error: unknown) {
             Swal.close();
 
@@ -225,46 +225,55 @@ export const RegistroUsuario: React.FC = () => {
                         <div className={styles.row}>
                             <div className={styles.inputBox}>
                                 <label htmlFor="pais">País:</label>
-                                <select
-                                    id="pais"
-                                    value={paisId ?? ''}
-                                    onChange={(e) => handlePaisChange(Number(e.target.value))}
-                                    required>
-                                    <option value="" disabled>Seleccionar país</option>
-                                    {paises.map((pais) => (
-                                        <option key={pais.id} value={pais.id}>{pais.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        id="pais"
+                                        value={paisId ?? ''}
+                                        onChange={(e) => handlePaisChange(Number(e.target.value))}
+                                        required>
+                                        <option value="" disabled>Seleccionar país</option>
+                                        {paises.map((pais) => (
+                                            <option key={pais.id} value={pais.id}>{pais.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                </div>
                             </div>
 
                             <div className={styles.inputBox}>
                                 <label htmlFor="provincia">Provincia:</label>
-                                <select
-                                    id="provincia"
-                                    value={provinciaId ?? ''}
-                                    onChange={(e) => handleProvinciaChange(Number(e.target.value))}
-                                    disabled={!paisId}
-                                    required>
-                                    <option value="" disabled>Seleccionar provincia</option>
-                                    {provincias.map((provincia) => (
-                                        <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        id="provincia"
+                                        value={provinciaId ?? ''}
+                                        onChange={(e) => handleProvinciaChange(Number(e.target.value))}
+                                        disabled={!paisId}
+                                        required>
+                                        <option value="" disabled>Seleccionar provincia</option>
+                                        {provincias.map((provincia) => (
+                                            <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                </div>
                             </div>
 
                             <div className={styles.inputBox}>
                                 <label htmlFor="localidad">Localidad:</label>
-                                <select
-                                    id="localidad"
-                                    value={localidadId ?? ''}
-                                    onChange={(e) => setLocalidadId(Number(e.target.value))}
-                                    disabled={!provinciaId}
-                                    required>
-                                    <option value="" disabled>Seleccionar localidad</option>
-                                    {localidades.map((localidad) => (
-                                        <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <select
+                                        id="localidad"
+                                        value={localidadId ?? ''}
+                                        onChange={(e) => setLocalidadId(Number(e.target.value))}
+                                        disabled={!provinciaId}
+                                        required>
+                                        <option value="" disabled>Seleccionar localidad</option>
+                                        {localidades.map((localidad) => (
+                                            <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+                                        ))}
+                                    </select>
+                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                </div>
                             </div>
                         </div>
 
