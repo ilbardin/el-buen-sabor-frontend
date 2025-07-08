@@ -1,4 +1,5 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, useContext} from 'react';
+import {AuthContext} from "../../context/auth/authContext.ts";
 import styles from './LoginCard.module.css';
 
 type LoginCardProps = {
@@ -10,9 +11,10 @@ type LoginCardProps = {
     password: string;
     setUsername: (value: string) => void;
     setPassword: (value: string) => void;
+    onLogout: () => void;
+    onHide: () => void;
 };
 
-// Componente de "LoginCard"
 const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
     (
         {
@@ -24,10 +26,20 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
             password,
             setUsername,
             setPassword,
+            onLogout,
+            onHide,
         },
         ref
     ) => {
+        const {usuario, logout} = useContext(AuthContext);
+
         if (!showLogin && !isClosing) return null;
+
+        const handleLogout = () => {
+            logout();
+            onLogout();
+            onHide();
+        };
 
         return (
             <div
@@ -39,30 +51,50 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
                 }}
                 ref={ref}
             >
-                <h3 className={styles.loginTitle}>Iniciar sesión</h3>
-                <form onSubmit={handleLogin}>
-                    <input
-                        type="text"
-                        maxLength={20}
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        placeholder="Usuario"
-                        className={styles.loginInput}
-                    />
-                    <input
-                        type="password"
-                        maxLength={20}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        placeholder="Contraseña"
-                        className={styles.loginInput}
-                    />
-                    <button type="submit" className={styles.loginButton}>
-                        Iniciar sesión
-                    </button>
-                </form>
+                {usuario ? (
+                    <div>
+                        <h3 className={styles.loginTitle}>
+                            ¿Qué vas a comer hoy {usuario.nombre}?
+                        </h3>
+                        <button
+                            onClick={handleLogout}
+                            className={`${styles.buttonBase} ${styles.logoutButton}`}
+                        >
+                            Cerrar sesión
+                        </button>
+                    </div>
+                ) : (
+                    <>
+                        <h3 className={styles.loginTitle}>Iniciar sesión</h3>
+                        <form
+                            onSubmit={(e) => {
+                                handleLogin(e);
+                                onHide();
+                            }}>
+                            <input
+                                type="text"
+                                maxLength={20}
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                placeholder="Usuario"
+                                className={styles.loginInput}
+                            />
+                            <input
+                                type="password"
+                                maxLength={20}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                placeholder="Contraseña"
+                                className={styles.loginInput}
+                            />
+                            <button type="submit" className={`${styles.buttonBase} ${styles.loginButton}`}>
+                                Iniciar sesión
+                            </button>
+                        </form>
+                    </>
+                )}
             </div>
         );
     }

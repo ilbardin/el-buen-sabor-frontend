@@ -30,6 +30,11 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
+    const handleHide = () => {
+        setShowLogin(false);
+        setIsClosing(false);
+    };
+
     const toggleLogin = useCallback(() => {
         if (showLogin) {
             setIsClosing(true);
@@ -53,6 +58,10 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             // @ts-expect-error tipado
             await handleError(err);
         }
+    };
+
+    const handleLogout = () => {
+        setUser(null);
     };
 
     const handleSuccess = (data: UserData) => {
@@ -161,6 +170,8 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                         password={password}
                         setUsername={setUsername}
                         setPassword={setPassword}
+                        onLogout={handleLogout}
+                        onHide={handleHide}
                         ref={loginRef}
                     />
                 </div>
