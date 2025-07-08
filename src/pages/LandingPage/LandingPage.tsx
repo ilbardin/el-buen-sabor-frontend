@@ -13,14 +13,21 @@ import {UserRole} from "../../models/usuario/userRoles.ts";
 import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 
-const LandingPage: React.FC = ({onLoginSuccess}) => {
+type LoginProps = {
+    onLoginSuccess: (userData: UserData) => void;
+};
+
+export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+    const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
+    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
     const [showLogin, setShowLogin] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
-    const user = null;
+    const navigate = useNavigate();
+
     const loginRef = useRef<HTMLDivElement>(null);
+    const userIconRef = useRef<HTMLSpanElement>(null);
 
     const toggleLogin = useCallback(() => {
         if (showLogin) {
@@ -51,17 +58,23 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
         Swal.close();
         onLoginSuccess(data);
 
+        const storedUser = localStorage.getItem('usuario');
+
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+
         const navigateByRole = (role: UserRole) => {
             switch (role) {
                 case UserRole.Admin:
-                    navigate(ROUTES.HOME);
+                    navigate(ROUTES.HOME_ADMIN);
                     break;
                 case UserRole.Cliente:
-                    navigate(ROUTES.PRODUCTOS);
+                    navigate(ROUTES.HOME);
                     break;
                 default:
                     console.warn(`Rol sin programar: ${role}`);
-                    navigate(ROUTES.PRODUCTOS);
+                    navigate(ROUTES.HOME);
             }
         };
 
@@ -83,6 +96,19 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
         }
     };
 
+    const getInitials = (name: string, surname: string) => {
+        const fullName = `${name} ${surname}`;
+        const parts = fullName.trim().split(' ');
+        return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
+    };
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('usuario');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
@@ -93,10 +119,14 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [showLogin, toggleLogin]);
 
-    const getInitials = (name: string) => {
-        const parts = name.trim().split(' ');
-        return parts.map(p => p[0].toUpperCase()).join('').slice(0, 2);
-    };
+    useEffect(() => {
+        if ((showLogin || isClosing) && userIconRef.current) {
+            const rect = userIconRef.current.getBoundingClientRect();
+            const top = rect.bottom + window.scrollY + 8;
+            const left = rect.right + window.scrollX - 320;
+            setLoginCardPosition({ top, left });
+        }
+    }, [showLogin, isClosing]);
 
     return (
         <div className={styles.container}>
@@ -112,10 +142,10 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
                 <div className={styles.actions}>
                     <span className={styles.icon}><FaSearch/></span>
                     <span className={styles.icon}><FaShoppingCart/></span>
-                    <span className={styles.icon} onClick={toggleLogin}>
+                    <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
                         {user ? (
                             <div className={styles.userCircle}>
-                                {getInitials(user.name || 'Usuario')}
+                                {getInitials(user.nombre, user.apellido)}
                             </div>
                         ) : (
                             <FaUser/>
@@ -124,6 +154,11 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
                     {(showLogin || isClosing) && true && (
                         <div
                             className={`${styles.loginCard} ${isClosing ? styles.fadeOut : styles.fadeIn}`}
+                            style={{
+                                top: `${loginCardPosition.top}px`,
+                                left: `${loginCardPosition.left}px`,
+                                position: 'absolute',
+                            }}
                             ref={loginRef}
                         >
                             <h3 className={styles.loginTitle}>Iniciar sesión</h3>
@@ -200,4 +235,3 @@ const LandingPage: React.FC = ({onLoginSuccess}) => {
     );
 };
 
-export default LandingPage;

@@ -50,7 +50,9 @@
 }
 
 .actions {
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .actions .icon {
@@ -145,8 +147,6 @@
 
 .loginCard {
     position: absolute;
-    top: 50px;
-    right: 0;
     background: white;
     padding: 1.5rem;
     border-radius: 12px;
@@ -241,8 +241,8 @@
 .userCircle {
     background-color: var(--color-primario);
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -250,6 +250,8 @@
     font-weight: bold;
     font-size: 0.9rem;
     user-select: none;
+    vertical-align: middle;
+    margin-bottom: 0.2rem;
 }
 
 .buenSabor {
