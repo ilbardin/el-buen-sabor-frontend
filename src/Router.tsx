@@ -13,7 +13,7 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
-import LandingPage from "./pages/LandingPage/LandingPage.tsx";
+import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
