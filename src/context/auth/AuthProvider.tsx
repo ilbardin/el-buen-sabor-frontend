@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import {type ReactNode, useEffect, useState} from 'react';
 import {AuthContext} from './authContext.ts';
 import type {UserData, Usuario} from '../../models/usuario/usuario.ts';
 
-export const AuthProvider: React.FC = ({children}) => {
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export const AuthProvider = ({children}: AuthProviderProps) => {
     const [tokenJwt, setJwt] = useState<string | null>(null);
     const [jwtExpirationDate, setExpirationDate] = useState<Date | null>(null);
     const [usuario, setUsuario] = useState<Usuario | null>(null);
