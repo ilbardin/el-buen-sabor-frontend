@@ -107,7 +107,7 @@ export const ProductosABM = () => {
                     <img
                       src={`http://localhost:8080/uploads/images/${articulo.imagenes[0].denominacion}`}
                       alt="Producto"
-                      style={{ width: "80px", height: "auto" }}
+                      style={{ width: "80px", height: "auto", maxHeight: "80px"  }}
                     />
                   ) : (
                     "Sin imagen"
