@@ -170,7 +170,6 @@ export default function FormularioArticulosManufacturados({
   const handleImagenUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    if (files.length === 0) return;
 
     const urls: string[] = [];
 
@@ -181,6 +180,7 @@ export default function FormularioArticulosManufacturados({
       }
     }
     setImagenesArticuloManofacturado((prev) => [...prev, ...urls]);
+    e.target.value = '';
   };
 
   const eliminarImagen = (index: number) => {
@@ -326,7 +326,7 @@ export default function FormularioArticulosManufacturados({
                           .filter((cat) =>
                             cat.denominacion
                               .toLowerCase()
-                              .includes(categoriaSeleccionada.toLowerCase())
+                              .includes(categoriaSeleccionada?.toLowerCase())
                           )
                           .slice(0, 5)
                           .map((cat) => (
