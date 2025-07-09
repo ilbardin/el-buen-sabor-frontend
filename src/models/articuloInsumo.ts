@@ -39,5 +39,5 @@ export interface CategoriaArticuloCreacion {
 }
 
 export interface ImagenInsumo {
-    url: string;
+    denominacion: string;
 }

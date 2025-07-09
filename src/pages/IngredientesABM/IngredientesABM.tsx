@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { eliminarArticuloInsumo, 
-  getArticulosInsumo, } from "../../services/ingredientesService.ts";
+import {
+  eliminarArticuloInsumo,
+  getArticulosInsumo,
+} from "../../services/ingredientesService.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import { AgregarCategoriaArticulo } from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
@@ -89,7 +91,7 @@ export const IngredientesABM = () => {
             <th>Rubro</th>
             <th>Precio Compra</th>
             <th>Precio Venta</th>
-            <th>Estado</th>
+            <th>Imagen</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -100,7 +102,19 @@ export const IngredientesABM = () => {
               <td>{articulo.categoriaArticulo.denominacion}</td>
               <td>{articulo.precioCompra}</td>
               <td>{articulo.precioVenta}</td>
-              <td>{articulo.estaActivo ? "Está activo" : "Dado de baja"}</td>
+              <td>
+                {articulo.imagenInsumo &&
+                articulo.imagenInsumo.denominacion?.trim()?.length > 0 ? (
+                  <img
+                    src={`http://localhost:8080/uploads/images/${articulo.imagenInsumo.denominacion}`}
+                    alt="Producto"
+                    style={{ width: "80px", height: "auto", maxHeight: "80px" }}
+                  />
+                ) : (
+                  "Sin imagen"
+                )}
+              </td>
+
               <td>
                 <div className={styles.acciones}>
                   <button

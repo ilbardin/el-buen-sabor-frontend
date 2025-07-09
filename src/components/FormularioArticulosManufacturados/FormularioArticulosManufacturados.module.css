@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    margin-top: 100px;
 }
 
 .formArticuloContainer {
@@ -20,12 +21,14 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     font-family: 'Poppins', sans-serif;
     color: var(--color-terciario);
+    margin-top: 100px;
 }
 
 .formArticulo h2 {
     color: var(--color-terciario);
     text-align: center;
     margin-bottom: 24px;
+    margin-top: 100px;
 }
 
 .formArticuloLabel {

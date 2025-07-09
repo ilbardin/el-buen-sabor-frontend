@@ -137,3 +137,31 @@ export async function getUnidadesDeMedida(): Promise<UnidadMedida[]> {
         throw error;
     }
 }
+
+export async function subirImagen(file: File): Promise<string | null> {
+    const formData = new FormData();
+    formData.append("imagen", file);
+
+    try {
+        const response = await axiosInstance.post(
+            "http://localhost:8080/uploads/images",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        if (handleInvalidResponse(response, "Error al subir la imagen.")) {
+            return null;
+        }
+
+        const fileName = response.data.denominacion;
+        console.log("Imagen subida exitosamente:", fileName);
+        return fileName;
+    } catch (error) {
+        console.error("Error al subir la imagen:", error);
+        return null;
+    }
+}

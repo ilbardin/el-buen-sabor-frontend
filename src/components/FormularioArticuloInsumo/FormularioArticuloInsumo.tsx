@@ -3,6 +3,7 @@ import {
   getCategoriasArticuloInsumo,
   editarArticuloInsumo,
   getUnidadesDeMedida,
+  subirImagen,
 } from "../../services/ingredientesService.ts";
 import React, { useEffect, useState } from "react";
 import type { CategoriaArticulo } from "../../models/categoriaArticulo.ts";
@@ -26,6 +27,8 @@ export const FormularioArticulosInsumo = ({
   const [categorias, setCategorias] = useState<CategoriaArticulo[]>([]);
   const [unidadSeleccionada, setUnidadSeleccionada] = useState("");
   const [unidades, setUnidades] = useState<UnidadMedida[]>([]);
+  const [imagenArticuloInsumo, setImagenArticuloInsumo] = useState("");
+  const [formularioValidado, setFormularioValidado] = useState(false);
 
   useEffect(() => {
     async function cargarDatos() {
@@ -60,6 +63,18 @@ export const FormularioArticulosInsumo = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setFormularioValidado(true);
+
+    // * no envia el formulario si falta algo obligatorio
+    if (
+      !denominacion.trim() ||
+      !categoriaSeleccionada.trim() ||
+      !imagenArticuloInsumo.trim()
+    ) {
+      //.trim() para evitar espacios en blanco
+      return;
+    }
+
     const categoriaObj = categorias.find(
       (cat) => cat.denominacion === categoriaSeleccionada
     );
@@ -89,9 +104,10 @@ export const FormularioArticulosInsumo = ({
       unidadMedida: {
         id: unidadObj.id,
       },
-      imagenInsumo: {
-        url: urlImagen,
-      },
+      imagenInsumo: 
+        {
+          denominacion: imagenArticuloInsumo.split("/").pop() ?? "",
+        },
     };
 
     try {
@@ -122,10 +138,21 @@ export const FormularioArticulosInsumo = ({
     }
   };
 
+  const handleImagenUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+  
+      const nombreArchivo = await subirImagen(file);
+      if (nombreArchivo) {
+        const urlCompleta = `http://localhost:8080/uploads/images/${nombreArchivo}`;
+        setImagenArticuloInsumo(urlCompleta);
+      }
+    };
+
   return (
     <div className={styles.divContenedor}>
       <div className={styles.formulario}>
-        <h2>Nuevo Producto</h2>
+        <h2 style={{marginTop: "0px"}}>Nuevo Articulo Insumo</h2>
         <form onSubmit={handleSubmit}>
           <label className={styles.formArticuloLabel}>Nombre:</label>
           <input
@@ -190,14 +217,41 @@ export const FormularioArticulosInsumo = ({
             ))}
           </datalist>
 
-          <label className={styles.formArticuloLabel}>Imagen:</label>
+          <label className={styles.formArticuloLabel}>
+                {/* Muestra el mensaje de error si se apretó "Guardar" y no hay imagen */}
+                {formularioValidado && !imagenArticuloInsumo.trim() && (
+                  <p className={styles.error}>Este campo es obligatorio</p>
+                )}
+                <div className={styles.inputConIcono}>
+                  <label
+                    htmlFor="imagenUpload"
+                    className={`${styles.botonGuardar} ${styles.boton} ${styles.botonConMargenInferior}`}
+                  >
+                    Subir Imagen
+                  </label>
 
-          <input
-            type="text"
-            placeholder="URL de la imagen"
-            value={urlImagen}
-            onChange={(e) => setUrlImagen(e.target.value)}
-          />
+                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
+                  {formularioValidado &&
+                    !imagenArticuloInsumo.trim() && (
+                      <span className={styles.iconoInput}>❗</span>
+                    )}
+                </div>
+                <input
+                  type="file"
+                  id="imagenUpload"
+                  accept="image/*"
+                  onChange={handleImagenUpload}
+                  style={{ display: "none" }}
+                />
+              </label>
+
+              {imagenArticuloInsumo && (
+                <img
+                  src={imagenArticuloInsumo}
+                  alt="Vista previa"
+                  style={{ maxWidth: "200px", marginTop: "0px",  maxHeight: "150px" }}
+                />
+              )}
 
           <div className={styles.botones}>
             <button
