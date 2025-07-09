@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   crearArticuloManufacturado,
   obtenerCategorias,
@@ -23,12 +23,13 @@ export default function FormularioArticulosManufacturados({
   onCreateSuccess: () => void;
   articuloParaEditar?: ArticuloManufacturado | null;
 }) {
+
   const [denominacion, setDenominacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precioVenta, setPrecioVenta] = useState(0);
   const [tiempoEstimado, setTiempoEstimado] = useState(0);
-  const [imagenArticuloManofacturado, setImagenArticuloManofacturado] =
-    useState("");
+  const [imagenesArticuloManofacturado, setImagenesArticuloManofacturado] =
+    useState<string[]>([]);
 
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   const [categorias, setCategorias] = useState<
@@ -44,6 +45,7 @@ export default function FormularioArticulosManufacturados({
   const [unidadMedida, setUnidadMedida] = useState("");
   const [formularioValidado, setFormularioValidado] = useState(false);
 
+  // !Carga inicial de categorías e insumos 
   useEffect(() => {
     async function cargarDatos() {
       const categorias = await obtenerCategorias();
@@ -55,14 +57,16 @@ export default function FormularioArticulosManufacturados({
     void cargarDatos();
   }, []);
 
+
+  // !Carga de datos del artículo a editar
   useEffect(() => {
     if (articuloParaEditar) {
       setDenominacion(articuloParaEditar.denominacion);
       setDescripcion(articuloParaEditar.descripcion);
       setPrecioVenta(articuloParaEditar.precioVenta);
       setTiempoEstimado(articuloParaEditar.tiempoEstimado);
-      setImagenArticuloManofacturado(
-        articuloParaEditar.imagenArticuloManofacturado || ""
+      setImagenesArticuloManofacturado(
+        articuloParaEditar.imagenesArticuloManofacturado || ""
       );
       setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
       setDetalles(
@@ -74,22 +78,6 @@ export default function FormularioArticulosManufacturados({
     }
   }, [articuloParaEditar]);
 
-  const agregarInsumo = () => {
-    const insumoObj = insumos.find(
-      (ins) => ins.denominacion === insumoSeleccionado
-    );
-
-    if (!insumoObj) {
-      alert("Insumo no encontrado");
-      return;
-    }
-
-    setDetalles([...detalles, { insumo: insumoObj, cantidad: cantidadInsumo }]);
-
-    setInsumoSeleccionado("");
-    setCantidadInsumo(0);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -100,7 +88,7 @@ export default function FormularioArticulosManufacturados({
       !denominacion.trim() ||
       !descripcion.trim() ||
       !categoriaSeleccionada.trim() ||
-      !imagenArticuloManofacturado.trim()
+      imagenesArticuloManofacturado.length === 0
     ) {
       //.trim() para evitar espacios en blanco
       return;
@@ -129,11 +117,9 @@ export default function FormularioArticulosManufacturados({
           id: d.insumo.id,
         },
       })),
-      imagenes: [
-        {
-          denominacion: imagenArticuloManofacturado.split("/").pop() ?? "",
-        },
-      ],
+      imagenes: imagenesArticuloManofacturado.map((url) => ({
+        denominacion: url.split("/").pop() ?? "",
+      })),
     };
 
     try {
@@ -153,22 +139,92 @@ export default function FormularioArticulosManufacturados({
     }
   };
 
+  //! MANEJO DE INSUMOS
+  /* #region*/
   const eliminarInsumo = (index: number) => {
     const nuevosDetalles = [...detalles];
     nuevosDetalles.splice(index, 1);
     setDetalles(nuevosDetalles);
   };
 
-  const handleImagenUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const agregarInsumo = () => {
+    const insumo = insumos.find(
+      (ins) => ins.denominacion === insumoSeleccionado
+    );
 
-    const nombreArchivo = await subirImagen(file);
-    if (nombreArchivo) {
-      const urlCompleta = `http://localhost:8080/uploads/images/${nombreArchivo}`;
-      setImagenArticuloManofacturado(urlCompleta);
+    if (!insumo) {
+      alert("Insumo no encontrado");
+      return;
     }
+
+    setDetalles([...detalles, { insumo: insumo, cantidad: cantidadInsumo }]);
+
+    setInsumoSeleccionado(""); //Regresa el campo Insumo a Buscar insumo
+    setCantidadInsumo(0);
   };
+  /* #endregion */
+
+  //! MANEJO DE IMAGENES
+  /* #region*/
+
+  const handleImagenUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    if (files.length === 0) return;
+
+    const urls: string[] = [];
+
+    for (const file of files) {
+      const nombreArchivo = await subirImagen(file);
+      if (nombreArchivo) {
+        urls.push(`http://localhost:8080/uploads/images/${nombreArchivo}`);
+      }
+    }
+    setImagenesArticuloManofacturado((prev) => [...prev, ...urls]);
+  };
+
+  const eliminarImagen = (index: number) => {
+    const nuevasImagenes = [...imagenesArticuloManofacturado];
+    nuevasImagenes.splice(index, 1);
+    setImagenesArticuloManofacturado(nuevasImagenes);
+  };
+
+  /* #endregion */
+
+  //! MANEJO DE LISTAS DESPLEGABLES
+  /*#region*/
+
+  const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
+  const [mostrarSugerenciasCategorias, setMostrarSugerenciasCategorias] =
+    useState(false);
+
+  // Referencias para detectar clicks fuera de los inputs
+  const refCategoria = useRef<HTMLDivElement>(null);
+  const refInsumo = useRef<HTMLDivElement>(null);
+
+  // Cierra las sugerencias al hacer click fuera del input
+  useEffect(() => {
+    const manejarClickFuera = (e: MouseEvent) => {
+      if (
+        refCategoria.current &&
+        !refCategoria.current.contains(e.target as Node)
+      ) {
+        setMostrarSugerenciasCategorias(false);
+      }
+
+      if (refInsumo.current && !refInsumo.current.contains(e.target as Node)) {
+        setMostrarSugerencias(false);
+      }
+    };
+
+    // Agrega el evento de click al documento para detectar clicks fuera del input
+    document.addEventListener("mousedown", manejarClickFuera);
+    return () => {
+      document.removeEventListener("mousedown", manejarClickFuera);
+    };
+  }, []);
+
+  /*#endregion*/
 
   return (
     <div className={styles.formArticuloModal}>
@@ -240,36 +296,67 @@ export default function FormularioArticulosManufacturados({
                 />
               </label>
 
-              <label className={styles.formArticuloLabel}>
+              <div className={styles.formArticuloLabel}>
                 Categoría:
                 {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                 {formularioValidado && !categoriaSeleccionada.trim() && (
                   <p className={styles.error}>Este campo es obligatorio</p>
                 )}
                 <div className={styles.inputConIcono}>
-                  <input
-                    className={styles.formArticuloInput}
-                    list="categorias"
-                    value={categoriaSeleccionada}
-                    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                  />
-                  <datalist id="categorias">
-                    {categorias.map((cat) => (
-                      <option key={cat.id} value={cat.denominacion} />
-                    ))}
-                  </datalist>
+                  <div
+                    className={styles.autocompleteWrapper}
+                    ref={refCategoria}
+                  >
+                    <input
+                      className={styles.formArticuloInput}
+                      type="text"
+                      placeholder="Buscar categoria"
+                      value={categoriaSeleccionada}
+                      onChange={(e) => {
+                        const valor = e.target.value;
+                        setCategoriaSeleccionada(valor);
+                        setMostrarSugerenciasCategorias(true);
+                      }}
+                      onFocus={() => setMostrarSugerenciasCategorias(true)}
+                    />
+
+                    {mostrarSugerenciasCategorias && (
+                      <ul className={styles.sugerenciasLista}>
+                        {categorias
+                          .filter((cat) =>
+                            cat.denominacion
+                              .toLowerCase()
+                              .includes(categoriaSeleccionada.toLowerCase())
+                          )
+                          .slice(0, 5)
+                          .map((cat) => (
+                            <li
+                              key={cat.id}
+                              className={styles.sugerenciaItem}
+                              onClick={() => {
+                                setCategoriaSeleccionada(cat.denominacion);
+                                setMostrarSugerenciasCategorias(false);
+                              }}
+                            >
+                              {cat.denominacion}
+                            </li>
+                          ))}
+                      </ul>
+                    )}
+                  </div>
                   {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
-                  {formularioValidado && !descripcion.trim() && (
+                  {formularioValidado && !categoriaSeleccionada.trim() && (
                     <span className={styles.iconoInput}>❗</span>
                   )}
                 </div>
-              </label>
+              </div>
 
               <label className={styles.formArticuloLabel}>
                 {/* Muestra el mensaje de error si se apretó "Guardar" y no hay imagen */}
-                {formularioValidado && !imagenArticuloManofacturado.trim() && (
-                  <p className={styles.error}>Este campo es obligatorio</p>
-                )}
+                {formularioValidado &&
+                  imagenesArticuloManofacturado.length === 0 && (
+                    <p className={styles.error}>Este campo es obligatorio</p>
+                  )}
                 <div className={styles.inputConIcono}>
                   <label
                     htmlFor="imagenUpload"
@@ -280,7 +367,7 @@ export default function FormularioArticulosManufacturados({
 
                   {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                   {formularioValidado &&
-                    !imagenArticuloManofacturado.trim() && (
+                    imagenesArticuloManofacturado.length === 0 && (
                       <span className={styles.iconoInput}>❗</span>
                     )}
                 </div>
@@ -288,46 +375,78 @@ export default function FormularioArticulosManufacturados({
                   type="file"
                   id="imagenUpload"
                   accept="image/*"
+                  multiple
                   onChange={handleImagenUpload}
                   style={{ display: "none" }}
                 />
               </label>
 
-              {imagenArticuloManofacturado && (
-                <img
-                  src={imagenArticuloManofacturado}
-                  alt="Vista previa"
-                  style={{ maxWidth: "200px", marginTop: "10px" }}
-                />
+              {imagenesArticuloManofacturado.length > 0 && (
+                <div className={styles.divImagenesArticulo}>
+                  {imagenesArticuloManofacturado.map((url, index) => (
+                    <div key={index} style={{ position: "relative" }}>
+                      <img
+                        src={url}
+                        alt={`Imagen ${index + 1}`}
+                        className={styles.imagenArticulo}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => eliminarImagen(index)}
+                        className={styles.botonEliminarImagen}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 
             <div className={styles.formArticuloColumnaDerecha}>
-              <label className={styles.formArticuloLabel}>
+              <div className={styles.formArticuloLabel}>
                 Insumo:
-                <input
-                  className={styles.formArticuloInput}
-                  list="insumos"
-                  value={insumoSeleccionado}
-                  onChange={(e) => {
-                    const seleccion = e.target.value;
-                    setInsumoSeleccionado(seleccion);
-                    const insumo = insumos.find(
-                      (ins) => ins.denominacion === seleccion
-                    );
-                    if (insumo) {
-                      setUnidadMedida(insumo.unidadMedida.denominacion);
-                    } else {
-                      setUnidadMedida("");
-                    }
-                  }}
-                />
-                <datalist id="insumos">
-                  {insumos.map((ins) => (
-                    <option key={ins.id} value={ins.denominacion} />
-                  ))}
-                </datalist>
-              </label>
+                <div className={styles.autocompleteWrapper} ref={refInsumo}>
+                  <input
+                    className={styles.formArticuloInput}
+                    type="text"
+                    placeholder="Buscar insumo..."
+                    value={insumoSeleccionado}
+                    onChange={(e) => {
+                      const valor = e.target.value;
+                      setInsumoSeleccionado(valor);
+                      setMostrarSugerencias(true);
+                    }}
+                    onFocus={() => setMostrarSugerencias(true)}
+                  />
+
+                  {mostrarSugerencias && (
+                    <ul className={styles.sugerenciasLista}>
+                      {insumos
+                        .filter((ins) =>
+                          ins.denominacion
+                            .toLowerCase()
+                            .includes(insumoSeleccionado.toLowerCase())
+                        )
+                        .slice(0, 5)
+                        .map((ins) => (
+                          <li
+                            key={ins.id}
+                            className={styles.sugerenciaItem}
+                            onClick={() => {
+                              setInsumoSeleccionado(ins.denominacion);
+                              setUnidadMedida(ins.unidadMedida.denominacion);
+                              setMostrarSugerencias(false);
+                            }}
+                          >
+                            {ins.denominacion}
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
               <div className={styles.formArticuloCantidadContainer}>
                 <label className={styles.formArticuloLabel}>
                   Cantidad de insumo:
