@@ -6,7 +6,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {ROUTES} from '../../constants/routes';
 import {showAlert, showLoading} from '../../utils/alerts';
-import {MdEmail, MdKeyboardArrowDown, MdLocationCity} from "react-icons/md";
+import {MdEmail, MdLocationCity} from "react-icons/md";
 import {BsTelephoneFill} from "react-icons/bs";
 import {registrarUsuario} from "../../services/registroUsuarioService.ts";
 import {FaLocationDot} from "react-icons/fa6";
@@ -207,6 +207,46 @@ export const RegistroUsuario: React.FC = () => {
         }
     };
 
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            width: '100%',
+            padding: '5px 0 0 5px',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '40px',
+            backgroundColor: 'transparent',
+            color: '#fff',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: '#fff',
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: '#fff',
+            marginTop: '5px'
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            zIndex: 9999,
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused ? '#34495e' : 'transparent',
+            color: '#fff',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: '#bbb',
+        }),
+    };
+
     return (
         <div className={styles.registroContainer}>
             <div className={styles.registroWrapper}>
@@ -249,9 +289,7 @@ export const RegistroUsuario: React.FC = () => {
                                 <div className={styles.selectWrapper}>
                                     <Select
                                         options={paisesOptions}
-                                        components={{
-                                            IndicatorSeparator: () => null,
-                                        }}
+                                        components={{IndicatorSeparator: () => null}}
                                         value={paisesOptions.find((opt) => opt.value === paisId) ?? null}
                                         onChange={(selectedOption) => {
                                             if (selectedOption) {
@@ -260,44 +298,7 @@ export const RegistroUsuario: React.FC = () => {
                                         }}
                                         placeholder="Seleccionar país"
                                         isSearchable={true}
-                                        styles={{
-                                            control: (provided) => ({
-                                                ...provided,
-                                                width: '100%',
-                                                padding: '5px 0 5px 5px',
-                                                border: '2px solid rgba(255, 255, 255, 0.2)',
-                                                borderRadius: '40px',
-                                                backgroundColor: 'transparent',
-                                                color: '#fff',
-                                                fontSize: '16px',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                            }),
-                                            singleValue: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            input: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            menu: (provided) => ({
-                                                ...provided,
-                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                                zIndex: 9999,
-                                            }),
-                                            option: (provided, state) => ({
-                                                ...provided,
-                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
-                                                color: '#fff',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                            }),
-                                            placeholder: (provided) => ({
-                                                ...provided,
-                                                color: '#bbb',
-                                            }),
-                                        }}
+                                        styles={customStyles}
                                     />
                                 </div>
                             </div>
@@ -319,48 +320,7 @@ export const RegistroUsuario: React.FC = () => {
                                         isDisabled={!paisId}
                                         placeholder="Seleccionar provincia"
                                         isSearchable={true}
-                                        styles={{
-                                            control: (provided) => ({
-                                                ...provided,
-                                                width: '100%',
-                                                padding: '5px 0 5px 5px',
-                                                border: '2px solid rgba(255, 255, 255, 0.2)',
-                                                borderRadius: '40px',
-                                                backgroundColor: 'transparent',
-                                                color: '#fff',
-                                                fontSize: '16px',
-                                                fontWeight: 'bold',
-                                                appearance: 'none',
-                                                webkitAppearance: 'none',
-                                                mozAppearance: 'none',
-                                                cursor: 'pointer',
-                                                boxSizing: 'border-box'
-                                            }),
-                                            singleValue: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            input: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            menu: (provided) => ({
-                                                ...provided,
-                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                                zIndex: 9999,
-                                            }),
-                                            option: (provided, state) => ({
-                                                ...provided,
-                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
-                                                color: '#fff',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                            }),
-                                            placeholder: (provided) => ({
-                                                ...provided,
-                                                color: '#bbb',
-                                            }),
-                                        }}
+                                        styles={customStyles}
                                     />
                                 </div>
                             </div>
@@ -382,46 +342,7 @@ export const RegistroUsuario: React.FC = () => {
                                         isDisabled={!provinciaId}
                                         placeholder="Seleccionar localidad"
                                         isSearchable={true}
-                                        styles={{
-                                            control: (provided) => ({
-                                                ...provided,
-                                                width: '100%',
-                                                padding: '5px 0 5px 5px',
-                                                border: '2px solid rgba(255, 255, 255, 0.2)',
-                                                borderRadius: '40px',
-                                                backgroundColor: 'transparent',
-                                                color: '#fff',
-                                                fontSize: '16px',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                            }),
-                                            singleValue: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            input: (provided) => ({
-                                                ...provided,
-                                                color: '#fff',
-                                            }),
-                                            menu: (provided) => ({
-                                                ...provided,
-                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                                borderRadius: '10px',
-                                                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
-                                                zIndex: 9999,
-                                            }),
-                                            option: (provided, state) => ({
-                                                ...provided,
-                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
-                                                color: '#fff',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                            }),
-                                            placeholder: (provided) => ({
-                                                ...provided,
-                                                color: '#bbb',
-                                            }),
-                                        }}
+                                        styles={customStyles}
                                     />
                                 </div>
                             </div>
