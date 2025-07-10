@@ -233,6 +233,7 @@ export const RegistroUsuario: React.FC = () => {
             ...provided,
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             zIndex: 9999,
+            borderRadius: '20px',
         }),
         option: (provided, state) => ({
             ...provided,
@@ -240,6 +241,7 @@ export const RegistroUsuario: React.FC = () => {
             color: '#fff',
             fontWeight: 'bold',
             cursor: 'pointer',
+            borderRadius: '20px',
         }),
         placeholder: (provided) => ({
             ...provided,
