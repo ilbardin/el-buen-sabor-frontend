@@ -95,7 +95,7 @@ export const RegistroUsuario: React.FC = () => {
         label: pais.nombre,
     }));
 
-    const provinciasOptions: ProvinciaOption[] = provincias.map((provincia) => ({
+    const provinciasOptions: Opcion[] = provincias.map((provincia) => ({
         value: provincia.id,
         label: provincia.nombre,
     }));
@@ -247,17 +247,58 @@ export const RegistroUsuario: React.FC = () => {
                             <div className={styles.inputBox}>
                                 <label htmlFor="pais">País:</label>
                                 <div className={styles.selectWrapper}>
-                                    <select
-                                        id="pais"
-                                        value={paisId ?? ''}
-                                        onChange={(e) => handlePaisChange(Number(e.target.value))}
-                                        required>
-                                        <option value="" disabled>Seleccionar país</option>
-                                        {paises.map((pais) => (
-                                            <option key={pais.id} value={pais.id}>{pais.nombre}</option>
-                                        ))}
-                                    </select>
-                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                    <Select
+                                        options={paisesOptions}
+                                        components={{
+                                            IndicatorSeparator: () => null,
+                                        }}
+                                        value={paisesOptions.find((opt) => opt.value === paisId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                handlePaisChange(selectedOption.value);
+                                            }
+                                        }}
+                                        placeholder="Seleccionar país"
+                                        isSearchable={true}
+                                        styles={{
+                                            control: (provided) => ({
+                                                ...provided,
+                                                width: '100%',
+                                                padding: '5px 0 5px 5px',
+                                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '40px',
+                                                backgroundColor: 'transparent',
+                                                color: '#fff',
+                                                fontSize: '16px',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer',
+                                            }),
+                                            singleValue: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            input: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            menu: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                zIndex: 9999,
+                                            }),
+                                            option: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
+                                                color: '#fff',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer',
+                                            }),
+                                            placeholder: (provided) => ({
+                                                ...provided,
+                                                color: '#bbb',
+                                            }),
+                                        }}
+                                    />
                                 </div>
                             </div>
 
@@ -305,14 +346,14 @@ export const RegistroUsuario: React.FC = () => {
                                             }),
                                             menu: (provided) => ({
                                                 ...provided,
-                                                backgroundColor: 'transparent',
-                                                backdropFilter: 'blur(50px)',
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                                 zIndex: 9999,
                                             }),
                                             option: (provided, state) => ({
                                                 ...provided,
                                                 backgroundColor: state.isFocused ? '#34495e' : 'transparent',
                                                 color: '#fff',
+                                                fontWeight: 'bold',
                                                 cursor: 'pointer',
                                             }),
                                             placeholder: (provided) => ({
@@ -327,18 +368,61 @@ export const RegistroUsuario: React.FC = () => {
                             <div className={styles.inputBox}>
                                 <label htmlFor="localidad">Localidad:</label>
                                 <div className={styles.selectWrapper}>
-                                    <select
-                                        id="localidad"
-                                        value={localidadId ?? ''}
-                                        onChange={(e) => setLocalidadId(Number(e.target.value))}
-                                        disabled={!provinciaId}
-                                        required>
-                                        <option value="" disabled>Seleccionar localidad</option>
-                                        {localidades.map((localidad) => (
-                                            <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-                                        ))}
-                                    </select>
-                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                    <Select
+                                        options={localidadesOptions}
+                                        components={{
+                                            IndicatorSeparator: () => null,
+                                        }}
+                                        value={localidadesOptions.find((opt) => opt.value === localidadId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                setLocalidadId(selectedOption.value);
+                                            }
+                                        }}
+                                        isDisabled={!provinciaId}
+                                        placeholder="Seleccionar localidad"
+                                        isSearchable={true}
+                                        styles={{
+                                            control: (provided) => ({
+                                                ...provided,
+                                                width: '100%',
+                                                padding: '5px 0 5px 5px',
+                                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '40px',
+                                                backgroundColor: 'transparent',
+                                                color: '#fff',
+                                                fontSize: '16px',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer',
+                                            }),
+                                            singleValue: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            input: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            menu: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                                borderRadius: '10px',
+                                                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+                                                zIndex: 9999,
+                                            }),
+                                            option: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
+                                                color: '#fff',
+                                                fontWeight: 'bold',
+                                                cursor: 'pointer',
+                                            }),
+                                            placeholder: (provided) => ({
+                                                ...provided,
+                                                color: '#bbb',
+                                            }),
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>

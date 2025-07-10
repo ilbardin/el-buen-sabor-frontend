@@ -61,37 +61,6 @@ input[type="number"] {
     width: 100%;
 }
 
-.selectWrapper select {
-    width: 100%;
-    padding: 10px 40px 10px 15px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 40px;
-    background-color: transparent;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.selectWrapper select:disabled {
-    background-color: #333333;
-    cursor: not-allowed;
-}
-
-.selectIcon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: white;
-    font-size: 24px;
-}
-
 .inputBox select:focus {
     border-color: #ffffff;
     outline: none;
