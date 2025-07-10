@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import Select from 'react-select';
 import {FaAddressBook, FaIdCard, FaUser} from 'react-icons/fa';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
@@ -13,6 +14,11 @@ import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
 import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
 import {AxiosError} from "axios";
 import styles from './RegistroUsuario.module.css';
+
+type Opcion = {
+    value: number;
+    label: string;
+};
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
@@ -83,6 +89,21 @@ export const RegistroUsuario: React.FC = () => {
             }
         }
     };
+
+    const paisesOptions: Opcion[] = paises.map((pais) => ({
+        value: pais.id,
+        label: pais.nombre,
+    }));
+
+    const provinciasOptions: ProvinciaOption[] = provincias.map((provincia) => ({
+        value: provincia.id,
+        label: provincia.nombre,
+    }));
+
+    const localidadesOptions: Opcion[] = localidades.map((loc) => ({
+        value: loc.id,
+        label: loc.nombre,
+    }));
 
     useEffect(() => {
         void fetchPaises();
@@ -243,18 +264,63 @@ export const RegistroUsuario: React.FC = () => {
                             <div className={styles.inputBox}>
                                 <label htmlFor="provincia">Provincia:</label>
                                 <div className={styles.selectWrapper}>
-                                    <select
-                                        id="provincia"
-                                        value={provinciaId ?? ''}
-                                        onChange={(e) => handleProvinciaChange(Number(e.target.value))}
-                                        disabled={!paisId}
-                                        required>
-                                        <option value="" disabled>Seleccionar provincia</option>
-                                        {provincias.map((provincia) => (
-                                            <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
-                                        ))}
-                                    </select>
-                                    <MdKeyboardArrowDown className={styles.selectIcon}/>
+                                    <Select
+                                        options={provinciasOptions}
+                                        components={{
+                                            IndicatorSeparator: () => null
+                                        }}
+                                        value={provinciasOptions.find((opt) => opt.value === provinciaId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                handleProvinciaChange(selectedOption.value);
+                                            }
+                                        }}
+                                        isDisabled={!paisId}
+                                        placeholder="Seleccionar provincia"
+                                        isSearchable={true}
+                                        styles={{
+                                            control: (provided) => ({
+                                                ...provided,
+                                                width: '100%',
+                                                padding: '5px 0 5px 5px',
+                                                border: '2px solid rgba(255, 255, 255, 0.2)',
+                                                borderRadius: '40px',
+                                                backgroundColor: 'transparent',
+                                                color: '#fff',
+                                                fontSize: '16px',
+                                                fontWeight: 'bold',
+                                                appearance: 'none',
+                                                webkitAppearance: 'none',
+                                                mozAppearance: 'none',
+                                                cursor: 'pointer',
+                                                boxSizing: 'border-box'
+                                            }),
+                                            singleValue: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            input: (provided) => ({
+                                                ...provided,
+                                                color: '#fff',
+                                            }),
+                                            menu: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: 'transparent',
+                                                backdropFilter: 'blur(50px)',
+                                                zIndex: 9999,
+                                            }),
+                                            option: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: state.isFocused ? '#34495e' : 'transparent',
+                                                color: '#fff',
+                                                cursor: 'pointer',
+                                            }),
+                                            placeholder: (provided) => ({
+                                                ...provided,
+                                                color: '#bbb',
+                                            }),
+                                        }}
+                                    />
                                 </div>
                             </div>
 
