@@ -4,6 +4,7 @@ import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {showAlert} from "../../utils/alerts.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import useConditionalBlocker from "../../hooks/useConditionalBlocker.tsx";
+import {ROUTES} from "../../constants/routes.ts";
 
 const DuracionCarritoAlert: React.FC = () => {
     const {cart} = useCart();
@@ -31,7 +32,7 @@ const DuracionCarritoAlert: React.FC = () => {
             void showAlert(
                 'Duración del carrito',
                 'info',
-                `Recuerda, tu carrito estará disponible solo por ${expirationInHours} hora(s).`,
+                `Recuerda, tu carrito estará disponible solo por <br><strong>${expirationInHours}</strong> <strong>horas</strong>.`,
                 true
             ).then(() => {
                 setCartModified(false);
@@ -41,7 +42,7 @@ const DuracionCarritoAlert: React.FC = () => {
         }
     };
 
-    useConditionalBlocker(handleBlockNavigation, cart.length > 0 && cartModified && location.pathname === '/productos');
+    useConditionalBlocker(handleBlockNavigation, cart.length > 0 && cartModified && location.pathname === ROUTES.PRODUCTOS);
 
     return null;
 };
