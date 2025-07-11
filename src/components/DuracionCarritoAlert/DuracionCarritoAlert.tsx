@@ -1,28 +1,47 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import React, {useEffect, useRef, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router';
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {showAlert} from "../../utils/alerts.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
-
+import useConditionalBlocker from "../../hooks/useConditionalBlocker.tsx";
 
 const DuracionCarritoAlert: React.FC = () => {
-    const location = useLocation();
     const {cart} = useCart();
-    const [alertShown, setAlertShown] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const previousCart = useRef(cart);
+    const [cartModified, setCartModified] = useState(false);
 
-    const expirationInHours = useMemo(() => Math.ceil(CARRITO_EXPIRATION_TIME / (60 * 60 * 1000)), []);
+    const expirationInHours = Math.ceil(CARRITO_EXPIRATION_TIME / (60 * 60 * 1000));
 
     useEffect(() => {
-        if (location.pathname !== '/productos' && cart.length > 0 && !alertShown) {
+        if (cart.length > 0) {
+            if (JSON.stringify(previousCart.current) !== JSON.stringify(cart)) {
+                setCartModified(true);
+            }
+        } else {
+            setCartModified(false);
+        }
+
+        previousCart.current = cart;
+    }, [cart]);
+
+    const handleBlockNavigation = () => {
+        if (cart.length > 0 && cartModified) {
             void showAlert(
                 'Duración del carrito',
                 'info',
                 `Recuerda, tu carrito estará disponible solo por ${expirationInHours} hora(s).`,
                 true
-            );
-            setAlertShown(true);
+            ).then(() => {
+                setCartModified(false);
+                navigate(-1);
+            }).catch(() => {
+            });
         }
-    }, [location.pathname, cart.length, alertShown, expirationInHours]);
+    };
+
+    useConditionalBlocker(handleBlockNavigation, cart.length > 0 && cartModified && location.pathname === '/productos');
 
     return null;
 };
