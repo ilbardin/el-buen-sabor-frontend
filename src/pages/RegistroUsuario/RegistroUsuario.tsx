@@ -14,6 +14,7 @@ import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
 import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
 import {AxiosError} from "axios";
 import styles from './RegistroUsuario.module.css';
+import type {StylesConfig} from 'react-select';
 
 type Opcion = {
     value: number;
@@ -207,7 +208,7 @@ export const RegistroUsuario: React.FC = () => {
         }
     };
 
-    const customStyles = {
+    const customStyles: StylesConfig<any, false> = {
         control: (provided) => ({
             ...provided,
             width: '100%',
