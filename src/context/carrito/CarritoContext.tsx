@@ -6,7 +6,7 @@ import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 
-const CHECK_INTERVAL = 1000;
+const CHECK_INTERVAL = 60000;
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
