@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
-import {FaSearch, FaShoppingCart, FaUser} from 'react-icons/fa';
+import {FaShoppingCart, FaUser} from 'react-icons/fa';
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";
 import type {UserData} from "../../models/usuario/usuario.ts";
@@ -150,7 +150,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    <span className={styles.icon}><FaSearch/></span>
                     <span className={styles.icon}><FaShoppingCart/></span>
                     <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
                         {user ? (
