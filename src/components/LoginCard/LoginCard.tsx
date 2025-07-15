@@ -33,12 +33,11 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
         },
         ref
     ) => {
-        const {usuario, logout} = useContext(AuthContext);
+        const {usuario} = useContext(AuthContext);
 
         if (!showLogin && !isClosing) return null;
 
         const handleLogout = () => {
-            logout();
             onLogout();
             onHide();
         };
