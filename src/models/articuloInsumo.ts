@@ -7,10 +7,7 @@ export interface ArticuloInsumo {
     precioCompra: number;
     precioVenta: number;
     esParaElaborar: boolean;
-    categoriaArticulo: {
-        id: number;
-        denominacion: string;
-    };
+    categoria: string;
     imagenInsumo: {
         id: number;
         denominacion: string;
@@ -20,6 +17,7 @@ export interface ArticuloInsumo {
         denominacion: string;
     }
 }
+
 
 export interface ArticuloInsumoCreacion {
     estaActivo:        boolean;

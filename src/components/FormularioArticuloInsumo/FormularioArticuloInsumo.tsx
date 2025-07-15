@@ -55,7 +55,7 @@ export const FormularioArticulosInsumo = ({
       setEsParaElaborar(articuloParaEditar.esParaElaborar);
       setUrlImagen(articuloParaEditar.imagenInsumo?.url ?? "");
       setCategoriaSeleccionada(
-        articuloParaEditar.categoriaArticulo.denominacion
+        articuloParaEditar.categoria
       );
       setUnidadSeleccionada(articuloParaEditar.unidadMedida.denominacion);
     }

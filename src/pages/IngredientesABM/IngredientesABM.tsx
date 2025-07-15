@@ -99,7 +99,7 @@ export const IngredientesABM = () => {
           {articulos.map((articulo) => (
             <tr key={articulo.id}>
               <td>{articulo.denominacion}</td>
-              <td>{articulo.categoriaArticulo.denominacion}</td>
+              <td>{articulo.categoria}</td>
               <td>{articulo.precioCompra}</td>
               <td>{articulo.precioVenta}</td>
               <td>

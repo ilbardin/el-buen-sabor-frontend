@@ -13,6 +13,7 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
+import { StockABM } from './pages/StockABM/StockABM.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -60,6 +61,14 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <IngredientesABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.STOCK_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <StockABM/>
                         </ProtectedRoute>
                     }
                 />

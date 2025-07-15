@@ -5,4 +5,5 @@ export const ROUTES = {
     INSUMOS_ABM: '/insumo-abm',
     PRODUCTOS: '/productos',
     LOGIN: '/login',
+    STOCK_ABM: '/stock-abm',
 };
