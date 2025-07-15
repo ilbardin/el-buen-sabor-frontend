@@ -52,9 +52,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     };
 
     const logout = () => {
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('jwtExpirationDate');
-        localStorage.removeItem('usuario');
+        localStorage.clear();
         setUsuario(null);
     };
 
