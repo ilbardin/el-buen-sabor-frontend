@@ -13,12 +13,15 @@ import {UserRole} from "../../models/usuario/userRoles.ts";
 import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import LoginCard from "../../components/LoginCard/LoginCard.tsx";
+import {useAuth} from "../../context/auth/useAuth.ts";
+import {handleLogout} from "../../utils/funcionesReutilizables.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
 };
 
 export const LandingPage = ({onLoginSuccess}: LoginProps) => {
+    const {logout} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
@@ -60,8 +63,14 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         }
     };
 
-    const handleLogout = () => {
-        setUser(null);
+    const handleUserLogout = async () => {
+        await handleLogout(
+            () => {
+                logout();
+                setUser(null);
+            },
+            navigate
+        );
     };
 
     const handleSuccess = (data: UserData) => {
@@ -169,7 +178,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                         password={password}
                         setUsername={setUsername}
                         setPassword={setPassword}
-                        onLogout={handleLogout}
+                        onLogout={handleUserLogout}
                         onHide={handleHide}
                         ref={loginRef}
                     />
