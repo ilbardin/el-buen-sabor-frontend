@@ -1,6 +1,4 @@
 import {showConfirm} from "./alerts.ts";
-import type {NavigateFunction} from 'react-router-dom';
-import {ROUTES} from "../constants/routes.ts";
 
 export const existeCarrito = (): boolean => {
     for (let i = 0; i < localStorage.length; i++) {
@@ -12,30 +10,10 @@ export const existeCarrito = (): boolean => {
     return false;
 };
 
-const alertaCarrito = async (): Promise<boolean> => {
+export const alertaCarrito = async (): Promise<boolean> => {
     return await showConfirm(
         "Confirmación",
         "Si cerra sesión, perderá los productos guardados en el carrito."
     );
 };
 
-export const handleLogout = async (
-    onLogout: () => void,
-    navigate: NavigateFunction,
-    onBeforeLogout: () => void = () => {}
-) => {
-    const performLogout = () => {
-        onLogout();
-        onBeforeLogout();
-        navigate(ROUTES.HOME);
-    };
-
-    if (existeCarrito()) {
-        const confirmacion = await alertaCarrito();
-        if (!confirmacion) {
-            return;
-        }
-    }
-
-    performLogout();
-};
