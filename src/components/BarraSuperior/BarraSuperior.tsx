@@ -4,24 +4,31 @@ import {UserRole} from "../../models/usuario/userRoles.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import styles from './BarraSuperior.module.css';
 import {BiSolidLogOut} from "react-icons/bi";
-import {handleLogout} from "../../utils/funcionesReutilizables.ts";
+import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
+
 
 export const BarraSuperior = () => {
     const {logout, setIsLoggingOut, usuario} = useAuth();
     const navigate = useNavigate();
 
     const handleUserLogout = async () => {
-        setIsLoggingOut(true);
+        const performLogout = () => {
+            setIsLoggingOut(true);
+            logout();
+            navigate(ROUTES.HOME, {replace: true});
+        };
 
-        await handleLogout(
-            () => {
-                navigate(ROUTES.HOME);
-                logout();
-            },
-            () => {
-                setTimeout(() => setIsLoggingOut(false), 500);
+        if (existeCarrito()) {
+            const confirmacion = await alertaCarrito();
+
+            if (!confirmacion) {
+                return;
             }
-        );
+        }
+
+        performLogout();
+        // hack para cambiar el estado de setIsLoggingOut una vez haya finalizado la navegacion
+        // setTimeout(() => setIsLoggingOut(false), 500);
     };
 
     return (

@@ -14,14 +14,14 @@ import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {handleLogout} from "../../utils/funcionesReutilizables.ts";
+import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
 };
 
 export const LandingPage = ({onLoginSuccess}: LoginProps) => {
-    const {logout} = useAuth();
+    const {logout, setIsLoggingOut} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
@@ -57,20 +57,27 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             showLoading('Iniciando sesión...');
             const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
             handleSuccess(response.data);
-        } catch (err: unknown) {
-            // @ts-expect-error tipado
+        } catch (err: any) {
             await handleError(err);
         }
     };
 
     const handleUserLogout = async () => {
-        await handleLogout(
-            () => {
-                logout();
-                setUser(null);
-            },
-            navigate
-        );
+        const performLogout = () => {
+            logout();
+            setUser(null);
+            navigate(ROUTES.HOME);
+        };
+
+        if (existeCarrito()) {
+            const confirmacion = await alertaCarrito();
+
+            if (!confirmacion) {
+                return;
+            }
+        }
+
+        performLogout();
     };
 
     const handleSuccess = (data: UserData) => {
@@ -120,6 +127,11 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         const parts = fullName.trim().split(' ');
         return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
     };
+
+    // seteo el estado de isLogginOut al montar este componente
+    useEffect(() => {
+        setIsLoggingOut(false);
+    }, [setIsLoggingOut]);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('usuario');
