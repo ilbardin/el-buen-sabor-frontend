@@ -208,14 +208,14 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    <span
+                    {user && <span
                         className={styles.icon}
                         onClick={toggleCart}
                         ref={cartIconRef}
                         style={{cursor: 'pointer'}}
                     >
                     <FaShoppingCart/>
-                </span>
+                </span>}
                     {showCart && (
                         <div
                             ref={cartRef}
