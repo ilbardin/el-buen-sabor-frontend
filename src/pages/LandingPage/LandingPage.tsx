@@ -166,7 +166,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <span>EL BUEN SABOR™</span>
                 </div>
                 <nav className={styles.navLinks}>
-                    <Link to={ROUTES.PRODUCTOS}>Menú</Link>
+                    {user && <Link to={ROUTES.PRODUCTOS}>Menú</Link>}
                     <Link to="/especiales">Nuestros especiales</Link>
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
