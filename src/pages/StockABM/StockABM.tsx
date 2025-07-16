@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styles from "./StockABM.module.css";
 import type { StockInsumo } from "../../models/stockInsumo.ts";
 import { InsumoStock } from "../../components/InsumoStock/InsumoStock";
 import { getStockInsumos } from "../../services/stockInsumoService.ts";
@@ -22,7 +23,7 @@ export const StockABM = () => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.container}>
       {mostrarModal && (
         <FormularioStockInsumo
           onClose={async () => {
@@ -32,9 +33,9 @@ export const StockABM = () => {
         />
       )}
 
-      <h1>Gestión de Stock</h1>
-      <button onClick={() => setMostrarModal(true)}>Cargar Stock</button>
-      <table>
+      <h1 className={styles.titulo}>Gestión de Stock</h1>
+      <button className={styles.boton} onClick={() => setMostrarModal(true)}>Cargar Stock</button>
+      <table className={styles.tabla}>
         <thead>
           <tr>
             <th>ID</th>

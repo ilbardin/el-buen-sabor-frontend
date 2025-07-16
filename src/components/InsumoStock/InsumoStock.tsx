@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { StockInsumo } from "../../models/stockInsumo.ts";
 import { editarStockInsumo } from "../../services/stockInsumoService.ts";
+import styles from "./InsumoStock.module.css";
 export function InsumoStock(props: { stockInsumo: StockInsumo }) {
   const [stockActual, setStockActual] = useState(
     props.stockInsumo.cantidadActual
@@ -42,13 +43,17 @@ export function InsumoStock(props: { stockInsumo: StockInsumo }) {
       <td>{props.stockInsumo.cantidadMaxima}</td>
       <td>{props.stockInsumo.unidadMedida}</td>
       <td>
+        <div className={styles.celdaStock}>
         <button onClick={() => manejarStock(-1)}>-</button>
         <input type="text" value={stockActual} readOnly />
         <button onClick={() => manejarStock(1)}>+</button>
+        </div>
       </td>
       <td>
+        <div className={styles.botonesAcciones}>
         <button onClick={() => rechazarStock()}>❌</button>
         <button onClick={() => aceptarStock()}>✔️</button>
+        </div>
       </td>
     </tr>
   );
