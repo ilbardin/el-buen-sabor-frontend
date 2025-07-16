@@ -1,11 +1,11 @@
 .cart {
-    position: fixed;
+    margin-top: 20px;
     top: 100px;
     right: 20px;
     width: 320px;
     background: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     padding: 20px;
     font-family: Arial, sans-serif;
     z-index: 1000;
