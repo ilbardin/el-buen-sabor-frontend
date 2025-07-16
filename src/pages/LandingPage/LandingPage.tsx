@@ -279,11 +279,11 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                         <br/>
                         Tiene <span className={styles.buenSabor}>El Buen Sabor</span>.
                     </p>
-                    <button
+                    {user && <button
                         className={styles.orderButton}
                         onClick={() => navigate(ROUTES.PRODUCTOS)}>
                         PEDIR
-                    </button>
+                    </button>}
                 </div>
 
                 <div className={styles.right}>
