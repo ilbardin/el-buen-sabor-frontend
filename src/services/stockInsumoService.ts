@@ -30,3 +30,16 @@ export async function getStockInsumos(): Promise<StockInsumo[]> {
         throw error;
     }
 }
+
+
+export async function editarStockInsumo(stock: StockInsumo): Promise<void> {
+    try {
+        await axiosInstance.put(API_URL, stock);
+
+
+        await showAlert("Éxito", "success", "Stock de insumos actualizado correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
