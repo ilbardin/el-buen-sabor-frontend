@@ -15,6 +15,8 @@ import type {GenericError} from "../../models/errorResponseModel.ts";
 import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
+import {Carrito} from "../../components/Carrito/Carrito.tsx";
+import {useCart} from "../../context/carrito/useCart.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -25,13 +27,22 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
+
+    // Componente carrito
+    const {cart, saveCart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
+    const [showCart, setShowCart] = useState(false);
+    const [cartPosition, setCartPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
+    const cartRef = useRef<HTMLDivElement>(null);
+    const cartIconRef = useRef<HTMLSpanElement>(null);
+
+    // Componente LoginCard
     const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
     const [showLogin, setShowLogin] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
-    const navigate = useNavigate();
-
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
+
+    const navigate = useNavigate();
 
     const handleHide = () => {
         setShowLogin(false);
@@ -128,6 +139,32 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
     };
 
+    const toggleCart = useCallback(() => {
+        setShowCart((prev) => !prev);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (cartRef.current && !cartRef.current.contains(e.target as Node)
+                && cartIconRef.current && !cartIconRef.current.contains(e.target as Node)
+            ) {
+                setShowCart(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        if (showCart && cartIconRef.current) {
+            const rect = cartIconRef.current.getBoundingClientRect();
+            setCartPosition({
+                top: rect.bottom + window.scrollY - 12,
+                left: rect.right + window.scrollX - 360
+            });
+        }
+    }, [showCart]);
+
     // seteo el estado de isLogginOut al montar este componente
     useEffect(() => {
         setIsLoggingOut(false);
@@ -171,7 +208,34 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    <span className={styles.icon}><FaShoppingCart/></span>
+                    <span
+                        className={styles.icon}
+                        onClick={toggleCart}
+                        ref={cartIconRef}
+                        style={{cursor: 'pointer'}}
+                    >
+                    <FaShoppingCart/>
+                </span>
+                    {showCart && (
+                        <div
+                            ref={cartRef}
+                            style={{
+                                position: 'absolute',
+                                zIndex: 1000,
+                                top: cartPosition.top,
+                                left: cartPosition.left,
+                            }}
+                            className={styles.cartDropdown}
+                        >
+                            <Carrito
+                                items={cart}
+                                onIncrease={increaseQuantity}
+                                onDecrease={decreaseQuantity}
+                                onSave={saveCart}
+                                onClear={clearCart}
+                            />
+                        </div>
+                    )}
                     <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
                         {user ? (
                             <div className={styles.userCircle}>
