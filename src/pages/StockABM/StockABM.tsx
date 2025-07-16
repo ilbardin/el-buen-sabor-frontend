@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import type { StockInsumo } from '../../models/stockInsumo.ts';
-import { InsumoStock } from '../../components/InsumoStock/InsumoStock';
-import { getStockInsumos } from '../../services/stockInsumoService.ts';
+import { useState, useEffect } from "react";
+import type { StockInsumo } from "../../models/stockInsumo.ts";
+import { InsumoStock } from "../../components/InsumoStock/InsumoStock";
+import { getStockInsumos } from "../../services/stockInsumoService.ts";
+import { FormularioStockInsumo } from "../../components/FormularioStockInsumo/FormularioStockInsumo.tsx";
 export const StockABM = () => {
+  const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
-const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
-
-  const cargarArticulosInsumo = async () => {
+  const cargarStockInsumo = async () => {
     try {
       const stockInsumos = await getStockInsumos();
       console.log("Stock Insumo:", stockInsumos);
@@ -17,13 +18,23 @@ const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
   };
 
   useEffect(() => {
-    void cargarArticulosInsumo();
+    void cargarStockInsumo();
   }, []);
 
   return (
     <div>
+      {mostrarModal && (
+        <FormularioStockInsumo
+          onClose={async () => {
+            setMostrarModal(false);
+            await cargarStockInsumo();
+          }}
+        />
+      )}
+
       <h1>Gestión de Stock</h1>
-            <table>
+      <button onClick={() => setMostrarModal(true)}>Cargar Stock</button>
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -41,4 +52,4 @@ const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
       </table>
     </div>
   );
-}
+};
