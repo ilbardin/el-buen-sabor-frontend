@@ -7,7 +7,10 @@ import { FormularioStockInsumo } from "../../components/FormularioStockInsumo/Fo
 export const StockABM = () => {
   const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+  const [unidadMedida, setUnidadMedida] = useState("");
 
+  //! CARGA DE STOCK DE INSUMOS
   const cargarStockInsumo = async () => {
     try {
       const stockInsumos = await getStockInsumos();
@@ -22,6 +25,21 @@ export const StockABM = () => {
     void cargarStockInsumo();
   }, []);
 
+  //! BUCADOR DE INSUMOS
+  const handleChange = (e) => {
+    setBusqueda(e.target.value);
+  };
+
+  const resultados = stockInsumos.filter((insumo) =>
+    insumo.denominacion.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  //! FILTRADO POR UNIDAD DE MEDIDA
+
+  const handleChangeUnidadMedida = (e) => {
+    setUnidadMedida(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
       {mostrarModal && (
@@ -34,7 +52,31 @@ export const StockABM = () => {
       )}
 
       <h1 className={styles.titulo}>Gestión de Stock</h1>
-      <button className={styles.boton} onClick={() => setMostrarModal(true)}>Cargar Stock</button>
+      <button
+        value={""}
+        className={styles.boton}
+        onClick={() => setMostrarModal(true)}
+      >
+        Cargar Stock
+      </button>
+
+      <input
+        type="text"
+        placeholder="Buscar"
+        onChange={handleChange}
+        className={styles.buscador}
+        value={busqueda}
+      />
+
+      <select value={unidadMedida} onChange={handleChangeUnidadMedida}>
+        <option value="">Todas las Unidades</option>
+        {resultados.map((insumo) => (
+          <option key={insumo.idInsumo} value={insumo.unidadMedida}>
+            {insumo.unidadMedida}
+          </option>
+        ))}
+      </select>
+
       <table className={styles.tabla}>
         <thead>
           <tr>
@@ -46,9 +88,14 @@ export const StockABM = () => {
           </tr>
         </thead>
         <tbody>
-          {stockInsumos.map((insumo) => (
-            <InsumoStock key={insumo.idInsumo} stockInsumo={insumo} />
-          ))}
+          {resultados
+            .filter(
+              (insumo) =>
+                insumo.unidadMedida === unidadMedida || unidadMedida === ""
+            )
+            .map((insumo) => (
+              <InsumoStock key={insumo.idInsumo} stockInsumo={insumo} />
+            ))}
         </tbody>
       </table>
     </div>
