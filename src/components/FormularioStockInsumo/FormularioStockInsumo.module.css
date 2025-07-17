@@ -107,7 +107,7 @@ h2 {
 }
 
 .inputConIcono .formArticuloInput {
-  padding-right: 36px; /* Espacio para el icono */
+  padding-right: 36px;
 }
 
 .iconoInput {
@@ -119,3 +119,5 @@ h2 {
   font-size: 16px;
   color: #999;
 }
+
+

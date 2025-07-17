@@ -60,30 +60,36 @@ export const StockABM = () => {
         Cargar Stock
       </button>
 
-      <input
-        type="text"
-        placeholder="Buscar"
-        onChange={handleChange}
-        className={styles.buscador}
-        value={busqueda}
-      />
+      <div className={styles.filtrosContainer}>
+        <input
+          type="text"
+          placeholder="Buscar"
+          onChange={handleChange}
+          className={styles.filtroInput}
+          value={busqueda}
+        />
 
-      <select value={unidadMedida} onChange={handleChangeUnidadMedida}>
-        <option value="">Todas las Unidades</option>
-        {resultados.map((insumo) => (
-          <option key={insumo.idInsumo} value={insumo.unidadMedida}>
-            {insumo.unidadMedida}
-          </option>
-        ))}
-      </select>
+        <select
+          value={unidadMedida}
+          onChange={handleChangeUnidadMedida}
+          className={styles.filtroSelect}
+        >
+          <option value="">Todas las Unidades</option>
+          {resultados.map((insumo) => (
+            <option key={insumo.idInsumo} value={insumo.unidadMedida}>
+              {insumo.unidadMedida}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <table className={styles.tabla}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Cantidad Minima</th>
-            <th>Cantidad Maxima</th>
+            <th>Minimo</th>
+            <th>Maximo</th>
             <th>Unidad de Medida</th>
           </tr>
         </thead>

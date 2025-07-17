@@ -1,13 +1,17 @@
 .celdaStock {
-  display: flex;
+  display: inline-flex;
+  align-content: center;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 0px;
+  margin: 0px;
 }
 
 .celdaStock input {
-  width: 50px;
+  width: 40px;
   text-align: center;
   padding: 6px;
+  margin: 2%;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -61,3 +65,4 @@
 .botonesAcciones button:last-child:hover {
   background-color: #27ae60;
 }
+

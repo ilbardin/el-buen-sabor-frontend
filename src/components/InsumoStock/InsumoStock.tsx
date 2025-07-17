@@ -26,7 +26,7 @@ export function InsumoStock(props: { stockInsumo: StockInsumo }) {
     };
 
     await editarStockInsumo(stockActualizado);
-  
+
     setStockInicial(stockActual);
   }
 
@@ -44,17 +44,21 @@ export function InsumoStock(props: { stockInsumo: StockInsumo }) {
       <td>{props.stockInsumo.unidadMedida}</td>
       <td>
         <div className={styles.celdaStock}>
-        <button onClick={() => manejarStock(-1)}>-</button>
-        <input type="text" value={stockActual} readOnly />
-        <button onClick={() => manejarStock(1)}>+</button>
+          <button onClick={() => manejarStock(-1)}>-</button>
+          <input type="text" value={stockActual} readOnly />
+          <button onClick={() => manejarStock(1)}>+</button>
         </div>
       </td>
-      <td>
-        <div className={styles.botonesAcciones}>
-        <button onClick={() => rechazarStock()}>❌</button>
-        <button onClick={() => aceptarStock()}>✔️</button>
-        </div>
-      </td>
+      
+        {stockActual !== stockInicial &&
+        <td>
+          <div className={styles.botonesAcciones}>
+            <button onClick={() => rechazarStock()}>❌</button>
+            <button onClick={() => aceptarStock()}>✔️</button>
+          </div>
+          </td>
+        }
+      
     </tr>
   );
 }

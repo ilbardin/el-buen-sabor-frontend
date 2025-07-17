@@ -52,3 +52,35 @@
 .tabla tr:hover {
     background-color: #f1f1f1;
 }
+
+
+.filtrosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.filtroInput,
+.filtroSelect {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: var(--color-terciario);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.filtroInput:focus,
+.filtroSelect:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: 0 0 4px rgba(231, 76, 60, 0.3);
+}
+
+.filtroInput::placeholder {
+  color: #aaa;
+}
