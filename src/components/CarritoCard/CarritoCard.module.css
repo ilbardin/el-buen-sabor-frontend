@@ -1,0 +1,41 @@
+.carritoCard {
+    position: absolute;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: none;
+    z-index: 10;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+.fadeIn {
+    animation-name: slideDown;
+}
+
+.fadeOut {
+    animation-name: slideUp;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
