@@ -15,8 +15,8 @@ import type {GenericError} from "../../models/errorResponseModel.ts";
 import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
-import {Carrito} from "../../components/Carrito/Carrito.tsx";
-import {useCart} from "../../context/carrito/useCart.ts";
+import CarritoCard from "../../components/CarritoCard/CarritoCard.tsx";
+import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -29,9 +29,9 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
 
     // Componente carrito
-    const {cart, saveCart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
     const [showCart, setShowCart] = useState(false);
-    const [cartPosition, setCartPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
+    const [isCartClosing, setIsCartClosing] = useState(false);
+    const [cartPosition, setCartPosition] = useState({top: 0, left: 0});
     const cartRef = useRef<HTMLDivElement>(null);
     const cartIconRef = useRef<HTMLSpanElement>(null);
 
@@ -139,21 +139,46 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
     };
 
-    const toggleCart = useCallback(() => {
-        setShowCart((prev) => !prev);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (cartRef.current && !cartRef.current.contains(e.target as Node)
-                && cartIconRef.current && !cartIconRef.current.contains(e.target as Node)
-            ) {
+    const toggleCart = () => {
+        if (showCart) {
+            setIsCartClosing(true);
+            setTimeout(() => {
                 setShowCart(false);
+                setIsCartClosing(false);
+            }, 300);
+        } else {
+            if (cartIconRef.current) {
+                const rect = cartIconRef.current.getBoundingClientRect();
+                setCartPosition({
+                    top: rect.bottom + window.scrollY,
+                    left: rect.left + window.scrollX,
+                });
             }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+            setShowCart(true);
+        }
+    };
+
+    const handleHideCart = () => {
+        setIsCartClosing(true);
+        setTimeout(() => {
+            setShowCart(false);
+            setIsCartClosing(false);
+        }, 300);
+    };
+
+    useOutsideClick({
+        refs: [loginRef],
+        enabled: showLogin,
+        onOutsideClick: () => {
+            if (showLogin) toggleLogin();
+        }
+    });
+
+    useOutsideClick({
+        refs: [cartRef, cartIconRef],
+        enabled: showCart,
+        onOutsideClick: handleHideCart
+    });
 
     useEffect(() => {
         if (showCart && cartIconRef.current) {
@@ -165,7 +190,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         }
     }, [showCart]);
 
-    // seteo el estado de isLogginOut al montar este componente
+    // Seteo el estado de isLoggingOut al montar este componente
     useEffect(() => {
         setIsLoggingOut(false);
     }, [setIsLoggingOut]);
@@ -208,34 +233,24 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    {user && <span
-                        className={styles.icon}
-                        onClick={toggleCart}
-                        ref={cartIconRef}
-                        style={{cursor: 'pointer'}}
-                    >
-                    <FaShoppingCart/>
-                </span>}
-                    {showCart && (
-                        <div
-                            ref={cartRef}
-                            style={{
-                                position: 'absolute',
-                                zIndex: 1000,
-                                top: cartPosition.top,
-                                left: cartPosition.left,
-                            }}
-                            className={styles.cartDropdown}
+                    {user && (
+                        <span
+                            className={styles.icon}
+                            onClick={toggleCart}
+                            ref={cartIconRef}
+                            style={{cursor: 'pointer'}}
                         >
-                            <Carrito
-                                items={cart}
-                                onIncrease={increaseQuantity}
-                                onDecrease={decreaseQuantity}
-                                onSave={saveCart}
-                                onClear={clearCart}
-                            />
-                        </div>
+                        <FaShoppingCart/>
+                        </span>
                     )}
+                    <CarritoCard
+                        showCart={showCart}
+                        isClosing={isCartClosing}
+                        position={cartPosition}
+                        onHide={handleHideCart}
+                        ref={cartRef}
+                    />
+
                     <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
                         {user ? (
                             <div className={styles.userCircle}>
