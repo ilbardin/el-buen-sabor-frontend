@@ -147,13 +147,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                 setIsCartClosing(false);
             }, 300);
         } else {
-            if (cartIconRef.current) {
-                const rect = cartIconRef.current.getBoundingClientRect();
-                setCartPosition({
-                    top: rect.bottom + window.scrollY,
-                    left: rect.left + window.scrollX,
-                });
-            }
             setShowCart(true);
         }
     };
@@ -201,16 +194,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             setUser(JSON.parse(storedUser));
         }
     }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
-                if (showLogin) toggleLogin();
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showLogin, toggleLogin]);
 
     useEffect(() => {
         if ((showLogin || isClosing) && userIconRef.current) {
