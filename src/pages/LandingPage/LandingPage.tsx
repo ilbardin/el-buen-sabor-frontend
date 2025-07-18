@@ -238,7 +238,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                             className={styles.icon}
                             onClick={toggleCart}
                             ref={cartIconRef}
-                            style={{cursor: 'pointer'}}
                         >
                         <FaShoppingCart/>
                         </span>
