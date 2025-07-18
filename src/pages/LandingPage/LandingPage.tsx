@@ -176,10 +176,9 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     useEffect(() => {
         if (showCart && cartIconRef.current) {
             const rect = cartIconRef.current.getBoundingClientRect();
-            setCartPosition({
-                top: rect.bottom + window.scrollY - 12,
-                left: rect.right + window.scrollX - 360
-            });
+            const top = rect.bottom + window.scrollY - 12;
+            const left = rect.right + window.scrollX - 360;
+            setCartPosition({top, left});
         }
     }, [showCart]);
 
