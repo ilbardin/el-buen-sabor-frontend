@@ -174,12 +174,31 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     });
 
     useEffect(() => {
-        if (showCart && cartIconRef.current) {
-            const rect = cartIconRef.current.getBoundingClientRect();
-            const top = rect.bottom + window.scrollY - 12;
-            const left = rect.right + window.scrollX - 360;
-            setCartPosition({top, left});
-        }
+        const updateCartPosition = () => {
+            if (showCart && cartIconRef.current) {
+                const rect = cartIconRef.current.getBoundingClientRect();
+                const isMobile = window.innerWidth <= 768;
+
+                if (isMobile) {
+                    setCartPosition({
+                        top: rect.bottom + window.scrollY - 12,
+                        left: window.innerWidth / 2 - 150,
+                    });
+                } else {
+                    const top = rect.bottom + window.scrollY - 12;
+                    const left = rect.right + window.scrollX - 370;
+                    setCartPosition({ top, left });
+                }
+            }
+        };
+
+        updateCartPosition();
+
+        window.addEventListener('resize', updateCartPosition);
+
+        return () => {
+            window.removeEventListener('resize', updateCartPosition);
+        };
     }, [showCart]);
 
     // Seteo el estado de isLoggingOut al montar este componente

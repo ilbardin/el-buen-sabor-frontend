@@ -1,6 +1,6 @@
 .carritoCard {
     position: absolute;
-    background: transparent;
+    background: white;
     padding: 0;
     margin: 0;
     border: none;
@@ -8,6 +8,8 @@
     animation-duration: 0.3s;
     animation-fill-mode: forwards;
     opacity: 0;
+    width: 320px;
+    max-width: 60vw;
 }
 
 .fadeIn {
