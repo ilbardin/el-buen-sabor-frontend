@@ -1,0 +1,41 @@
+.selectorContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  background-color: var(--color-principal);
+  height: 50px;
+  padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.botonesWrapper {
+  background-color: var(--color-primario);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.botonSelector {
+  display: flex;
+  background-color: transparent;
+  color: white;
+  padding: 0rem;
+  border: none;
+  border-radius: 0px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  border-left: #eee solid 3px;
+}
+
+.botonSelector:hover {
+  text-decoration: underline;
+}

@@ -14,6 +14,7 @@ import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
 import { StockABM } from './pages/StockABM/StockABM.tsx';
+import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -69,6 +70,14 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <StockABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.GESTION_EMPRESA}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <GestionEmpresa/>
                         </ProtectedRoute>
                     }
                 />

@@ -6,4 +6,5 @@ export const ROUTES = {
     PRODUCTOS: '/productos',
     LOGIN: '/login',
     STOCK_ABM: '/stock-abm',
+    GESTION_EMPRESA: '/gestion-empresa',
 };
