@@ -5,7 +5,7 @@ import { IngredientesABM } from "../IngredientesABM/IngredientesABM";
 import styles from "./GestionEmpresa.module.css";
 
 export default function GestionEmpresa() {
-  const [componenteActivo, setComponenteActivo] = useState("inicio");
+  const [componenteActivo, setComponenteActivo] = useState("manofacturados");
 
   return (
     <div>
