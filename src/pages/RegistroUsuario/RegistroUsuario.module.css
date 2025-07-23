@@ -22,6 +22,7 @@
     color: #fff;
     border-radius: 10px;
     padding: 30px 40px;
+    margin: 5vh 0;
 }
 
 .wrapper h1 {
@@ -54,18 +55,10 @@ input[type="number"] {
     flex: 1;
 }
 
-.inputBox select {
+.selectWrapper {
+    position: relative;
+    display: inline-block;
     width: 100%;
-    padding: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 40px;
-    font-size: 16px;
-    margin: 5px 0;
-    box-sizing: border-box;
-    background-color: transparent;
-    color: #fff;
-    font-weight: bold;
-    transition: border-color 0.2s;
 }
 
 .inputBox select:focus {
