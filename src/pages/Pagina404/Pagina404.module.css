@@ -1,0 +1,57 @@
+.containerWrapper404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url("public/bg/login-bg.jpg") no-repeat center center;
+    background-size: cover;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.containerWrapper404 h1 {
+    font-size: 2.5rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    margin: 0;
+}
+
+.backButton {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-primario);
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.backButton:hover {
+    background-color: var(--color-secundario);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.containerWrapper404 h1 {
+    animation: fadeIn 1s ease-out;
+}
+
+

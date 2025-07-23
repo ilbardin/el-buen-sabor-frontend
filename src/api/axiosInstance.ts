@@ -1,12 +1,12 @@
 import axios, {type InternalAxiosRequestConfig} from "axios";
 
-const LOGIN_PATH = "/login";
+const UBICACIONES_EXCLUIDAS = ["/login", "/paises", "/provincias", "/localidades", "/registro-usuario"];
 
 const setAuthorizationHeader = (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("jwt");
 
     if (!token) {
-        console.error("NO HAY TOKEN.");
+        console.error("No hay token JWT.");
         return config;
     }
 
@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        if (config.url?.includes(LOGIN_PATH)) {
+        if (UBICACIONES_EXCLUIDAS.some(path => config.url?.includes(path))) {
             return config;
         }
 

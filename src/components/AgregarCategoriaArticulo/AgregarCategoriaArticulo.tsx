@@ -1,9 +1,11 @@
 import {crearCategoriaArticuloInsumo, getCategoriasArticuloInsumo,} from "../../services/ingredientesService.ts";
 import React, {useEffect, useState} from "react";
 import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
-import styles from './AgregarCategoriaArticulo.module.css';
+import styles from "./AgregarCategoriaArticulo.module.css";
 
-export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => {
+export const AgregarCategoriaArticulo = ({onClose}: {
+    onClose: () => void;
+}) => {
     const [nombre, setNombre] = useState("");
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
     const [categorias, setCategorias] = useState<CategoriaArticulo[]>([]);
@@ -30,36 +32,28 @@ export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => 
 
             if (!categoriaObj) {
                 console.error("Categoría no encontrada");
+                await crearCategoriaArticuloInsumo(nombre, null);
                 return;
             }
 
             await crearCategoriaArticuloInsumo(nombre, categoriaObj.id);
             onClose();
         } catch (error) {
-            console.error("Error al guardar el producto:", error);
+            console.error("Error al guardar la Categoria:", error);
         }
     }
 
     return (
-        <div
-            className={styles.divContenedor}
-        >
-            <div
-                style={{
-                    backgroundColor: "white",
-                    padding: "20px",
-                    borderRadius: "8px",
-                    width: "400px",
-                }}
-            >
-                <h2>Nuevo Producto</h2>
+        <div className={styles.divContenedor}>
+            <div className={styles.formulario}>
+                <h2>Nueva Categoria</h2>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <input
                             list="lista-categorias"
                             value={categoriaSeleccionada}
                             onChange={(e) => setCategoriaSeleccionada(e.target.value)}
-                            placeholder="Selecciona una categoría"
+                            placeholder="Selecciona una categoría padre"
                         />
                         <datalist id="lista-categorias">
                             {categorias.map((cat, index) => (
@@ -70,19 +64,28 @@ export const AgregarCategoriaArticulo = ({onClose}: { onClose: () => void }) => 
                         <input
                             type="text"
                             name="nombre"
-                            placeholder="Nombre del producto"
+                            placeholder="Nombre de la nueva Categoria"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
                         />
                     </div>
-                    <div style={{marginTop: "20px"}}>
-                        <button type="submit">Guardar</button>
-                        <button type="button" onClick={onClose}>
+                    <div className={styles.botones}>
+                        <button
+                            type="button"
+                            className={`${styles.boton} ${styles.botonCancelar}`}
+                            onClick={onClose}
+                        >
                             Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            className={`${styles.boton} ${styles.botonGuardar}`}
+                        >
+                            Guardar
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     );
-}
+};

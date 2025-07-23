@@ -94,6 +94,21 @@ export async function crearArticuloManufacturado(articulo: ArticuloManufacturado
     }
 }
 
+export async function editarArticuloManufacturado(articulo: ArticuloManufacturadoCreacion): Promise<void> {
+    try {
+        const response = await axiosInstance.post(API_URL, articulo);
+
+        if (handleInvalidResponse(response, "Error al editar artículo manufacturado.")) {
+            return;
+        }
+
+        await showAlert("Éxito", "success", "Artículo manufacturado creado correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 export async function eliminarArticuloManufacturado(id: number): Promise<void> {
     if (id === undefined) {
         console.error("El ID no puede ser undefined.");
@@ -128,5 +143,34 @@ export async function savePedido(pedido: PedidoRequest) {
     } catch (error) {
         console.error("Error al guardar el pedido:", error);
         throw error;
+    }
+}
+
+
+export async function subirImagen(file: File): Promise<string | null> {
+    const formData = new FormData();
+    formData.append("imagen", file);
+
+    try {
+        const response = await axiosInstance.post(
+            "http://localhost:8080/uploads/images",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        if (handleInvalidResponse(response, "Error al subir la imagen.")) {
+            return null;
+        }
+
+        const fileName = response.data.denominacion;
+        console.log("Imagen subida exitosamente:", fileName);
+        return fileName;
+    } catch (error) {
+        console.error("Error al subir la imagen:", error);
+        return null;
     }
 }

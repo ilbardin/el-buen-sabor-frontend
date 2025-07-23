@@ -1,8 +1,12 @@
-import React, {type ReactNode, useState} from 'react';
+import React, {type ReactNode, useCallback, useEffect, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
 import {showAlert} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
+import {useAuth} from "../auth/useAuth.ts";
+import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
+
+const CHECK_INTERVAL = 60000;
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
@@ -33,13 +37,59 @@ export interface CartContextProps {
 }
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-    const [cart, setCart] = useState<CartItem[]>(() => {
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
+    const {usuario} = useAuth();
+    const userId = usuario?.email || 'guest';
+
+    const [cart, setCart] = useState<CartItem[]>([]);
+
+    const clearCart = useCallback(() => {
+        setCart([]);
+        localStorage.removeItem(`cart_${userId}`);
+        localStorage.removeItem(`cart_${userId}_expires`);
+    }, [userId]);
+
+    const loadCart = useCallback(() => {
+        const savedCart = localStorage.getItem(`cart_${userId}`);
+        const expiration = localStorage.getItem(`cart_${userId}_expires`);
+
+        if (savedCart && expiration) {
+            const isExpired = Date.now() > parseInt(expiration, 10);
+            
+            if (!isExpired) {
+                return JSON.parse(savedCart);
+            }
+            
+            clearCart();
+        }
+
+        return [];
+    }, [clearCart, userId]);
+
+    useEffect(() => {
+        const initialCart = loadCart();
+        setCart(initialCart);
+    }, [loadCart]);
+
+    useEffect(() => {
+        if (cart.length === 0) {
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const expiration = localStorage.getItem(`cart_${userId}_expires`);
+
+            if (expiration && Date.now() > parseInt(expiration, 10)) {
+                clearCart();
+                clearInterval(interval);
+            }
+        }, CHECK_INTERVAL);
+
+        return () => clearInterval(interval);
+    }, [cart, clearCart, userId]);
 
     const saveCartToLocalStorage = (updatedCart: CartItem[]) => {
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+        localStorage.setItem(`cart_${userId}_expires`, (Date.now() + CARRITO_EXPIRATION_TIME).toString());
     };
 
     const addToCart = (producto: ArticuloManufacturado) => {
@@ -97,11 +147,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         });
     };
 
-    const clearCart = () => {
-        setCart([]);
-        localStorage.removeItem('cart');
-    };
-
     const saveCart = async () => {
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
         const gastosEnvio = 500;
@@ -145,7 +190,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
                 decreaseQuantity,
                 clearCart,
                 saveCart,
-                isItemInCart}}>
+                isItemInCart
+            }}>
             {children}
         </CartContext.Provider>
     );

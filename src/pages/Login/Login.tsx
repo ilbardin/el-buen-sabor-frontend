@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {FaLock, FaUser} from 'react-icons/fa';
 import type {UserData} from "../../models/usuario/usuario.ts";
 import {LOGIN_URL} from "../../constants/constants.ts";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import Swal from "sweetalert2";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
@@ -11,6 +11,7 @@ import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
 import {ROUTES} from "../../constants/routes.ts";
 import type {AxiosError} from "axios";
+import {UserRole} from "../../models/usuario/userRoles.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -53,10 +54,24 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
     };
 
     const handleSuccess = (data: UserData) => {
-        onLoginSuccess(data);
         Swal.close();
+        onLoginSuccess(data);
 
-        navigate(ROUTES.HOME);
+        const navigateByRole = (role: UserRole) => {
+            switch (role) {
+                case UserRole.Admin:
+                    navigate(ROUTES.HOME);
+                    break;
+                case UserRole.Cliente:
+                    navigate(ROUTES.PRODUCTOS);
+                    break;
+                default:
+                    console.warn(`Rol sin programar: ${role}`);
+                    navigate(ROUTES.PRODUCTOS);
+            }
+        };
+
+        navigateByRole(data.user.rol);
     };
 
     const handleLoginSubmit = async (e: React.FormEvent) => {
@@ -104,12 +119,9 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
                             </label>
                             <FaLock className={styles.icon}/>
                         </div>
-                        <div className={styles.forgotPassword}>
-                            <a href="#">¿Olvidaste tu contraseña?</a>
-                        </div>
                         <button type="submit" className={styles.btn}>Iniciar sesión</button>
                         <div className={styles.registerLink}>
-                            <p>¿No tienes cuenta? <a href="#">Regístrate</a></p>
+                            <p>¿No tienes cuenta? <Link to={ROUTES.REGISTRO_USUARIO}>Regístrate</Link></p>
                         </div>
                     </form>
                 </div>
