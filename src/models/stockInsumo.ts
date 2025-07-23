@@ -5,4 +5,5 @@ export interface StockInsumo {
     cantidadMaxima: number;
     cantidadActual: number;
     unidadMedida:   string;
+    categorias:   string[];
 }

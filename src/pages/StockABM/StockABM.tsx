@@ -9,6 +9,7 @@ export const StockABM = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [unidadMedida, setUnidadMedida] = useState("");
+  const [categorias, setCategorias] = useState("");
 
   //! CARGA DE STOCK DE INSUMOS
   const cargarStockInsumo = async () => {
@@ -35,9 +36,18 @@ export const StockABM = () => {
   );
 
   //! FILTRADO POR UNIDAD DE MEDIDA
+  const unidadesUnicas = [...new Set(stockInsumos.map((i) => i.unidadMedida))];
 
   const handleChangeUnidadMedida = (e) => {
     setUnidadMedida(e.target.value);
+  };
+
+  //! FILTRADO POR CATEGORIAS
+  const todasCategorias = stockInsumos.flatMap((i) => i.categorias || []);
+  const categoriasUnicas = [...new Set(todasCategorias)];
+
+  const handleChangeCategorias = (e) => {
+    setCategorias(e.target.value);
   };
 
   return (
@@ -75,9 +85,22 @@ export const StockABM = () => {
           className={styles.filtroSelect}
         >
           <option value="">Todas las Unidades</option>
-          {resultados.map((insumo) => (
-            <option key={insumo.idInsumo} value={insumo.unidadMedida}>
-              {insumo.unidadMedida}
+          {unidadesUnicas.map((unidad, idx) => (
+            <option key={idx} value={unidad}>
+              {unidad}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={categorias}
+          onChange={handleChangeCategorias}
+          className={styles.filtroSelect}
+        >
+          <option value="">Todas las Categorias</option>
+          {categoriasUnicas.map((categoria, idx) => (
+            <option key={idx} value={categoria}>
+              {categoria}
             </option>
           ))}
         </select>
@@ -97,7 +120,8 @@ export const StockABM = () => {
           {resultados
             .filter(
               (insumo) =>
-                insumo.unidadMedida === unidadMedida || unidadMedida === ""
+                (insumo.unidadMedida === unidadMedida || unidadMedida === "") &&
+                (insumo.categorias.includes(categorias) || categorias === "")
             )
             .map((insumo) => (
               <InsumoStock key={insumo.idInsumo} stockInsumo={insumo} />
