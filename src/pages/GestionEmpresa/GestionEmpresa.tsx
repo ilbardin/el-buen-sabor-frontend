@@ -8,18 +8,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserRole } from "../../models/usuario/userRoles";
 import { useAuth } from "../../context/auth/useAuth";
 import { BiSolidLogOut } from "react-icons/bi";
+import type { Empresa } from "../../models/empresa";
 //import styles from "../components/BarraSuperior/BarraSuperior.module.css";
 
 export default function GestionEmpresa() {
   const [componenteActivo, setComponenteActivo] = useState("manofacturados");
   const { logout, setIsLoggingOut, usuario } = useAuth();
-   const navigate = useNavigate();
+  const [ empresas, setEmpresas ] = useState<Empresa[]>([]);
+  const navigate = useNavigate();
 
-     const handleLogout = () => {
-       setIsLoggingOut(true);
-       logout();
-       navigate(ROUTES.LOGIN);
-     };
+  const handleLogout = () => {
+    setIsLoggingOut(true);
+    logout();
+    navigate(ROUTES.LOGIN);
+  };
+
+
+  const cargarEmpresas = async () => {
+    try {
+      const empresas = await getEmpresas();
+    } catch (error) {
+      console.error("Error al cargar las empresas:", error);
+    }
+  }
+
   return (
     <div>
       <nav className={styles.topbar}>
@@ -74,7 +86,21 @@ export default function GestionEmpresa() {
         )}
       </nav>
 
-      
+      <div>
+        <h1 className={styles.titulo}>Gestión de Empresa</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>{/* Aquí irían los módulos de empresa, por ejemplo: */}</tbody>
+        </table>
+      </div>
+
+      <br />
 
       <div>
         {componenteActivo === "manofacturados" && <ProductosABM />}
