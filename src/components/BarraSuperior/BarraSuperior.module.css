@@ -1,89 +1,146 @@
 .topbar {
-    background-color: var(--color-primario);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000;
+  background-color: var(--color-primario);
+  padding: 0.0rem 2rem;
+  padding-bottom: 0rem;
+  height: 54px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
-.topbar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 2rem;
+.nav {
+  text-align: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+  height: 100%;
+  background-color: var(--color-primario);
+}
+nav ul {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.topbar li {
-    display: inline;
+.nav li {
+  position: relative;
+  height: 100%;
 }
 
-.topbar a {
-    text-decoration: none;
-    color: #f4f6f8;
-    font-weight: bold;
-    font-size: 1rem;
+.topbar a,
+.topbar span {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  color: #f4f6f8;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.topbar a:hover {
-    text-decoration: underline;
+.topbar a:hover,
+.topbar span:hover {
+  text-decoration: underline;
+  background-color: #c0392b;
+}
+
+.dropdownToggle {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  cursor: pointer;
+  color: #f4f6f8;
+  font-weight: bold;
+}
+
+.dropdownMenu {
+  display: none;
+  position: absolute;
+  background-color: var(--color-primario);
+  color: black;
+  padding: 0rem 0;
+  z-index: 1001;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  /*top: calc(100% + 16px);*/
+}
+
+.dropdown:hover .dropdownMenu {
+  display: block;
+}
+
+.dropdownMenu li {
+  display: flex;
+  list-style: none;
+  text-decoration: none;
+  background-color: var(--color-primario);
+  align-items: center;
+  text-align: center;
+}
+
+.dropdownMenu li:hover {
+  background-color: #c0392b;
 }
 
 .loginButton {
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 3rem;
-    transition: background-color 0.3s ease;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 3rem;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .loginButton:hover {
-    background-color: #27ae60;
+  background-color: #27ae60;
 }
 
 .logoutButton {
-    background-color: #ffffff;
-    color: var(--color-primario);
-    border: 2px solid var(--color-primario);
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-right: 3rem;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: #ffffff;
+  color: var(--color-primario);
+  border: 2px solid var(--color-primario);
+padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 3rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*margin-bottom: 1rem;*/
+  height: 44px;
 }
 
 .logoutButton:hover {
-    background-color: var(--color-terciario);
-    color: #ffffff;
+  background-color: var(--color-terciario);
+  color: #ffffff;
 }
 
 .pageContent {
-    padding: 4rem 1rem 1rem;
-}
-
-.userInfo {
-    color: #f4f6f8;
-    font-size: 1rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0;
-    white-space: nowrap;
+  padding-top: 5rem;
 }

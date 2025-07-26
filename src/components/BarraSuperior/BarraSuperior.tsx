@@ -4,8 +4,8 @@ import { UserRole } from "../../models/usuario/userRoles.ts";
 import { ROUTES } from "../../constants/routes.ts";
 import styles from "./BarraSuperior.module.css";
 import { BiSolidLogOut } from "react-icons/bi";
+import { SlArrowDown } from "react-icons/sl";
 import GestionEmpresa from "../../pages/GestionEmpresa/GestionEmpresa.tsx";
-
 
 export const BarraSuperior = () => {
   const { logout, setIsLoggingOut, usuario } = useAuth();
@@ -17,9 +17,9 @@ export const BarraSuperior = () => {
     navigate(ROUTES.LOGIN);
   };
 
-    if (location.pathname === "/gestion-empresa") {
-    return ( 
-        <div>
+  if (location.pathname === "/gestion-empresa") {
+    return (
+      <div>
         <GestionEmpresa />
       </div>
     );
@@ -27,23 +27,32 @@ export const BarraSuperior = () => {
   return (
     <div>
       <nav className={styles.topbar}>
-        <ul>
+        <ul className={styles.nav}>
           <li>
             <Link to={ROUTES.HOME}>Home</Link>
           </li>
-          {(usuario?.rol === UserRole.Admin ||
-            usuario?.rol === UserRole.Cliente) && (
-            <>
-              <li>
-                <Link to={ROUTES.PRODUCTOS}>Productos</Link>
-              </li>
 
+          <li>
+            <Link to={ROUTES.PRODUCTOS}>Productos</Link>
+          </li>
+
+          <li className={styles.dropdown}>
+            <Link className={styles.dropdownToggle} to={ROUTES.GESTION_EMPRESA}>
+               Gestion de Empresa   
+              <SlArrowDown style={{ marginLeft: 10 }} />
+            </Link>
+            <ul className={styles.dropdownMenu}>
               <li>
-                <Link to={ROUTES.GESTION_EMPRESA}>Gestion de Empresa</Link>
+                <Link to={ROUTES.PRODUCTOS_ABM}>Productos Manofacturados</Link>
               </li>
-              
-            </>
-          )}
+              <li>
+                <Link to={ROUTES.INSUMOS_ABM}>Productos Insumos</Link>
+              </li>
+              <li>
+                <Link to={ROUTES.PROMOCIONES}>Promociones</Link>
+              </li>
+            </ul>
+          </li>
         </ul>
         {usuario && (
           <>
