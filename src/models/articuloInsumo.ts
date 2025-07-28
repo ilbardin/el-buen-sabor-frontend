@@ -8,6 +8,7 @@ export interface ArticuloInsumo {
     precioVenta: number;
     esParaElaborar: boolean;
     categoria: string;
+    nombreUnidadMedida: string;
     imagenInsumo: {
         id: number;
         denominacion: string;

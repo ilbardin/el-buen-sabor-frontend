@@ -435,7 +435,7 @@ export default function FormularioArticulosManufacturados({
                             className={styles.sugerenciaItem}
                             onClick={() => {
                               setInsumoSeleccionado(ins.denominacion);
-                              setUnidadMedida(ins.unidadMedida.denominacion);
+                              setUnidadMedida(ins.nombreUnidadMedida);
                               setMostrarSugerencias(false);
                             }}
                           >
@@ -485,7 +485,7 @@ export default function FormularioArticulosManufacturados({
                         {d.insumo.denominacion}
                       </span>
                       <span className={styles.insumoCantidad}>
-                        {d.cantidad} {d.insumo.unidadMedida.denominacion}
+                        {d.cantidad} {d.insumo.nombreUnidadMedida}
                       </span>
                       <button
                         type="button"
