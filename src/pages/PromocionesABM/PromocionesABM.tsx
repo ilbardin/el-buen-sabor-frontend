@@ -9,7 +9,6 @@ export const PromocionesABM = () => {
   const [promociones, setPromociones] = useState<Promocion[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-  const [categoria, setCategoria] = useState("");
 
   //! CARGA DE PROMOCIONES
   const cargarPromociones = async () => {
@@ -35,15 +34,6 @@ export const PromocionesABM = () => {
     promo.denominacion.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  //! CATEGORÍAS ÚNICAS (si aplica)
-  const categoriasUnicas = [
-    ...new Set(promociones.map((p) => p.denominacion).filter(Boolean)),
-  ];
-
-  const handleChangeCategoria = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategoria(e.target.value);
-  };
-
   return (
     <div className={styles.container}>
       {mostrarModal && (
@@ -67,18 +57,6 @@ export const PromocionesABM = () => {
           value={busqueda}
         />
 
-        <select
-          value={categoria}
-          onChange={handleChangeCategoria}
-          className={styles.filtroSelect}
-        >
-          <option value="">Todas las Categorías</option>
-          {categoriasUnicas.map((cat, idx) => (
-            <option key={idx} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
       </div>
 
       <table className={styles.tabla}>
@@ -86,19 +64,16 @@ export const PromocionesABM = () => {
           <tr>
             <th>ID</th>
             <th>Denominación</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>Categoría</th>
+            <th>Descuento</th>
+            <th>Fecha Desde</th>
+            <th>Fecha Hasta</th>
+            <th>Botones</th>
           </tr>
         </thead>
         <tbody>
           {resultados
-            .filter(
-              (promo) =>
-                (promo.denominacion === categoria || categoria === "")
-            )
             .map((promo) => (
-              <PromocionItem key={promo.id} />
+              <PromocionItem key={promo.id} promocion={promo} />
             ))}
         </tbody>
       </table>
