@@ -37,7 +37,7 @@ export const PromocionesABM = () => {
 
   //! CATEGORÍAS ÚNICAS (si aplica)
   const categoriasUnicas = [
-    ...new Set(promociones.map((p) => p.categoria?.nombre).filter(Boolean)),
+    ...new Set(promociones.map((p) => p.denominacion).filter(Boolean)),
   ];
 
   const handleChangeCategoria = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,12 +47,7 @@ export const PromocionesABM = () => {
   return (
     <div className={styles.container}>
       {mostrarModal && (
-        <FormularioPromocion
-          onClose={async () => {
-            setMostrarModal(false);
-            await cargarPromociones();
-          }}
-        />
+        <FormularioPromocion/>
       )}
 
       <h1 className={styles.titulo}>Gestión de Promociones</h1>
@@ -100,10 +95,10 @@ export const PromocionesABM = () => {
           {resultados
             .filter(
               (promo) =>
-                (promo.categoria?.nombre === categoria || categoria === "")
+                (promo.denominacion === categoria || categoria === "")
             )
             .map((promo) => (
-              <PromocionItem key={promo.id} promocion={promo} />
+              <PromocionItem key={promo.id} />
             ))}
         </tbody>
       </table>

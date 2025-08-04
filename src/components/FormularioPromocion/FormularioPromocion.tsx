@@ -1,11 +1,9 @@
-import type { Promocion } from "../../models/promocion";
-
-export function FormularioPromocion(prop: { promocion: Promocion }) {
+export function FormularioPromocion() {
 
 
   return (
     <div>
-      <h1>hola item Promociones</h1>
+      <h1>Hola Formulario Promociones</h1>
     </div>
   );
 }
