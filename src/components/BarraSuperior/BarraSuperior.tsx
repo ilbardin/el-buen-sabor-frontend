@@ -38,7 +38,7 @@ export const BarraSuperior = () => {
 
           <li className={styles.dropdown}>
             <Link className={styles.dropdownToggle} to={ROUTES.GESTION_EMPRESA}>
-               Gestion de Empresa   
+              Gestion de Empresa
               <SlArrowDown style={{ marginLeft: 10 }} />
             </Link>
             <ul className={styles.dropdownMenu}>
@@ -49,7 +49,25 @@ export const BarraSuperior = () => {
                 <Link to={ROUTES.INSUMOS_ABM}>Productos Insumos</Link>
               </li>
               <li>
-                <Link to={ROUTES.PROMOCIONES}>Promociones</Link>
+                <Link to={ROUTES.PROMOCIONES_ABM}>Promociones</Link>
+              </li>
+            </ul>
+          </li>
+
+          <li className={styles.dropdown}>
+            <Link className={styles.dropdownToggle} to={ROUTES.GESTION_EMPRESA}>
+              Gestion de Empresa
+              <SlArrowDown style={{ marginLeft: 10 }} />
+            </Link>
+            <ul className={styles.dropdownMenu}>
+              <li>
+                <Link to={ROUTES.PRODUCTOS_ABM}>Productos Manofacturados</Link>
+              </li>
+              <li>
+                <Link to={ROUTES.INSUMOS_ABM}>Productos Insumos</Link>
+              </li>
+              <li>
+                <Link to={ROUTES.PROMOCIONES_ABM}>Promociones</Link>
               </li>
             </ul>
           </li>
