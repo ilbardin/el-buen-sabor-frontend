@@ -1,6 +1,11 @@
 import type { Promocion } from "../../models/promocion";
+import { eliminarPromocion } from "../../services/promocionService";
 
 export function PromocionItem( props: { promocion: Promocion } ) {
+
+  const deletePromocion = async (id: number) => {
+    await eliminarPromocion(id);
+  }
   return (
     <>
       <tr>
@@ -10,8 +15,15 @@ export function PromocionItem( props: { promocion: Promocion } ) {
       <td>{props.promocion.fechaDesde}</td>
       <td>{props.promocion.fechaHasta}</td>
       <td>
-        <button>Modificar</button>
-        <button>Eliminar</button>
+        <button
+        >
+          Modificar
+        </button>
+        <button onClick={() => {
+            if (props.promocion.id !== undefined) {
+              deletePromocion(props.promocion.id);
+            }
+          }}>Eliminar</button>
       </td>
       
     </tr>

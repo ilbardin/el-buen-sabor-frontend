@@ -45,6 +45,10 @@ export function FormularioPromocion({ onClose }: { onClose: () => void }) {
     }
   };
 
+  const deletePromocion = () => {
+    
+  }
+
   return (
     <div className={styles.divContenedor}>
       <div className={styles.formulario}>
