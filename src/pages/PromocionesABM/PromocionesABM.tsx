@@ -37,7 +37,9 @@ export const PromocionesABM = () => {
   return (
     <div className={styles.container}>
       {mostrarModal && (
-        <FormularioPromocion/>
+        <FormularioPromocion onClose={() => {
+            setMostrarModal(false);
+          }}/>
       )}
 
       <h1 className={styles.titulo}>Gestión de Promociones</h1>
