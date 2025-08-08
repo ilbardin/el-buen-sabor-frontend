@@ -1,0 +1,58 @@
+.itemDetalle {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* espacio horizontal entre campos */
+  margin-bottom: 12px;
+  flex-wrap: nowrap; /* para que no se vayan a la siguiente línea */
+}
+
+.itemDetalle label {
+  min-width: 70px;
+  color: var(--color-terciario);
+  font-weight: 500;
+  font-size: 14px;
+  /* Para que el label quede al lado del input y no encima: */
+  flex-shrink: 0;
+}
+
+.inputCantidad {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fdfdfd;
+  color: var(--color-terciario);
+  font-family: "Poppins", sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* para centrar el número */
+
+  /* Anchos: ajustalos según convenga */
+  min-width: 7px; /* para cantidad */
+  flex-grow: 1;    /* para que tome el espacio restante */
+  max-width: 50px; /* máximo ancho razonable */
+}
+
+.inputCantidad:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 3px rgba(231, 76, 60, 0.4);
+}
+
+.botonAgregar {
+  margin-top: 12px;
+  align-self: flex-start;
+  background-color: var(--color-primario);
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botonAgregar:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}

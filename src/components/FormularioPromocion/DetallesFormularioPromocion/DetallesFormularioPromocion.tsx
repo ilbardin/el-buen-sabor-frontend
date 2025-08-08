@@ -11,7 +11,10 @@ interface Props {
   setDetalle: React.Dispatch<React.SetStateAction<PromocionDetalle[]>>;
 }
 
-export default function DetallesFormularioPromocion({ detalle, setDetalle }: Props) {
+export default function DetallesFormularioPromocion({
+  detalle,
+  setDetalle,
+}: Props) {
   const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
   const [manufacturados, setManufacturados] = useState<ArticuloManufacturado[]>(
     []
@@ -68,11 +71,17 @@ export default function DetallesFormularioPromocion({ detalle, setDetalle }: Pro
 
   return (
     <div>
-      <h2>Detalles de la Promoción</h2>
+      <button
+        type="button"
+        className={styles.botonAgregar}
+        onClick={addNewInsumo}
+      >
+        + Agregar artículo
+      </button>
       {detalle.map((item, index) => (
         <div key={index} className={styles.itemDetalle}>
-          <label>Cantidad:</label>
           <input
+            className={styles.inputCantidad}
             type="number"
             min="1"
             value={item.cantidad}
@@ -82,6 +91,7 @@ export default function DetallesFormularioPromocion({ detalle, setDetalle }: Pro
           />
 
           <select
+            className={styles.inputInsumo}
             onChange={(e) =>
               handleChangeDetalle(index, "articuloInsumo", e.target.value)
             }
@@ -96,6 +106,7 @@ export default function DetallesFormularioPromocion({ detalle, setDetalle }: Pro
           </select>
 
           <select
+            className={styles.inputManufacturado}
             onChange={(e) =>
               handleChangeDetalle(
                 index,
@@ -116,13 +127,6 @@ export default function DetallesFormularioPromocion({ detalle, setDetalle }: Pro
       ))}
 
       
-      <button
-        type="button"
-        className={styles.botonAgregar}
-        onClick={addNewInsumo}
-      >
-        + Agregar artículo
-      </button>
     </div>
   );
 }

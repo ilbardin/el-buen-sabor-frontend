@@ -1,0 +1,126 @@
+.divContenedor {
+  margin-top: 2.5%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(44, 62, 80, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.formulario {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  width: 700px;
+  max-width: 95%;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", sans-serif;
+
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  color: var(--color-terciario);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.formBody {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.leftColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.rightColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  color: var(--color-terciario);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fdfdfd;
+  box-sizing: border-box;
+  color: var(--color-terciario);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 3px rgba(231, 76, 60, 0.4);
+}
+
+.botones {
+  margin-top: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.boton {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.botonGuardar {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.botonGuardar:hover {
+  background-color: #c0392b;
+  transform: scale(1.03);
+}
+
+.botonCancelar {
+  background-color: var(--color-secundario);
+  color: var(--color-terciario);
+}
+
+.botonCancelar:hover {
+  background-color: #d4ac0d;
+  transform: scale(1.03);
+}
+
+.error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
