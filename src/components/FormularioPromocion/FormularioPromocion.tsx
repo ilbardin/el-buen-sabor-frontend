@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./FormularioPromocion.module.css";
 import type { Promocion, PromocionDetalle } from "../../models/promocion";
-import { crearPromocion } from "../../services/promocionService";
+import {
+  crearPromocion,
+  editarPromocion,
+} from "../../services/promocionService";
 import DetallesFormularioPromocion from "./DetallesFormularioPromocion/DetallesFormularioPromocion";
 
-export function FormularioPromocion({ onClose }: { onClose: () => void }) {
+export function FormularioPromocion({
+  onClose,
+  promocionAEditar,
+}: {
+  onClose: () => void;
+  promocionAEditar?: Promocion | null; 
+}) {
   const [denominacion, setDenominacion] = useState("");
   const [fechaDesde, setFechaDesde] = useState("");
   const [fechaHasta, setFechaHasta] = useState("");
@@ -12,6 +21,17 @@ export function FormularioPromocion({ onClose }: { onClose: () => void }) {
   const [detalle, setDetalle] = useState<PromocionDetalle[]>([]);
 
   const [formularioValidado, setFormularioValidado] = useState(false);
+
+
+  useEffect(() => {
+    if (promocionAEditar) {
+      setDenominacion(promocionAEditar.denominacion);
+      setFechaDesde(promocionAEditar.fechaDesde);
+      setFechaHasta(promocionAEditar.fechaHasta);
+      setDescuento(promocionAEditar.descuento * 100);
+      setDetalle(promocionAEditar.detalle || []);
+    }
+  }, [promocionAEditar]);
 
   //! MANEJO DEL ENVÍO DEL FORMULARIO
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +49,7 @@ export function FormularioPromocion({ onClose }: { onClose: () => void }) {
     }
 
     const promocion: Promocion = {
+      id: promocionAEditar?.id,
       denominacion,
       fechaDesde,
       fechaHasta,
@@ -37,17 +58,21 @@ export function FormularioPromocion({ onClose }: { onClose: () => void }) {
     };
 
     try {
-      console.log("Creando promoción:", promocion);
-      await crearPromocion(promocion);
-      onClose();
+      if (promocionAEditar) {
+        console.log("Editando promoción:", promocion);
+        await editarPromocion(promocion);
+        onClose();
+        return;
+      } else {
+        console.log("Creando promoción:", promocion);
+        await crearPromocion(promocion);
+        onClose();
+        return;
+      }
     } catch (error) {
       console.error("Error al crear promoción:", error);
     }
   };
-
-  const deletePromocion = () => {
-    
-  }
 
   return (
     <div className={styles.divContenedor}>

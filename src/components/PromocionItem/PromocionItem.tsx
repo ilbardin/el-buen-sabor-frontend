@@ -1,11 +1,12 @@
 import type { Promocion } from "../../models/promocion";
 import { eliminarPromocion } from "../../services/promocionService";
 
-export function PromocionItem( props: { promocion: Promocion } ) {
+export function PromocionItem( props: { promocion: Promocion, onEditar: (promo: Promocion) => void } ) {
 
   const deletePromocion = async (id: number) => {
     await eliminarPromocion(id);
   }
+
   return (
     <>
       <tr>
@@ -16,6 +17,9 @@ export function PromocionItem( props: { promocion: Promocion } ) {
       <td>{props.promocion.fechaHasta}</td>
       <td>
         <button
+          onClick={() => {
+            props.onEditar(props.promocion);
+          }}
         >
           Modificar
         </button>

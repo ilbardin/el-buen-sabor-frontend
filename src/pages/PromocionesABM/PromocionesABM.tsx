@@ -10,6 +10,10 @@ export const PromocionesABM = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
 
+  const [promocionAEditar, setPromocionAEditar] = useState<Promocion | null>(
+    null
+  );
+
   //! CARGA DE PROMOCIONES
   const cargarPromociones = async () => {
     try {
@@ -37,16 +41,18 @@ export const PromocionesABM = () => {
   return (
     <div className={styles.container}>
       {mostrarModal && (
-        <FormularioPromocion onClose={() => {
+        <FormularioPromocion
+          onClose={() => {
             setMostrarModal(false);
-          }}/>
+            setPromocionAEditar(null);
+            void cargarPromociones();
+          }}
+          promocionAEditar={promocionAEditar} //? revisar
+        />
       )}
 
       <h1 className={styles.titulo}>Gestión de Promociones</h1>
-      <button
-        className={styles.boton}
-        onClick={() => setMostrarModal(true)}
-      >
+      <button className={styles.boton} onClick={() => {setMostrarModal(true); setPromocionAEditar(null);}}>
         Cargar Promoción
       </button>
 
@@ -58,7 +64,6 @@ export const PromocionesABM = () => {
           className={styles.filtroInput}
           value={busqueda}
         />
-
       </div>
 
       <table className={styles.tabla}>
@@ -73,10 +78,9 @@ export const PromocionesABM = () => {
           </tr>
         </thead>
         <tbody>
-          {resultados
-            .map((promo) => (
-              <PromocionItem key={promo.id} promocion={promo} />
-            ))}
+          {resultados.map((promo) => (
+            <PromocionItem key={promo.id} promocion={promo} onEditar={(promo) => {setPromocionAEditar(promo); setMostrarModal(true)}}/>
+          ))}
         </tbody>
       </table>
     </div>
