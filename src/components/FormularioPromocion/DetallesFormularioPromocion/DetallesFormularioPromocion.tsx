@@ -19,6 +19,14 @@ export default function DetallesFormularioPromocion({
   const [manufacturados, setManufacturados] = useState<ArticuloManufacturado[]>(
     []
   );
+  const [cantidad, setCantidad] = useState<number>(1);
+  const [insumoSeleccionado, setInsumoSeleccionado] = useState<string>("");
+  const [manufacturadoSeleccionado, setManufacturadoSeleccionado] =
+    useState<string>("");
+
+  const [tipoSeleccionado, setTipoSeleccionado] = useState<
+    "insumo" | "manufacturado"
+  >("insumo");
 
   useEffect(() => {
     void cargarArticulos();
@@ -49,84 +57,124 @@ export default function DetallesFormularioPromocion({
   };
 
   //! MANEJO DE CAMBIOS EN EL DETALLE
-  const handleChangeDetalle = (
-    index: number,
-    campo: "cantidad" | "articuloInsumo" | "articuloManufacturado",
-    valor: unknown
-  ) => {
-    const nuevosDetalles = [...detalle];
-    if (campo === "cantidad") {
-      nuevosDetalles[index].cantidad = Number(valor);
+  const handleAgregarAlDetalle = () => {
+    if (tipoSeleccionado === "insumo") {
+      const insumo = insumos.find((i) => i.id === Number(insumoSeleccionado));
+      if (!insumo) return alert("Selecciona un insumo válido");
+
+      setDetalle([
+        ...detalle,
+        {
+          cantidad,
+          articuloInsumo: { id: insumo.id ?? 0 },
+          articuloManufacturado: null,
+        },
+      ]);
+      setInsumoSeleccionado("");
     } else {
-      nuevosDetalles[index].articuloInsumo = null;
-      nuevosDetalles[index].articuloManufacturado = null;
-      if (campo === "articuloInsumo") {
-        nuevosDetalles[index].articuloInsumo = { id: Number(valor) };
-      } else {
-        nuevosDetalles[index].articuloManufacturado = { id: Number(valor) };
-      }
+      const manufacturado = manufacturados.find(
+        (m) => m.id === Number(manufacturadoSeleccionado)
+      );
+      if (!manufacturado) return alert("Selecciona un manufacturado válido");
+
+      setDetalle([
+        ...detalle,
+        {
+          cantidad,
+          articuloInsumo: null,
+          articuloManufacturado: {
+            id: manufacturado.id ?? 0,
+          },
+        },
+      ]);
+      setManufacturadoSeleccionado("");
     }
-    setDetalle(nuevosDetalles);
+
+    setCantidad(1);
+    console.log(detalle.map((d) => console.log(d)));
   };
 
   return (
     <div>
+
       <button
         type="button"
         className={styles.botonAgregar}
-        onClick={addNewInsumo}
+        onClick={handleAgregarAlDetalle}
       >
-        + Agregar artículo
+        Agregar al detalle
       </button>
-      {detalle.map((item, index) => (
-        <div key={index} className={styles.itemDetalle}>
-          <input
-            className={styles.inputCantidad}
-            type="number"
-            min="1"
-            value={item.cantidad}
-            onChange={(e) =>
-              handleChangeDetalle(index, "cantidad", e.target.value)
-            }
-          />
 
-          <select
-            className={styles.inputInsumo}
-            onChange={(e) =>
-              handleChangeDetalle(index, "articuloInsumo", e.target.value)
-            }
-            value={item.articuloInsumo?.id ?? ""}
-          >
-            <option value="">Insumo</option>
-            {insumos.map((insumo) => (
-              <option key={insumo.id} value={insumo.id}>
-                {insumo.denominacion}
-              </option>
-            ))}
-          </select>
+      <div>
+        <input
+          type="number"
+          min={1}
+          value={cantidad}
+          onChange={(e) => setCantidad(Number(e.target.value))}
+        />
 
-          <select
-            className={styles.inputManufacturado}
-            onChange={(e) =>
-              handleChangeDetalle(
-                index,
-                "articuloManufacturado",
-                e.target.value
-              )
-            }
-            value={item.articuloManufacturado?.id ?? ""}
+        <div>
+          <button
+            type="button"
+            onClick={() => setTipoSeleccionado("insumo")}
+            className={tipoSeleccionado === "insumo" ? styles.botonActivo : ""}
           >
-            <option value="">Manufacturado</option>
-            {manufacturados.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.denominacion}
-              </option>
-            ))}
-          </select>
+            Insumo
+          </button>
+          <button
+            type="button"
+            onClick={() => setTipoSeleccionado("manufacturado")}
+            className={
+              tipoSeleccionado === "manufacturado" ? styles.botonActivo : ""
+            }
+          >
+            Manufacturado
+          </button>
         </div>
-      ))}
-
-      
+        <div>
+          {tipoSeleccionado === "insumo" ? (
+            <select
+              value={insumoSeleccionado}
+              onChange={(e) => setInsumoSeleccionado(e.target.value)}
+            >
+              <option value="">Seleccione un insumo</option>
+              {insumos.map((insumo) => (
+                <option key={insumo.id} value={insumo.id}>
+                  {insumo.denominacion}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <select
+              value={manufacturadoSeleccionado}
+              onChange={(e) => setManufacturadoSeleccionado(e.target.value)}
+            >
+              <option value="">Seleccione un manufacturado</option>
+              {manufacturados.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.denominacion}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
+      <div>
+        <h1>Productos Añadidos</h1>
+        {detalle.map((item, index) => (
+          <div key={index} className={styles.producto}>
+            <span>Cantidad: {item.cantidad}</span>
+            {item.articuloInsumo && (
+              <span>Insumo: {item.articuloInsumo.denominacion}</span>
+            )}
+            {item.articuloManufacturado && (
+              <span>
+                Manufacturado: {item.articuloManufacturado.denominacion}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

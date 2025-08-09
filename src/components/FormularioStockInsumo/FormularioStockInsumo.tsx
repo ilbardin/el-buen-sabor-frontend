@@ -75,7 +75,7 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
               />
               <datalist id="lista-insumos">
                 {insumos.map((insumo) => (
-                  <option key={insumo.idInsumo} value={insumo.denominacion} />
+                  <option key={insumo.id} value={insumo.denominacion} />
                 ))}
               </datalist>
 
