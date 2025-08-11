@@ -71,7 +71,7 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
                             onClick={onSave}
                         >
                             <FaCartPlus size={20}/>
-                            <span className={styles.btnText}>Guardar carrito</span>
+                            <span className={styles.btnText}>Enviar pedido</span>
                         </button>
                         <button
                             className={`${styles.boton} ${styles.btnClear}`}
