@@ -44,18 +44,6 @@ export default function DetallesFormularioPromocion({
     }
   };
 
-  //! AGREGA UN NUEVO INSUMO AL DETALLE PARA RELLENAR (VACIO)
-  const addNewInsumo = () => {
-    setDetalle([
-      ...detalle,
-      {
-        cantidad: 1,
-        articuloInsumo: null,
-        articuloManufacturado: null,
-      },
-    ]);
-  };
-
   //! MANEJO DE CAMBIOS EN EL DETALLE
   const handleAgregarAlDetalle = () => {
     if (tipoSeleccionado === "insumo") {
@@ -94,18 +82,17 @@ export default function DetallesFormularioPromocion({
     console.log(detalle.map((d) => console.log(d)));
   };
 
+  //! ELIMINACIÓN DE UN DETALLE
+  const eliminarDetalle = (index: number) => {
+    const nuevoDetalle = [...detalle];
+    nuevoDetalle.splice(index, 1);
+    setDetalle(nuevoDetalle);
+  };
+
   return (
     <div>
-
-      <button
-        type="button"
-        className={styles.botonAgregar}
-        onClick={handleAgregarAlDetalle}
-      >
-        Agregar al detalle
-      </button>
-
       <div>
+        <label>Cantidad:</label>
         <input
           type="number"
           min={1}
@@ -114,10 +101,19 @@ export default function DetallesFormularioPromocion({
         />
 
         <div>
+          <label> Tipo de producto </label>
           <button
             type="button"
             onClick={() => setTipoSeleccionado("insumo")}
-            className={tipoSeleccionado === "insumo" ? styles.botonActivo : ""}
+            className={
+              tipoSeleccionado === "insumo"
+                ? styles.botonActivo
+                : styles.botonInactivo
+            }
+            style={{
+              borderTopLeftRadius: "6px",
+              borderBottomLeftRadius: "6px",
+            }}
           >
             Insumo
           </button>
@@ -125,12 +121,19 @@ export default function DetallesFormularioPromocion({
             type="button"
             onClick={() => setTipoSeleccionado("manufacturado")}
             className={
-              tipoSeleccionado === "manufacturado" ? styles.botonActivo : ""
+              tipoSeleccionado === "manufacturado"
+                ? styles.botonActivo
+                : styles.botonInactivo
             }
+            style={{
+              borderTopRightRadius: "6px",
+              borderBottomRightRadius: "6px",
+            }}
           >
             Manufacturado
           </button>
         </div>
+        <br />
         <div>
           {tipoSeleccionado === "insumo" ? (
             <select
@@ -159,21 +162,41 @@ export default function DetallesFormularioPromocion({
           )}
         </div>
       </div>
+      <button
+        type="button"
+        className={styles.botonAgregar}
+        onClick={handleAgregarAlDetalle}
+      >
+        Agregar al detalle
+      </button>
       <div>
-        <h1>Productos Añadidos</h1>
-        {detalle.map((item, index) => (
-          <div key={index} className={styles.producto}>
-            <span>Cantidad: {item.cantidad}</span>
-            {item.articuloInsumo && (
-              <span>Insumo: {item.articuloInsumo.denominacion}</span>
-            )}
-            {item.articuloManufacturado && (
-              <span>
-                Manufacturado: {item.articuloManufacturado.denominacion}
-              </span>
-            )}
-          </div>
-        ))}
+        <p>Productos Añadidos</p>
+        <div className={styles.insumoLista}>
+          {detalle.map((item, index) => (
+            <div key={index} className={styles.producto}>
+              {item.articuloInsumo && (
+                <span className={styles.productoNombre}>
+                  {insumos.find((insumo) => insumo.id === item.articuloInsumo?.id)?.denominacion}
+                </span>
+              )}
+              {item.articuloManufacturado && (
+                <span className={styles.productoNombre}>
+                  {manufacturados.find((manofacturado) => manofacturado.id === item.articuloManufacturado?.id)?.denominacion}
+                </span>
+              )}
+
+              <span className={styles.productoCantidad}> cantidad:  {item.cantidad}</span>
+
+              <button
+                type="button"
+                onClick={() => eliminarDetalle(index)}
+                className={`${styles.formArticuloButton} ${styles.formArticuloCancelarInsumo}`}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -114,7 +114,7 @@ export function FormularioPromocion({
               )}
 
               {/* Descuento */}
-              <label>Descuento (ej: 0.25 = 25%):</label>
+              <label>Descuento:</label>
               <input
                 type="number"
                 step="1"
@@ -122,21 +122,24 @@ export function FormularioPromocion({
                 max="100"
                 value={descuento}
                 onChange={(e) => setDescuento(Number(e.target.value))}
+                
               />
               {formularioValidado && descuento === "" && (
                 <p className={styles.error}>Este campo es obligatorio</p>
               )}
             </div>
-              <div className={styles.rightColumn}>
-            {/* Detalles de promoción */}
+            <div className={styles.rightColumn}>
+              {/* Detalles de promoción */}
 
-            <DetallesFormularioPromocion
-              detalle={detalle}
-              setDetalle={setDetalle}
-            />
-            {formularioValidado && detalle.length === 0 && (
-              <p className={styles.error}>Debes agregar al menos un articulo</p>
-            )}
+              <DetallesFormularioPromocion
+                detalle={detalle}
+                setDetalle={setDetalle}
+              />
+              {formularioValidado && detalle.length === 0 && (
+                <p className={styles.error}>
+                  Debes agregar al menos un articulo
+                </p>
+              )}
             </div>
           </div>
 

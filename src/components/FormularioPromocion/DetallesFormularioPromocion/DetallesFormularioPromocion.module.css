@@ -1,9 +1,9 @@
 .itemDetalle {
   display: flex;
   align-items: center;
-  gap: 12px; /* espacio horizontal entre campos */
+  gap: 12px; 
   margin-bottom: 12px;
-  flex-wrap: nowrap; /* para que no se vayan a la siguiente línea */
+
 }
 
 .itemDetalle label {
@@ -11,7 +11,6 @@
   color: var(--color-terciario);
   font-weight: 500;
   font-size: 14px;
-  /* Para que el label quede al lado del input y no encima: */
   flex-shrink: 0;
 }
 
@@ -24,12 +23,11 @@
   color: var(--color-terciario);
   font-family: "Poppins", sans-serif;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  text-align: center; /* para centrar el número */
+  text-align: center; 
 
-  /* Anchos: ajustalos según convenga */
-  min-width: 7px; /* para cantidad */
-  flex-grow: 1;    /* para que tome el espacio restante */
-  max-width: 50px; /* máximo ancho razonable */
+  min-width: 7px;
+  flex-grow: 1;    
+  max-width: 50px; 
 }
 
 .inputCantidad:focus {
@@ -55,4 +53,125 @@
 .botonAgregar:hover {
   background-color: #c0392b;
   transform: scale(1.05);
+}
+
+
+.botonActivo, .botonInactivo {
+  height: auto;
+  width: 50%;
+}
+
+.botonActivo {
+
+  background-color: var(--color-primario);
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botonActivo:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.botonInactivo {
+  background-color: #e0e0e0;
+  color: #555;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botonInactivo:hover {
+  background-color: #d5d5d5;
+  transform: scale(1.05);
+}
+
+
+.formArticuloButton {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.formArticuloButton:hover {
+  background-color: #c0392b;
+}
+
+.formArticuloCancelarInsumo {
+  margin: 0%;
+  padding: 5px 8px;
+  background-color: var(--color-secundario);
+  color: var(--color-terciario);
+}
+
+.formArticuloInsumos ul {
+  padding-left: 20px;
+  color: var(--color-terciario);
+  font-size: 14px;
+}
+
+.formArticuloInsumos h4 {
+  color: var(--color-terciario);
+  margin-top: 20px;
+}
+
+.insumoLista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.insumoProducto {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fdfdfd;
+  font-size: 14px;
+  color: var(--color-terciario);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  align-items: center;
+}
+
+.producto {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fdfdfd;
+  font-size: 14px;
+  color: var(--color-terciario);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  align-items: center;
+}
+
+.productoNombre {
+  font-weight: 500;
+  color: var(--color-terciario);
+  width: 60%;
+  text-align: left;
+}
+
+.productoCantidad {
+  font-weight: 500;
+  color: var(--color-primario);
 }
