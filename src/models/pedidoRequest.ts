@@ -12,3 +12,8 @@ export interface DetallePedido {
     articuloManufacturado?: { id: number };
     articuloInsumo?: { id: number };
 }
+
+export interface PedidoMercadoPago {
+    id: string;
+    init_point: string;
+}
