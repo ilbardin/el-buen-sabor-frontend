@@ -1,21 +1,42 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth/useAuth.ts";
-import { UserRole } from "../../models/usuario/userRoles.ts";
 import { ROUTES } from "../../constants/routes.ts";
 import styles from "./BarraSuperior.module.css";
 import { BiSolidLogOut } from "react-icons/bi";
 import { SlArrowDown } from "react-icons/sl";
 import GestionEmpresa from "../../pages/GestionEmpresa/GestionEmpresa.tsx";
+import { useEffect, useState } from "react";
+import { getSucursal } from "../../services/sucursalService.ts";
+import type { Sucursal } from "../../models/sucursal.ts";
+import { useSucursalStore } from "../Sucursal/SucursalStore.tsx";
 
 export const BarraSuperior = () => {
   const { logout, setIsLoggingOut, usuario } = useAuth();
   const navigate = useNavigate();
+  const idSucursal = useSucursalStore((state) => state.idSucursal);
+  const setIdSucursal = useSucursalStore((state) => state.setIdSucursal);
 
   const handleLogout = () => {
     setIsLoggingOut(true);
     logout();
     navigate(ROUTES.LOGIN);
   };
+
+  const cambioIdSucursal = (id: number) => {
+    setIdSucursal(id);
+    console.log("Sucursal cambiada a ID:", useSucursalStore.getState().idSucursal);
+  }
+
+  const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+
+  useEffect(() => {
+    async function obtenerDatos() {
+      const sucursales = await getSucursal();
+      setSucursales(sucursales);
+    }
+
+    void obtenerDatos();
+  }, [usuario]);
 
   if (location.pathname === "/gestion-empresa") {
     return (
@@ -55,27 +76,45 @@ export const BarraSuperior = () => {
           </li>
 
           <li className={styles.dropdown}>
-            <Link className={styles.dropdownToggle} to={ROUTES.GESTION_EMPRESA}>
-              Gestion de Empresa
+            <li className={styles.dropdownToggle}>
+              Gestion de Sucursales
               <SlArrowDown style={{ marginLeft: 10 }} />
-            </Link>
+            </li>
             <ul className={styles.dropdownMenu}>
               <li>
-                <Link to={ROUTES.PRODUCTOS_ABM}>Productos Manofacturados</Link>
+                <Link to={ROUTES.EMPRESA_ABM}>Empresa</Link>
               </li>
               <li>
-                <Link to={ROUTES.INSUMOS_ABM}>Productos Insumos</Link>
+                <Link to={ROUTES.SUCURSAL_ABM}>Sucursal</Link>
               </li>
               <li>
-                <Link to={ROUTES.PROMOCIONES_ABM}>Promociones</Link>
+                <Link to={ROUTES.STOCK_ABM}>Stock</Link>
               </li>
+            </ul>
+          </li>
+
+          <li className={styles.dropdown}>
+            <li className={styles.dropdownToggle}>
+              Sucursal: {idSucursal}
+              <SlArrowDown style={{ marginLeft: 10 }} />
+            </li>
+            <ul className={styles.dropdownMenu}>
+              {sucursales.map((sucursal) => (
+                <li
+                  onClick={() => cambioIdSucursal(sucursal.id)}
+                  key={sucursal.id}
+                >
+                  {" "}
+                  {sucursal.nombre}
+                </li>
+              ))}
             </ul>
           </li>
         </ul>
         {usuario && (
           <>
             <button className={styles.logoutButton} onClick={handleLogout}>
-              <BiSolidLogOut size={18} style={{ marginRight: 2 }} />
+              <BiSolidLogOut size={24} style={{ marginRight: 2 }} />
               Cerrar sesión
             </button>
           </>

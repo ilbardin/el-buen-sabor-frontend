@@ -1,6 +1,6 @@
 .topbar {
   background-color: var(--color-primario);
-  padding: 0.0rem 2rem;
+  padding: 0rem 2rem;
   padding-bottom: 0rem;
   height: 54px;
   display: flex;
@@ -122,7 +122,7 @@ nav ul {
   background-color: #ffffff;
   color: var(--color-primario);
   border: 2px solid var(--color-primario);
-padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -134,6 +134,7 @@ padding: 0.5rem 1rem;
   justify-content: center;
   /*margin-bottom: 1rem;*/
   height: 44px;
+  width: 200px;
 }
 
 .logoutButton:hover {

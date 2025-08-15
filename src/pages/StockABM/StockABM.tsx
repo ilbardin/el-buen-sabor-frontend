@@ -4,12 +4,15 @@ import type { StockInsumo } from "../../models/stockInsumo.ts";
 import { InsumoStock } from "../../components/InsumoStock/InsumoStock";
 import { getStockInsumos } from "../../services/stockInsumoService.ts";
 import { FormularioStockInsumo } from "../../components/FormularioStockInsumo/FormularioStockInsumo.tsx";
+import { useSucursalStore } from "../../components/Sucursal/SucursalStore.tsx";
+
 export const StockABM = () => {
   const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [unidadMedida, setUnidadMedida] = useState("");
   const [categorias, setCategorias] = useState("");
+  const idSucursal = useSucursalStore(state => state.idSucursal);
 
   //! CARGA DE STOCK DE INSUMOS
   const cargarStockInsumo = async () => {
@@ -23,8 +26,10 @@ export const StockABM = () => {
   };
 
   useEffect(() => {
+    if (idSucursal) {
     void cargarStockInsumo();
-  }, []);
+    }
+  }, [idSucursal]);
 
   //! BUCADOR DE INSUMOS
   const handleChange = (e) => {
