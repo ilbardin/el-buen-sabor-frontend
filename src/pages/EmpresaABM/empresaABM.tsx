@@ -2,7 +2,7 @@ import type { Empresa } from "../../models/empresa";
 import { useState, useEffect } from "react";
 import { getEmpresas } from "../../services/empresaService";
 import { FormularioEmpresa } from "../../components/FormularioEmpresa/formularioEmpresa";
-import { ModuloEmpresa } from "../../components/Empresa/ModuloEmpresa";
+import { ModuloEmpresa } from "../../components/ModuloEmpresa/ModuloEmpresa";
 import styles from "./empresaABM.module.css";
 
 export default function empresaABM() {
@@ -11,10 +11,12 @@ export default function empresaABM() {
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState<
     Empresa | undefined
   >(undefined);
+  const [busqueda, setBusqueda] = useState("");
 
   const fetchData = async () => {
     try {
       const empresas = await getEmpresas();
+
       setEmpresa(empresas);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -22,9 +24,15 @@ export default function empresaABM() {
   };
 
   useEffect(() => {
-    fetchData();
+    void fetchData();
   }, []);
 
+  const handleChange = (e) => {
+    setBusqueda(e.target.value);
+  };
+  const resultados = empresa.filter((empresa) =>
+    empresa.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  );
   return (
     <div>
       {mostrarModal && (
@@ -45,7 +53,15 @@ export default function empresaABM() {
       >
         Cargar Stock
       </button>
-      {empresa.map((empresa) => (
+
+      <input
+        type="text"
+        placeholder="Buscar"
+        onChange={handleChange}
+        className={styles.filtroInput}
+        value={busqueda}
+      />
+      {resultados.map((empresa) => (
         <ModuloEmpresa
           key={empresa.cuil}
           empresa={empresa}

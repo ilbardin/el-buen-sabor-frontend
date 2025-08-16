@@ -3,8 +3,9 @@ export interface Sucursal {
     nombre: string;
     horarioApertura: string;
     horarioCierre: string;
-    id: number;
+    id?: number;
     empresa: Empresa;
+    fechaBaja?: string | null;
 }
 
 export interface Empresa {

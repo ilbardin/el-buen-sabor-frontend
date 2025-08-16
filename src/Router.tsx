@@ -17,7 +17,7 @@ import { StockABM } from './pages/StockABM/StockABM.tsx';
 import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
 import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
-import SucursalABM from './pages/SucursalABM/sucursalABM.tsx';
+import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {

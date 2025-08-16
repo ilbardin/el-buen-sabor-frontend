@@ -33,9 +33,19 @@ export async function getSucursal(): Promise<Sucursal[]> {
 }
 
 
-export async function crearSucursal(stock: Sucursal): Promise<void> {
+export async function crearSucursal(sucursal: Sucursal): Promise<void> {
     try {
-        await axiosInstance.put(API_URL, stock);
+        await axiosInstance.put(API_URL, sucursal);
+        await showAlert("Éxito", "success", "Sucursal creada correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function deleteSucursal(id: number): Promise<void> {
+    try {
+        await axiosInstance.delete(API_URL +"/"+ id);
         await showAlert("Éxito", "success", "Sucursal creada correctamente.");
     } catch (error) {
         console.error("Error:", error);

@@ -31,10 +31,10 @@ export const FormularioEmpresa = ({ onClose, empresa }: { onClose: () => void; e
     const nuevaEmpresa = { cuil, nombre, razonSocial };
 
     if (empresa?.id) {
-      // modo modificar
+      
       await editarEmpresa(empresa.id, nuevaEmpresa);
     } else {
-      // modo crear
+      
       await crearEmpresa(nuevaEmpresa);
     }
 

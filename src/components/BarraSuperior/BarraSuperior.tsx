@@ -101,7 +101,7 @@ export const BarraSuperior = () => {
             <ul className={styles.dropdownMenu}>
               {sucursales.map((sucursal) => (
                 <li
-                  onClick={() => cambioIdSucursal(sucursal.id)}
+                  onClick={() => cambioIdSucursal(sucursal.nombre)}
                   key={sucursal.id}
                 >
                   {" "}
