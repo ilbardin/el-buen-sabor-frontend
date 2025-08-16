@@ -35,7 +35,7 @@ export async function getSucursal(): Promise<Sucursal[]> {
 
 export async function crearSucursal(sucursal: Sucursal): Promise<void> {
     try {
-        await axiosInstance.put(API_URL, sucursal);
+        await axiosInstance.post(API_URL, sucursal);
         await showAlert("Éxito", "success", "Sucursal creada correctamente.");
     } catch (error) {
         console.error("Error:", error);

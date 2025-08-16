@@ -1,3 +1,176 @@
-export function FormularioSucursal(){
-    return <div>FormularioSucursal</div>;
+import React, { useState, useEffect } from "react";
+import { crearSucursal, getSucursal } from "../../services/sucursalService";
+import type { Sucursal } from "../../models/sucursal";
+import styles from "./FormularioSucursal.module.css";
+import type { Empresa } from "../../models/empresa";
+import { getEmpresas } from "../../services/empresaService";
+
+export function FormularioSucursal({
+  onClose,
+  sucursal,
+}: {
+  onClose: () => void;
+  sucursal?: Sucursal;
+}) {
+  const [nombre, setNombre] = useState("");
+  const [horarioApertura, setHorarioApertura] = useState("");
+  const [horarioCierre, setHorarioCierre] = useState("");
+  const [empresa, setEmpresa] = useState(1);
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState<string>("");
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [formularioValidado, setFormularioValidado] = useState(false);
+
+    async function cargarEmpresas() {
+        try {
+          const articulos = await getEmpresas();
+          setEmpresas(articulos);
+        } catch (error) {
+          console.error("Error al cargar los insumos:", error);
+        }
+      }
+
+
+  useEffect(() => {
+    cargarEmpresas();
+    if (sucursal) {
+      setNombre(sucursal.nombre);
+      setHorarioApertura(sucursal.horarioApertura);
+      setHorarioCierre(sucursal.horarioCierre);
+      setEmpresa(sucursal.empresa.id);
+    }
+  }, [sucursal]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setFormularioValidado(true);
+    const empresa = empresas.find(
+      (i) => i.nombre.toLowerCase() === empresaSeleccionada.toLowerCase()
+    );
+
+    if (nombre === "" || horarioApertura === "" || horarioCierre === "") {
+      return;
+    }
+
+    const nuevaSucursal: Sucursal = {
+      nombre,
+      horarioApertura,
+      horarioCierre,
+      empresa,
+    };
+
+    if (sucursal?.id) {
+        console.log("Editando sucursal:", sucursal.id);
+      // Editar sucursal existente
+      nuevaSucursal.id = sucursal.id;
+      await editarSucursal(nuevaSucursal);
+    } else {
+        console.log("Creando nueva sucursal");
+      // Crear nueva sucursal
+      await crearSucursal(nuevaSucursal);
+    }
+
+    onClose();
+  };
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label className={styles.formArticuloLabel}>Nombre:</label>
+
+          {formularioValidado && nombre === "" && (
+            <p className={styles.error}>Este campo es obligatorio</p>
+          )}
+          <div className={styles.inputConIcono}>
+            <input
+              type="number"
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+            />
+            {formularioValidado && nombre === "" && (
+              <span className={styles.iconoInput}>❗</span>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label className={styles.formArticuloLabel}>Horario Apertura:</label>
+
+          {formularioValidado && horarioApertura === "" && (
+            <p className={styles.error}>Este campo es obligatorio</p>
+          )}
+          <div className={styles.inputConIcono}>
+            <input
+              type="time"
+              placeholder="horarioApertura"
+              value={horarioApertura}
+              onChange={(e) => setHorarioApertura(e.target.value)}
+            />
+            {formularioValidado && horarioApertura === "" && (
+              <span className={styles.iconoInput}>❗</span>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label className={styles.formArticuloLabel}>Horario Cierre:</label>
+
+          {formularioValidado && horarioCierre === "" && (
+            <p className={styles.error}>Este campo es obligatorio</p>
+          )}
+          <div className={styles.inputConIcono}>
+            <input
+              type="time"
+              placeholder="horarioCierre"
+              value={horarioCierre}
+              onChange={(e) => setHorarioCierre(e.target.value)}
+            />
+            {formularioValidado && horarioCierre === "" && (
+              <span className={styles.iconoInput}>❗</span>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <label className={styles.formArticuloLabel}>Horario Cierre:</label>
+
+          {formularioValidado && horarioCierre === "" && (
+            <p className={styles.error}>Este campo es obligatorio</p>
+          )}
+          <div className={styles.inputConIcono}>
+            <input
+              list="lista-empresas"
+              placeholder="empresa"
+              value={empresaSeleccionada}
+              onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+            />
+            <datalist id="lista-empresas">
+                {empresas.map((empresa) => (
+                  <option key={empresa.id} value={empresa.nombre} />
+                ))}
+              </datalist>
+            {formularioValidado && horarioCierre === "" && (
+              <span className={styles.iconoInput}>❗</span>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <button
+            className={`${styles.boton} ${styles.botonCancelar}`}
+            type="button"
+            onClick={onClose}
+          >
+            Cancelar
+          </button>
+          <button
+            className={`${styles.boton} ${styles.botonGuardar}`}
+            type="submit"
+          >
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }

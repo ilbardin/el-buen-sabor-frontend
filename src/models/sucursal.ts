@@ -1,5 +1,5 @@
 export interface Sucursal {
-    fechaAlta: string;
+    fechaAlta?: string;
     nombre: string;
     horarioApertura: string;
     horarioCierre: string;
