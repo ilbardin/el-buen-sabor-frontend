@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { crearSucursal, getSucursal } from "../../services/sucursalService";
+import { crearSucursal, getSucursal, editarSucursal } from "../../services/sucursalService";
 import type { Sucursal } from "../../models/sucursal";
 import styles from "./FormularioSucursal.module.css";
 import type { Empresa } from "../../models/empresa";
@@ -15,20 +15,18 @@ export function FormularioSucursal({
   const [nombre, setNombre] = useState("");
   const [horarioApertura, setHorarioApertura] = useState("");
   const [horarioCierre, setHorarioCierre] = useState("");
-  const [empresa, setEmpresa] = useState(1);
   const [empresaSeleccionada, setEmpresaSeleccionada] = useState<string>("");
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [formularioValidado, setFormularioValidado] = useState(false);
 
-    async function cargarEmpresas() {
-        try {
-          const articulos = await getEmpresas();
-          setEmpresas(articulos);
-        } catch (error) {
-          console.error("Error al cargar los insumos:", error);
-        }
-      }
-
+  async function cargarEmpresas() {
+    try {
+      const articulos = await getEmpresas();
+      setEmpresas(articulos);
+    } catch (error) {
+      console.error("Error al cargar los insumos:", error);
+    }
+  }
 
   useEffect(() => {
     cargarEmpresas();
@@ -36,7 +34,7 @@ export function FormularioSucursal({
       setNombre(sucursal.nombre);
       setHorarioApertura(sucursal.horarioApertura);
       setHorarioCierre(sucursal.horarioCierre);
-      setEmpresa(sucursal.empresa.id);
+      setEmpresaSeleccionada(String(sucursal.empresa.id));
     }
   }, [sucursal]);
 
@@ -44,10 +42,10 @@ export function FormularioSucursal({
     event.preventDefault();
     setFormularioValidado(true);
     const empresa = empresas.find(
-      (i) => i.nombre.toLowerCase() === empresaSeleccionada.toLowerCase()
-    );
+      (i) => String(i.id) === empresaSeleccionada
+    )!;
 
-    if (nombre === "" || horarioApertura === "" || horarioCierre === "") {
+    if (nombre === "" || horarioApertura === "" || horarioCierre === "" || !empresa) {
       return;
     }
 
@@ -59,12 +57,12 @@ export function FormularioSucursal({
     };
 
     if (sucursal?.id) {
-        console.log("Editando sucursal:", sucursal.id);
+      console.log("Editando sucursal:", sucursal.id);
       // Editar sucursal existente
       nuevaSucursal.id = sucursal.id;
-      await editarSucursal(nuevaSucursal);
+      await editarSucursal(nuevaSucursal, sucursal.id);
     } else {
-        console.log("Creando nueva sucursal");
+      console.log("Creando nueva sucursal");
       // Crear nueva sucursal
       await crearSucursal(nuevaSucursal);
     }
@@ -82,7 +80,7 @@ export function FormularioSucursal({
           )}
           <div className={styles.inputConIcono}>
             <input
-              type="number"
+              type="text"
               placeholder="Nombre"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
@@ -132,11 +130,14 @@ export function FormularioSucursal({
         </div>
 
         <div>
-          <label className={styles.formArticuloLabel}>Horario Cierre:</label>
+          <label className={styles.formArticuloLabel}>
+            Empresa perteneciente:
+          </label>
 
-          {formularioValidado && horarioCierre === "" && (
+          {formularioValidado && empresaSeleccionada === "" && (
             <p className={styles.error}>Este campo es obligatorio</p>
           )}
+          {/*
           <div className={styles.inputConIcono}>
             <input
               list="lista-empresas"
@@ -149,10 +150,25 @@ export function FormularioSucursal({
                   <option key={empresa.id} value={empresa.nombre} />
                 ))}
               </datalist>
-            {formularioValidado && horarioCierre === "" && (
-              <span className={styles.iconoInput}>❗</span>
-            )}
+            
+          */}
+
+          <div>
+            <select
+              value={empresaSeleccionada}
+              onChange={(e) => setEmpresaSeleccionada(e.target.value)}
+            >
+              <option value="">Seleccione una empresa</option>
+              {empresas.map((empresa) => (
+                <option key={empresa.id} value={empresa.id}>
+                  {empresa.nombre}
+                </option>
+              ))}
+            </select>
           </div>
+          {formularioValidado && empresaSeleccionada === "" && (
+            <span className={styles.iconoInput}>❗</span>
+          )}
         </div>
 
         <div>

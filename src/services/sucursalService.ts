@@ -52,3 +52,15 @@ export async function deleteSucursal(id: number): Promise<void> {
         throw error;
     }
 }
+
+
+
+export async function editarSucursal(sucursal: Sucursal, id:number): Promise<void> {
+    try {
+        await axiosInstance.put(API_URL +"/"+ id, sucursal);
+        await showAlert("Éxito", "success", "Sucursal editada correctamente.");
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}

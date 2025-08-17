@@ -1,0 +1,49 @@
+.container {
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.titulo {
+  font-size: 2rem;
+  color: var(--color-terciario);
+  margin-bottom: 1.5rem;
+}
+
+.boton {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.boton:hover {
+  background-color: #c0392b;
+}
+
+.filtroInput {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: var(--color-terciario);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 1.5rem;
+}
+
+.filtroInput:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: 0 0 4px rgba(231, 76, 60, 0.3);
+}
+
+.filtroInput::placeholder {
+  color: #aaa;
+}

@@ -3,22 +3,25 @@ import styles from "./formularioEmpresa.module.css";
 import { crearEmpresa, editarEmpresa } from "../../services/empresaService";
 import type { Empresa } from "../../models/empresa.ts";
 
-export const FormularioEmpresa = ({ onClose, empresa }: { onClose: () => void; empresa?: Empresa }) => {
+export const FormularioEmpresa = ({
+  onClose,
+  empresa,
+}: {
+  onClose: () => void;
+  empresa?: Empresa;
+}) => {
   const [cuil, setCuil] = useState(NaN);
   const [nombre, setNombre] = useState("");
   const [razonSocial, setRazonSocial] = useState("");
   const [formularioValidado, setFormularioValidado] = useState(false);
 
-
   useEffect(() => {
-
     if (empresa) {
       setCuil(empresa.cuil);
       setNombre(empresa.nombre);
       setRazonSocial(empresa.razonSocial);
     }
-  }, [empresa])
-
+  }, [empresa]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -31,20 +34,18 @@ export const FormularioEmpresa = ({ onClose, empresa }: { onClose: () => void; e
     const nuevaEmpresa = { cuil, nombre, razonSocial };
 
     if (empresa?.id) {
-      
       await editarEmpresa(empresa.id, nuevaEmpresa);
     } else {
-      
       await crearEmpresa(nuevaEmpresa);
     }
 
     onClose();
-    
   };
   return (
     <div>
-      <div className={styles.botones}>
-        <form onSubmit={handleSubmit}>
+      <div className={styles.divContenedor}>
+        <form className={styles.formulario} onSubmit={handleSubmit}>
+          <h2 className="titulo">Crear Empresa</h2>
           <div>
             <label className={styles.formArticuloLabel}>Cuil:</label>
 
@@ -99,7 +100,7 @@ export const FormularioEmpresa = ({ onClose, empresa }: { onClose: () => void; e
               )}
             </div>
           </div>
-          <div>
+          <div className={styles.botones}>
             <button
               className={`${styles.boton} ${styles.botonCancelar}`}
               type="button"

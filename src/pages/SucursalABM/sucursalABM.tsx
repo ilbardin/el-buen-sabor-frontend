@@ -66,7 +66,7 @@ export default function SucursalABM() {
 
       {sucursalesFiltradas.map((sucursal) => (
         <ModuloSucursal
-          key={sucursal.cuil}
+          key={sucursal.id}
           sucursal={sucursal}
           onModificar={(sucursal) => {
             setSucursalSeleccionada(sucursal);
