@@ -5,7 +5,7 @@ import {showAlert} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
-import {tipoEnvio} from "../../utils/TipoEnvio/TipoEnvio.tsx";
+import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
 
 const CHECK_INTERVAL = 60000;
 
