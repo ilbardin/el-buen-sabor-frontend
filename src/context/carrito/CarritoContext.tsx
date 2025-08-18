@@ -5,6 +5,7 @@ import {showAlert} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
+import {tipoEnvio} from "../../utils/TipoEnvio/TipoEnvio.tsx";
 
 const CHECK_INTERVAL = 60000;
 
@@ -54,11 +55,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
         if (savedCart && expiration) {
             const isExpired = Date.now() > parseInt(expiration, 10);
-            
+
             if (!isExpired) {
                 return JSON.parse(savedCart);
             }
-            
+
             clearCart();
         }
 
@@ -148,8 +149,14 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     };
 
     const saveCart = async () => {
+        const tipoEnvioSeleccionado = await tipoEnvio();
+
+        if (!tipoEnvioSeleccionado) {
+            return;
+        }
+
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        const gastosEnvio = 500;
+        const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
         const total = subtotal + gastosEnvio;
 
         const detalles = cart.map((item) => ({
@@ -162,7 +169,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             subtotal,
             gastosEnvio,
             total,
-            tipoEnvio: 'delivery',
+            tipoEnvio: tipoEnvioSeleccionado,
             detalles,
         };
 
