@@ -8,6 +8,7 @@ import FormularioArticulosManufacturados from "../../components/FormularioArticu
 import { showConfirm } from "../../utils/alerts.ts";
 import { AgregarCategoriaArticuloManufacturado } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from "./ProductosABM.module.css";
+import baseABM from "../../css/abmBase.module.css"
 
 export const ProductosABM = () => {
   const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
@@ -63,8 +64,8 @@ export const ProductosABM = () => {
         />
       )}
 
-      <div className={styles.container}>
-        <h1 className={styles.h1}>Productos Manufacturados</h1>
+      <div className={baseABM.container}>
+        <h1 className={baseABM.titulo}>Productos Manufacturados</h1>
 
         <div className={styles.botonesContainer}>
           <button

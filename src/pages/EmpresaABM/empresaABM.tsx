@@ -4,6 +4,7 @@ import { getEmpresas } from "../../services/empresaService";
 import { FormularioEmpresa } from "../../components/FormularioEmpresa/formularioEmpresa";
 import { ModuloEmpresa } from "../../components/ModuloEmpresa/ModuloEmpresa";
 import styles from "./empresaABM.module.css";
+import baseABM from "../../css/abmBase.module.css"
 
 export default function EmpresaABM() {
   const [empresa, setEmpresa] = useState<Empresa[]>([]);
@@ -34,7 +35,7 @@ export default function EmpresaABM() {
     emp.nombre.toLowerCase().includes(busqueda)
   );
   return (
-    <div className={styles.container}>
+    <div className={baseABM.container}>
       {mostrarModal && (
         <FormularioEmpresa
           empresa={empresaSeleccionada}
@@ -45,24 +46,26 @@ export default function EmpresaABM() {
           }}
         />
       )}
-      <h1 className={styles.titulo}>Empresa ABM</h1>
+      <h1 className={baseABM.titulo}>Empresa ABM</h1>
       <button
         value={""}
-        className={styles.boton}
+        className={baseABM.boton}
         onClick={() => setMostrarModal(true)}
       >
         Cargar Empresa
       </button>
 
+      <div className={baseABM.filtrosContainer}>
       <input
         type="text"
         placeholder="Buscar"
         onChange={handleChange}
-        className={styles.filtroInput}
+        className={baseABM.filtroInput}
         value={busqueda}
       />
+      </div>
 
-      <table className={styles.tabla}>
+      <table className={baseABM.tabla}>
         <thead>
           <tr>
             <th>ID</th>

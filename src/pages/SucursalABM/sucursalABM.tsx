@@ -4,6 +4,7 @@ import { getSucursal } from "../../services/sucursalService";
 import { ModuloSucursal } from "../../components/ModuloSucursal/ModuloSucursal";
 import { FormularioSucursal } from "../../components/FormularioSucursal/formularioSucursal";
 import styles from "./sucursalABM.module.css";
+import baseABM from "../../css/abmBase.module.css";
 
 export default function SucursalABM() {
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
@@ -34,7 +35,7 @@ export default function SucursalABM() {
     sucursal.nombre.toLowerCase().includes(busqueda)
   );
   return (
-    <div className={styles.container}>
+    <div className={baseABM.container}>
       {mostrarModal && (
         <FormularioSucursal
           sucursal={sucursalSeleccionada}
@@ -46,24 +47,26 @@ export default function SucursalABM() {
         />
       )}
 
-      <h1 className={styles.titulo}>Sucursal ABM</h1>
+      <h1 className={baseABM.titulo}>Sucursal ABM</h1>
 
       <button
         value={""}
-        className={styles.boton}
+        className={baseABM.boton}
         onClick={() => setMostrarModal(true)}
       >
         Cargar Sucursal
       </button>
 
-      <input
-        type="text"
-        placeholder="Buscar"
-        onChange={handleChange}
-        className={styles.filtroInput}
-        value={busqueda}
-      />
-      <table className={styles.tabla}>
+      <div className={baseABM.filtrosContainer}>
+        <input
+          type="text"
+          placeholder="Buscar"
+          onChange={handleChange}
+          className={baseABM.filtroInput}
+          value={busqueda}
+        />
+      </div>
+      <table className={baseABM.tabla}>
         <thead>
           <th>ID</th>
           <th>Nombre</th>
