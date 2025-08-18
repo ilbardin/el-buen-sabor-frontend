@@ -12,20 +12,20 @@
   transition: background-color 0.2s ease;
 }
 
-.botonesAcciones button:first-child {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.botonesAcciones button:first-child:hover {
-  background-color: #c0392b;
-}
-
 .botonesAcciones button:last-child {
-  background-color: #2ecc71;
+  background-color: var(--color-primario);
   color: white;
 }
 
 .botonesAcciones button:last-child:hover {
-  background-color: #27ae60;
+  background-color: #c0392b;
+}
+
+.botonesAcciones button:first-child {
+  background-color: var(--color-secundario);
+  color: var(--color-terciario);
+}
+
+.botonesAcciones button:first-child:hover {
+  background-color: #d4ac0d;
 }

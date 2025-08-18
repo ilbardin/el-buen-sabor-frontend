@@ -13,25 +13,25 @@ export function ModuloSucursal(props: {
   }
 
   return (
-    <tr
-      style={{
-        backgroundColor: props.sucursal.fechaBaja === null ? "" : "red",
-      }}
-    >
+    <tr>
       <td>{props.sucursal.id}</td>
       <td>{props.sucursal.nombre}</td>
       <td>{props.sucursal.horarioApertura}</td>
       <td>{props.sucursal.horarioCierre}</td>
-      <td>
+      <td
+        style={{
+        backgroundColor: props.sucursal.fechaBaja === null ? "" : "rgba(231, 76, 60, 0.1)",
+      }}
+      >
         {props.sucursal.fechaBaja ? String(props.sucursal.fechaBaja) : "Activo"}
       </td>
 
       <td>
         <div className={styles.botonesAcciones}>
-          <button onClick={() => eliminarSucursal()}>Eliminar</button>
           <button onClick={() => props.onModificar(props.sucursal)}>
             Modificar
           </button>
+          <button onClick={() => eliminarSucursal()}>Eliminar</button>
         </div>
       </td>
     </tr>

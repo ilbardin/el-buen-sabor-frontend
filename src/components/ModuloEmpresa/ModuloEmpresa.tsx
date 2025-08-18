@@ -7,7 +7,9 @@ export function ModuloEmpresa(props: {
   onModificar: (empresa: Empresa) => void;
 }) {
   async function eliminarEmpresa() {
-    await deleteEmpresa(props.empresa.id);
+    if (props.empresa.id) {
+      await deleteEmpresa(props.empresa.id);
+    }
   }
 
   return (
@@ -18,7 +20,8 @@ export function ModuloEmpresa(props: {
       <td>{props.empresa.razonSocial}</td>
       <td
         style={{
-          backgroundColor: props.empresa.fechaBaja === null ? "" : "red",
+          backgroundColor:
+            props.empresa.fechaBaja === null ? "" : "rgba(231, 76, 60, 0.1)",
         }}
       >
         {props.empresa.fechaBaja ? String(props.empresa.fechaBaja) : "Activo"}
@@ -26,10 +29,10 @@ export function ModuloEmpresa(props: {
 
       <td>
         <div className={styles.botonesAcciones}>
-          <button onClick={() => eliminarEmpresa()}>Eliminar</button>
           <button onClick={() => props.onModificar(props.empresa)}>
             Modificar
           </button>
+          <button onClick={() => eliminarEmpresa()}>Eliminar</button>
         </div>
       </td>
     </tr>

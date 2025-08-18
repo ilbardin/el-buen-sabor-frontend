@@ -34,7 +34,7 @@ export default function SucursalABM() {
     sucursal.nombre.toLowerCase().includes(busqueda)
   );
   return (
-    <div>
+    <div className={styles.container}>
       {mostrarModal && (
         <FormularioSucursal
           sucursal={sucursalSeleccionada}
@@ -46,7 +46,7 @@ export default function SucursalABM() {
         />
       )}
 
-      <h1>Sucursal ABM</h1>
+      <h1 className={styles.titulo}>Sucursal ABM</h1>
 
       <button
         value={""}
@@ -63,17 +63,28 @@ export default function SucursalABM() {
         className={styles.filtroInput}
         value={busqueda}
       />
-
-      {sucursalesFiltradas.map((sucursal) => (
-        <ModuloSucursal
-          key={sucursal.id}
-          sucursal={sucursal}
-          onModificar={(sucursal) => {
-            setSucursalSeleccionada(sucursal);
-            setMostrarModal(true);
-          }}
-        />
-      ))}
+      <table className={styles.tabla}>
+        <thead>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apertura</th>
+          <th>Cierre</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </thead>
+        <tbody>
+          {sucursalesFiltradas.map((sucursal) => (
+            <ModuloSucursal
+              key={sucursal.id}
+              sucursal={sucursal}
+              onModificar={(sucursal) => {
+                setSucursalSeleccionada(sucursal);
+                setMostrarModal(true);
+              }}
+            />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

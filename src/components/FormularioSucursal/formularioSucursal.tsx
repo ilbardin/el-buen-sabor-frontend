@@ -70,8 +70,11 @@ export function FormularioSucursal({
     onClose();
   };
   return (
-    <div>
+    <div className={styles.contenedor}>
+      <div className={styles.formulario}>
+        <h2>{sucursal ? "Editar Sucursal" : "Crear Sucursal"}</h2>
       <form onSubmit={handleSubmit}>
+
         <div>
           <label className={styles.formArticuloLabel}>Nombre:</label>
 
@@ -171,7 +174,7 @@ export function FormularioSucursal({
           )}
         </div>
 
-        <div>
+        <div className={styles.botones}>
           <button
             className={`${styles.boton} ${styles.botonCancelar}`}
             type="button"
@@ -187,6 +190,7 @@ export function FormularioSucursal({
           </button>
         </div>
       </form>
+      </div>
     </div>
   );
 }

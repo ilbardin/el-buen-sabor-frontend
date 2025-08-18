@@ -62,7 +62,7 @@ export default function EmpresaABM() {
         value={busqueda}
       />
 
-      <table>
+      <table className={styles.tabla}>
         <thead>
           <tr>
             <th>ID</th>
