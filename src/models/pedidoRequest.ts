@@ -10,7 +10,7 @@ export interface PedidoRequest {
 
 export interface DetallePedido {
     cantidad: number;
-    subTotal: number;
+    subtotal: number;
     articuloManufacturado?: { id: number };
     articuloInsumo?: { id: number };
 }
