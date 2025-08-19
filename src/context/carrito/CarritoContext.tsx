@@ -6,24 +6,13 @@ import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
+import type {PedidoRequest} from "../../models/pedidoRequest.ts";
 
 const CHECK_INTERVAL = 60000;
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
     precio: number;
-}
-
-interface PedidoRequest {
-    subtotal: number;
-    gastosEnvio: number;
-    total: number;
-    tipoEnvio: 'delivery' | 'takeaway';
-    detalles: {
-        cantidad: number;
-        subTotal: number;
-        articuloManufacturado: { id: number };
-    }[];
 }
 
 export interface CartContextProps {
@@ -171,6 +160,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             total,
             tipoEnvio: tipoEnvioSeleccionado,
             detalles,
+            cliente: {id: 1},
+            sucursalEmpresa: {id: 1}
         };
 
         try {
