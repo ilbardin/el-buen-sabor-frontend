@@ -1,10 +1,15 @@
 import axiosInstance from "../api/axiosInstance.ts";
-import type {PedidoRequest} from "../models/pedidoRequest.ts";
+import type {ItemCarritoMp} from "../models/pedidoRequest.ts";
 
-interface PreferenceMP {
+interface PreferenceIdResponse {
     id: string;
-    init_point: string;
+    initPoint: string;
 }
 
-export const crearPeticionMP = (pedido: PedidoRequest) =>
-    axiosInstance.post<PreferenceMP>('/checkout', pedido).then(res => res.data);
+interface PedidoMp {
+    montoCarrito: number;
+    items: ItemCarritoMp[];
+}
+
+export const crearPeticionMP = (pedido: PedidoMp) =>
+    axiosInstance.post<PreferenceIdResponse>('/checkout', pedido).then(res => res.data);

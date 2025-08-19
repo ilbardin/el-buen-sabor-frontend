@@ -15,3 +15,14 @@ export interface DetallePedido {
     articuloInsumo?: { id: number };
 }
 
+export interface ItemCarritoMp {
+    id: string;
+    title: string;
+    description: string;
+    pictureUrl?: string;
+    categoryId?: string;
+    quantity: number;
+    currencyId?: string;
+    unitPrice: string;
+}
+

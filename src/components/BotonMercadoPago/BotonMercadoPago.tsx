@@ -4,16 +4,12 @@ import {showAlert, showLoading} from "../../utils/alerts.ts";
 import mercadoPagoLogo from '/assets/logo-mp.png';
 import Swal from "sweetalert2";
 import styles from './BotonMercadoMago.module.css';
-import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {crearPeticionMP} from "../../services/mercadoPagoService.ts";
-
-interface CartItem extends ArticuloManufacturado {
-    cantidad: number;
-}
+import type {ItemCarritoMp} from "../../models/pedidoRequest.ts";
 
 interface Props {
     montoCarrito: number;
-    items: CartItem[];
+    items: ItemCarritoMp[];
 }
 
 const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
@@ -32,20 +28,21 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
 
     const handleComprar = async () => {
         if (items.length === 0) {
-            await showAlert('Error', 'error', 'Agregue al menos un instrumento al carrito');
+            await showAlert('Error', 'error', 'Agregue al menos un elemento al carrito');
             return;
         }
 
         showLoading('Cargando Mercado Pago...');
 
-        // TODO: ajustar detalles
         const pedido = {
-            id: '',
-            init_point: ''
+            montoCarrito,
+            items
         };
+        console.log(pedido);
 
         try {
             const response = await crearPeticionMP(pedido);
+            console.log(response);
             setIdPreference(response.id);
             Swal.close();
         } catch (err) {
@@ -67,12 +64,14 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
         <div className={styles.divBoton}>
             <button className={styles.btnMercadoPago} onClick={handleComprar}>
                 <img src={mercadoPagoLogo} alt="Mercado Pago" className={styles.logoMercadoPago}/>
-                Comprar con Mercado Pago
+                Ir a pagar
             </button>
 
             {idPreference && (
-                <div className='divVisible' style={{width: '300px'}}>
-                    <Wallet initialization={{preferenceId: idPreference}}/>
+                <div style={{width: '300px'}}>
+                    <Wallet initialization={{
+                        preferenceId: idPreference,
+                        redirectMode: 'self'}}/>
                 </div>
             )}
         </div>
