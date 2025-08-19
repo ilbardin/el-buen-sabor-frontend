@@ -5,6 +5,8 @@ import { ModuloSucursal } from "../../components/ModuloSucursal/ModuloSucursal";
 import { FormularioSucursal } from "../../components/FormularioSucursal/formularioSucursal";
 import styles from "./sucursalABM.module.css";
 import baseABM from "../../css/abmBase.module.css";
+import type { Empresa } from "../../models/empresa";
+import { getEmpresas } from "../../services/empresaService";
 
 export default function SucursalABM() {
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
@@ -13,10 +15,14 @@ export default function SucursalABM() {
     Sucursal | undefined
   >(undefined);
   const [busqueda, setBusqueda] = useState("");
+  const [empresas, setEmpresas] = useState<Empresa[]>([]);
+  const [idEmpresa, setIdEmpresa] = useState(0);
 
   const fetchData = async () => {
     try {
       const sucursales = await getSucursal();
+      const empresas = await getEmpresas();
+      setEmpresas(empresas);
       setSucursales(sucursales);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -30,10 +36,19 @@ export default function SucursalABM() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBusqueda(e.target.value.toLowerCase());
   };
+    const handleChangeCategorias = (e) => {
+    setIdEmpresa(Number(e.target.value));
+  };
 
   const sucursalesFiltradas = sucursales.filter((sucursal) =>
     sucursal.nombre.toLowerCase().includes(busqueda)
   );
+
+  const sucursalesFinales = sucursalesFiltradas.filter(
+  (sucursal) =>
+    idEmpresa === 0 || (sucursal.empresa && sucursal.empresa.id === idEmpresa)
+);
+
   return (
     <div className={baseABM.container}>
       {mostrarModal && (
@@ -65,6 +80,19 @@ export default function SucursalABM() {
           className={baseABM.filtroInput}
           value={busqueda}
         />
+
+        <select
+          value={idEmpresa}
+          onChange={handleChangeCategorias}
+          className={styles.filtroSelect}
+        >
+          <option value="">Todas las Categorias</option>
+          {empresas.map((empresa, idx) => (
+            <option key={idx} value={empresa.id}>
+              {empresa.nombre}
+            </option>
+          ))}
+        </select>
       </div>
       <table className={baseABM.tabla}>
         <thead>
@@ -76,7 +104,8 @@ export default function SucursalABM() {
           <th>Acciones</th>
         </thead>
         <tbody>
-          {sucursalesFiltradas.map((sucursal) => (
+          {sucursalesFinales
+          .map((sucursal) => (
             <ModuloSucursal
               key={sucursal.id}
               sucursal={sucursal}

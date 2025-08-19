@@ -91,8 +91,8 @@ export const ProductosABM = () => {
               <th>Tiempo estimadio</th>
               <th>Precio Costo</th>
               <th>Estado</th>
-              <th>Acciones</th>
               <th>Imagen</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>

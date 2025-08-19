@@ -42,7 +42,8 @@ nav ul {
 }
 
 .topbar a,
-.topbar span {
+.topbar span,
+.items {
   display: flex;
   align-items: center;
   height: 100%;
