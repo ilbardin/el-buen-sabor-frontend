@@ -150,7 +150,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
         const detalles = cart.map((item) => ({
             cantidad: item.cantidad,
-            subTotal: item.precio * item.cantidad,
+            subtotal: item.precio * item.cantidad,
             articuloManufacturado: {id: item.id!},
         }));
 
