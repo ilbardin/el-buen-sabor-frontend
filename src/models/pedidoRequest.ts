@@ -3,6 +3,8 @@ export interface PedidoRequest {
     gastosEnvio: number;
     total: number;
     tipoEnvio: "delivery" | "takeaway";
+    cliente: { id: number };
+    sucursalEmpresa: { id: number };
     detalles: DetallePedido[];
 }
 
