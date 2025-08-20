@@ -14,7 +14,9 @@ export const BarraSuperior = () => {
   const { logout, setIsLoggingOut, usuario } = useAuth();
   const navigate = useNavigate();
   const idSucursal = useSucursalStore((state) => state.idSucursal);
+  const sucursalNombre = useSucursalStore((state) => state.denominacionSucursal)
   const setIdSucursal = useSucursalStore((state) => state.setIdSucursal);
+  const setDenominacion = useSucursalStore((state) => state.setDenominacion);
 
   const handleLogout = () => {
     setIsLoggingOut(true);
@@ -22,8 +24,9 @@ export const BarraSuperior = () => {
     navigate(ROUTES.LOGIN);
   };
 
-  const cambioIdSucursal = (id: number) => {
+  const cambioIdSucursal = (id: number, denominacion: string) => {
     setIdSucursal(id);
+    setDenominacion(denominacion)
     console.log("Sucursal cambiada a ID:", useSucursalStore.getState().idSucursal);
   }
 
@@ -95,13 +98,13 @@ export const BarraSuperior = () => {
 
           <li className={styles.dropdown}>
             <div className={styles.dropdownToggle}>
-              Sucursal: {idSucursal}
+              Sucursal: {sucursalNombre}
               <SlArrowDown style={{ marginLeft: 10 }} />
             </div>
             <ul className={styles.dropdownMenu}>
               {sucursales.map((sucursal) => (
                 <li className={styles.items}
-                  onClick={() => cambioIdSucursal(Number(sucursal.id))}
+                  onClick={() => cambioIdSucursal(Number(sucursal.id), String(sucursal.nombre))}
                   key={sucursal.id}
                 >
                   {" "}
