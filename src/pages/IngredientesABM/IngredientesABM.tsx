@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  eliminarArticuloInsumo,
-  getArticulosInsumo,
-} from "../../services/ingredientesService.ts";
+import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import { AgregarCategoriaArticulo } from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
 import styles from "./IngredientesABM.module.css";
-import { showConfirm } from "../../utils/alerts.ts";
+import baseABM from "../../css/abmBase.module.css"
+import ModuloArticuloInsumo from "../../components/ModuloArticuloInsumo/ModuloArticuloInsumo.tsx";
 
 export const IngredientesABM = () => {
   const [articulos, setArticulos] = useState<ArticuloInsumo[]>([]);
@@ -15,6 +13,8 @@ export const IngredientesABM = () => {
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
   const [articuloParaEditar, setArticuloParaEditar] =
     useState<ArticuloInsumo | null>(null);
+
+  const [busqueda, setBusqueda] = useState("");
 
   const cargarArticulosInsumo = async () => {
     try {
@@ -30,21 +30,13 @@ export const IngredientesABM = () => {
     void cargarArticulosInsumo();
   }, []);
 
-  async function handleEliminar(id: number) {
-    try {
-      const confirmacion = await showConfirm(
-        "Confirmación",
-        "¿Está seguro de que desea eliminar el producto?"
-      );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBusqueda(e.target.value.toLowerCase());
+  };
 
-      if (confirmacion) {
-        await eliminarArticuloInsumo(id);
-        setArticulos(articulos.filter((articulo) => articulo.id !== id));
-      }
-    } catch (error) {
-      console.error("Error al eliminar el artículo:", error);
-    }
-  }
+  const articulosFiltrados = articulos.filter((articulo) =>
+    articulo.denominacion.toLowerCase().includes(busqueda)
+  );
 
   return (
     <div className={styles.container}>
@@ -53,8 +45,8 @@ export const IngredientesABM = () => {
           onClose={async () => {
             setMostrarModal(false);
             setArticuloParaEditar(null);
-            await cargarArticulosInsumo();
           }}
+          onCreateSuccess={cargarArticulosInsumo}
           articuloParaEditar={articuloParaEditar}
         />
       )}
@@ -84,6 +76,16 @@ export const IngredientesABM = () => {
         </button>
       </div>
 
+      <div className={baseABM.filtrosContainer}>
+        <input
+          type="text"
+          placeholder="Buscar"
+          onChange={handleChange}
+          className={baseABM.filtroInput}
+          value={busqueda}
+        />
+      </div>
+
       <table className={styles.tabla}>
         <thead>
           <tr>
@@ -96,49 +98,15 @@ export const IngredientesABM = () => {
           </tr>
         </thead>
         <tbody>
-          {articulos.map((articulo) => (
-            <tr key={articulo.id}>
-              <td>{articulo.denominacion}</td>
-              <td>{articulo.categoria}</td>
-              <td>{articulo.precioCompra}</td>
-              <td>{articulo.precioVenta}</td>
-              <td>
-                {articulo.imagenInsumo &&
-                articulo.imagenInsumo.denominacion?.trim()?.length > 0 ? (
-                  <img
-                    src={`http://localhost:8080/uploads/images/${articulo.imagenInsumo.denominacion}`}
-                    alt="Producto"
-                    style={{ width: "80px", height: "auto", maxHeight: "80px" }}
-                  />
-                ) : (
-                  "Sin imagen"
-                )}
-              </td>
-
-              <td>
-                <div className={styles.acciones}>
-                  <button
-                    className={`${styles.boton} ${styles.botonSecundario}`}
-                    onClick={() => {
-                      setArticuloParaEditar(articulo);
-                      setMostrarModal(true);
-                    }}
-                  >
-                    Modificar
-                  </button>
-                  <button
-                    className={styles.boton}
-                    onClick={async () => {
-                      if (articulo.id !== undefined) {
-                        await handleEliminar(articulo.id);
-                      }
-                    }}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </td>
-            </tr>
+          {articulosFiltrados.map((articulo) => (
+            <ModuloArticuloInsumo
+              key={articulo.id}
+              articulo={articulo}
+              onModificar={(articulo) => {
+                setArticuloParaEditar(articulo);
+                setMostrarModal(true);
+              }}
+            />
           ))}
         </tbody>
       </table>

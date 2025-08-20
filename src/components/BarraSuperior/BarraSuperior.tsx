@@ -76,10 +76,10 @@ export const BarraSuperior = () => {
           </li>
 
           <li className={styles.dropdown}>
-            <li className={styles.dropdownToggle}>
+            <div className={styles.dropdownToggle}>
               Gestion de Sucursales
               <SlArrowDown style={{ marginLeft: 10 }} />
-            </li>
+            </div>
             <ul className={styles.dropdownMenu}>
               <li>
                 <Link to={ROUTES.EMPRESA_ABM}>Empresa</Link>
@@ -94,10 +94,10 @@ export const BarraSuperior = () => {
           </li>
 
           <li className={styles.dropdown}>
-            <li className={styles.dropdownToggle}>
+            <div className={styles.dropdownToggle}>
               Sucursal: {idSucursal}
               <SlArrowDown style={{ marginLeft: 10 }} />
-            </li>
+            </div>
             <ul className={styles.dropdownMenu}>
               {sucursales.map((sucursal) => (
                 <li className={styles.items}

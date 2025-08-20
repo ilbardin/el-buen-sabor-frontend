@@ -36,7 +36,7 @@ export default function SucursalABM() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBusqueda(e.target.value.toLowerCase());
   };
-    const handleChangeCategorias = (e) => {
+  const handleChangeCategorias = (e) => {
     setIdEmpresa(Number(e.target.value));
   };
 
@@ -45,9 +45,9 @@ export default function SucursalABM() {
   );
 
   const sucursalesFinales = sucursalesFiltradas.filter(
-  (sucursal) =>
-    idEmpresa === 0 || (sucursal.empresa && sucursal.empresa.id === idEmpresa)
-);
+    (sucursal) =>
+      idEmpresa === 0 || (sucursal.empresa && sucursal.empresa.id === idEmpresa)
+  );
 
   return (
     <div className={baseABM.container}>
@@ -86,7 +86,7 @@ export default function SucursalABM() {
           onChange={handleChangeCategorias}
           className={styles.filtroSelect}
         >
-          <option value="">Todas las Categorias</option>
+          <option value="">Todas las Empresas</option>
           {empresas.map((empresa, idx) => (
             <option key={idx} value={empresa.id}>
               {empresa.nombre}
@@ -104,8 +104,7 @@ export default function SucursalABM() {
           <th>Acciones</th>
         </thead>
         <tbody>
-          {sucursalesFinales
-          .map((sucursal) => (
+          {sucursalesFinales.map((sucursal) => (
             <ModuloSucursal
               key={sucursal.id}
               sucursal={sucursal}

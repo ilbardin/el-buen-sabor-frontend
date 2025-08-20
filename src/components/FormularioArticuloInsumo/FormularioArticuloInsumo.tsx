@@ -54,10 +54,15 @@ export const FormularioArticulosInsumo = ({
       setPrecioVenta(articuloParaEditar.precioVenta);
       setEsParaElaborar(articuloParaEditar.esParaElaborar);
       setUrlImagen(articuloParaEditar.imagenInsumo?.url ?? "");
-      setCategoriaSeleccionada(
-        articuloParaEditar.categoria
-      );
-      setUnidadSeleccionada(articuloParaEditar.unidadMedida.denominacion);
+      setCategoriaSeleccionada(articuloParaEditar.categoria);
+      if (
+        articuloParaEditar.unidadMedida &&
+        articuloParaEditar.unidadMedida.denominacion
+      ) {
+        setUnidadSeleccionada(articuloParaEditar.unidadMedida.denominacion);
+      } else {
+        setUnidadSeleccionada(""); // o lo que necesites por defecto
+      }
     }
   }, [articuloParaEditar]);
   //
