@@ -40,13 +40,20 @@ export const IngredientesABM = () => {
 
   return (
     <div className={styles.container}>
+      <p>
+        {articuloParaEditar
+          ? JSON.stringify(articuloParaEditar)
+          : null}
+      </p>
       {mostrarModal && (
         <FormularioArticulosInsumo
           onClose={async () => {
             setMostrarModal(false);
             setArticuloParaEditar(null);
+            cargarArticulosInsumo();
           }}
           onCreateSuccess={cargarArticulosInsumo}
+          
           articuloParaEditar={articuloParaEditar}
         />
       )}
