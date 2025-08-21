@@ -1,0 +1,22 @@
+.prueba {
+  display: flex;
+  gap: 16px; /* Espacio entre los elementos, ajustá a tu gusto */
+  justify-content: center; /* Centra horizontalmente, opcional */
+  padding: 16px;
+  width: 95%; /* Ancho total del contenedor */
+  height: 500px; /* Altura total del contenedor */
+    overflow: hidden;
+    flex-direction: row;
+    
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  height: 500px;
+  border-color: blue;
+  border-width: 1px;
+  border-style: solid;
+}

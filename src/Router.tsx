@@ -19,6 +19,7 @@ import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
 import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
+import Prueba from './pages/Prueba/Prueba.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -111,6 +112,14 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <SucursalABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.PRUEBA}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <Prueba/>
                         </ProtectedRoute>
                     }
                 />

@@ -12,4 +12,5 @@ export const ROUTES = {
     GESTION_SUCURSALES: '/gestion-sucursales',
     EMPRESA_ABM: '/empresa-abm',
     SUCURSAL_ABM: '/sucursal-abm',
+    PRUEBA: '/prueba',
 };

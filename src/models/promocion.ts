@@ -4,6 +4,9 @@ export interface Promocion {
   fechaDesde: string;
   fechaHasta: string;
   descuento: number;
+  precioSinDescuento: number;
+  precioVenta: number;
+  imagenes: string[];
   detalle: PromocionDetalle[];
 }
 
