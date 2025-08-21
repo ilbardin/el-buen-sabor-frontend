@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./FormularioStockInsumo.module.css"; // Asegúrate de que sea el path correcto
-import type { StockInsumo } from "../../models/stockInsumo"; // Ajusta al path real
+import styles from "./FormularioStockInsumo.module.css"; 
 import { getArticulosInsumo } from "../../services/ingredientesService";
 import { editarStockInsumo } from "../../services/stockInsumoService";
 import type { ArticuloInsumo } from "../../models/articuloInsumo";

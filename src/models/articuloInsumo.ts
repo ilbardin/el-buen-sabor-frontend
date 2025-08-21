@@ -1,3 +1,4 @@
+/*
 export interface ArticuloInsumo {
     id?: number;
     fechaAlta: string;
@@ -18,7 +19,7 @@ export interface ArticuloInsumo {
         denominacion: string;
     }
 }
-
+*/
 
 export interface ArticuloInsumoCreacion {
     estaActivo:        boolean;
@@ -29,14 +30,29 @@ export interface ArticuloInsumoCreacion {
     precioVenta:       number;
     esParaElaborar:    boolean;
     categoriaArticulo: CategoriaArticuloCreacion;
-    unidadMedida:      CategoriaArticuloCreacion;
+    unidadMedida:      UnidadMedidaCreacion;
     imagenInsumo:      ImagenInsumo;
 }
 
 export interface CategoriaArticuloCreacion {
     id: number;
 }
+export interface UnidadMedidaCreacion {
+    id: number
+}
 
 export interface ImagenInsumo {
     denominacion: string;
+}
+
+export interface ArticuloInsumo {
+    id?: number;
+    denominacion: string;
+    fechaBaja: string | null;
+    precioVenta: number;
+    precioCompra: number;
+    categorias: string[];          // 🔹 array de strings
+    nombreUnidadMedida: string;    // 🔹 string
+    esParaElaborar: boolean;
+    nombreImagen: string | null;   // 🔹 string o null
 }
