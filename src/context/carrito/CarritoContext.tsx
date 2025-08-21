@@ -137,10 +137,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         });
     };
 
-    const pagarMp = async (): Promise<any> => {
-        return null;
-    };
-
     const saveCart = async () => {
         const tipoEnvioSeleccionado = await tipoEnvio();
 

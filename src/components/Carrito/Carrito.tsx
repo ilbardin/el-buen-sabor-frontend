@@ -14,7 +14,6 @@ interface CartProps {
     items: ItemCarrito[];
     onIncrease: (id: number) => void;
     onDecrease: (id: number) => void;
-    pagarMp: () => void;
     onClear: () => void;
 }
 
