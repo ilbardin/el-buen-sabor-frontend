@@ -1,11 +1,11 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {RegistroUsuario} from './pages/RegistroUsuario/RegistroUsuario';
 import Login from './pages/Login/Login';
 import {useAuth} from './context/auth/useAuth.ts';
 import {ProductosABM} from './pages/ProductosABM/ProductosABM';
 import {IngredientesABM} from './pages/IngredientesABM/IngredientesABM';
-import {Home} from './pages/Home/Home';
+import {HomeAdmin} from './pages/Home/HomeAdmin.tsx';
 import ProtectedRoute from './context/ProtectedRoute';
 import {UserRole} from './models/usuario/userRoles';
 import {ROUTES} from './constants/routes';
@@ -18,6 +18,7 @@ import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
 import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
 import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
+import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -25,14 +26,19 @@ const Router = () => {
         return <Login onLoginSuccess={login}/>;
     };
 
+    const LandingLoginWrapper: React.FC = () => {
+        const {login} = useAuth();
+        return <LandingPage onLoginSuccess={login}/>;
+    }
+
     return (
         <Routes>
             <Route element={<BarraSuperior/>}>
                 <Route
-                    path={ROUTES.HOME}
+                    path={ROUTES.HOME_ADMIN}
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                            <Home/>
+                            <HomeAdmin/>
                         </ProtectedRoute>
                     }
                 />
@@ -111,6 +117,8 @@ const Router = () => {
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
+            <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
+            <Route path="/" element={<Navigate to={ROUTES.HOME} replace/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
     );

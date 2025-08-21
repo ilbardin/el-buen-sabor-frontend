@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import {ROUTES} from "../../constants/routes.ts";
 
-export const Home = () => {
+export const HomeAdmin = () => {
     return (
         <div>
             <h1>Inicio</h1>

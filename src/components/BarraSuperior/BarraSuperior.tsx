@@ -1,3 +1,4 @@
+
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth/useAuth.ts";
 import { ROUTES } from "../../constants/routes.ts";
@@ -9,6 +10,13 @@ import { useEffect, useState } from "react";
 import { getSucursal } from "../../services/sucursalService.ts";
 import type { Sucursal } from "../../models/sucursal.ts";
 import { useSucursalStore } from "../Sucursal/SucursalStore.tsx";
+import {Link, Outlet, useNavigate} from 'react-router-dom';
+import {useAuth} from '../../context/auth/useAuth.ts';
+import {UserRole} from "../../models/usuario/userRoles.ts";
+import {ROUTES} from "../../constants/routes.ts";
+import styles from './BarraSuperior.module.css';
+import {BiSolidLogOut} from "react-icons/bi";
+import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
 
 export const BarraSuperior = () => {
   const { logout, setIsLoggingOut, usuario } = useAuth();
@@ -18,11 +26,25 @@ export const BarraSuperior = () => {
   const setIdSucursal = useSucursalStore((state) => state.setIdSucursal);
   const setDenominacion = useSucursalStore((state) => state.setDenominacion);
 
-  const handleLogout = () => {
-    setIsLoggingOut(true);
-    logout();
-    navigate(ROUTES.LOGIN);
-  };
+    const handleUserLogout = async () => {
+        const performLogout = () => {
+            setIsLoggingOut(true);
+            logout();
+            navigate(ROUTES.HOME, {replace: true});
+        };
+
+        if (existeCarrito()) {
+            const confirmacion = await alertaCarrito();
+
+            if (!confirmacion) {
+                return;
+            }
+        }
+
+        performLogout();
+        // hack para cambiar el estado de setIsLoggingOut una vez haya finalizado la navegacion
+        // setTimeout(() => setIsLoggingOut(false), 500);
+    };
 
   const cambioIdSucursal = (id: number, denominacion: string) => {
     setIdSucursal(id);
@@ -43,9 +65,11 @@ export const BarraSuperior = () => {
 
   if (location.pathname === "/gestion-empresa") {
     return (
+
       <div>
         <GestionEmpresa />
       </div>
+
     );
   }
   return (

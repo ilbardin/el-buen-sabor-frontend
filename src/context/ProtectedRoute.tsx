@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
 
     const handleLogout = () => {
         logout();
-        navigate(ROUTES.LOGIN);
+        navigate(ROUTES.HOME);
     };
 
     const isJwtValid = (): boolean => {
@@ -47,7 +47,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
             false
         );
 
-        return <Navigate to={ROUTES.LOGIN} replace/>;
+        return <Navigate to={ROUTES.HOME} replace/>;
     }
 
     if (!isJwtValid()) {

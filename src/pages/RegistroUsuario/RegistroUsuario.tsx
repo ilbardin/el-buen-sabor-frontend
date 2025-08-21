@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import Select from 'react-select';
 import {FaAddressBook, FaIdCard, FaUser} from 'react-icons/fa';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
-import styles from './RegistroUsuario.module.css';
 import {ROUTES} from '../../constants/routes';
 import {showAlert, showLoading} from '../../utils/alerts';
 import {MdEmail, MdLocationCity} from "react-icons/md";
@@ -13,6 +13,13 @@ import {FaLocationDot} from "react-icons/fa6";
 import type {Localidad, Pais, Provincia} from "../../models/ubicaciones.ts";
 import {getLocalidadesPorProvincia, getPaises, getProvinciasPorPais} from "../../services/ubicacionesService.ts";
 import {AxiosError} from "axios";
+import styles from './RegistroUsuario.module.css';
+import type {StylesConfig} from 'react-select';
+
+type Opcion = {
+    value: number;
+    label: string;
+};
 
 export const RegistroUsuario: React.FC = () => {
     const [nombre, setNombre] = useState('');
@@ -83,6 +90,21 @@ export const RegistroUsuario: React.FC = () => {
             }
         }
     };
+
+    const paisesOptions: Opcion[] = paises.map((pais) => ({
+        value: pais.id,
+        label: pais.nombre,
+    }));
+
+    const provinciasOptions: Opcion[] = provincias.map((provincia) => ({
+        value: provincia.id,
+        label: provincia.nombre,
+    }));
+
+    const localidadesOptions: Opcion[] = localidades.map((loc) => ({
+        value: loc.id,
+        label: loc.nombre,
+    }));
 
     useEffect(() => {
         void fetchPaises();
@@ -176,7 +198,7 @@ export const RegistroUsuario: React.FC = () => {
 
             await showAlert('Éxito', 'success', response.data.mensaje);
 
-            navigate(ROUTES.LOGIN);
+            navigate(ROUTES.HOME);
         } catch (error: unknown) {
             Swal.close();
 
@@ -184,6 +206,48 @@ export const RegistroUsuario: React.FC = () => {
                 await showAlert('Error', 'error', error?.response?.data);
             }
         }
+    };
+
+    const customStyles: StylesConfig<any, false> = {
+        control: (provided) => ({
+            ...provided,
+            width: '100%',
+            padding: '5px 0 0 5px',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '40px',
+            backgroundColor: 'transparent',
+            color: '#fff',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: '#fff',
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: '#fff',
+            marginTop: '5px'
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            zIndex: 9999,
+            borderRadius: '20px',
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused ? '#34495e' : 'transparent',
+            color: '#fff',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            borderRadius: '20px',
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: '#bbb',
+        }),
     };
 
     return (
@@ -225,46 +289,65 @@ export const RegistroUsuario: React.FC = () => {
                         <div className={styles.row}>
                             <div className={styles.inputBox}>
                                 <label htmlFor="pais">País:</label>
-                                <select
-                                    id="pais"
-                                    value={paisId ?? ''}
-                                    onChange={(e) => handlePaisChange(Number(e.target.value))}
-                                    required>
-                                    <option value="" disabled>Seleccionar país</option>
-                                    {paises.map((pais) => (
-                                        <option key={pais.id} value={pais.id}>{pais.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <Select
+                                        options={paisesOptions}
+                                        components={{IndicatorSeparator: () => null}}
+                                        value={paisesOptions.find((opt) => opt.value === paisId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                handlePaisChange(selectedOption.value);
+                                            }
+                                        }}
+                                        placeholder="Seleccionar país"
+                                        isSearchable={true}
+                                        styles={customStyles}
+                                    />
+                                </div>
                             </div>
 
                             <div className={styles.inputBox}>
                                 <label htmlFor="provincia">Provincia:</label>
-                                <select
-                                    id="provincia"
-                                    value={provinciaId ?? ''}
-                                    onChange={(e) => handleProvinciaChange(Number(e.target.value))}
-                                    disabled={!paisId}
-                                    required>
-                                    <option value="" disabled>Seleccionar provincia</option>
-                                    {provincias.map((provincia) => (
-                                        <option key={provincia.id} value={provincia.id}>{provincia.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <Select
+                                        options={provinciasOptions}
+                                        components={{
+                                            IndicatorSeparator: () => null
+                                        }}
+                                        value={provinciasOptions.find((opt) => opt.value === provinciaId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                handleProvinciaChange(selectedOption.value);
+                                            }
+                                        }}
+                                        isDisabled={!paisId}
+                                        placeholder="Seleccionar provincia"
+                                        isSearchable={true}
+                                        styles={customStyles}
+                                    />
+                                </div>
                             </div>
 
                             <div className={styles.inputBox}>
                                 <label htmlFor="localidad">Localidad:</label>
-                                <select
-                                    id="localidad"
-                                    value={localidadId ?? ''}
-                                    onChange={(e) => setLocalidadId(Number(e.target.value))}
-                                    disabled={!provinciaId}
-                                    required>
-                                    <option value="" disabled>Seleccionar localidad</option>
-                                    {localidades.map((localidad) => (
-                                        <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-                                    ))}
-                                </select>
+                                <div className={styles.selectWrapper}>
+                                    <Select
+                                        options={localidadesOptions}
+                                        components={{
+                                            IndicatorSeparator: () => null,
+                                        }}
+                                        value={localidadesOptions.find((opt) => opt.value === localidadId) ?? null}
+                                        onChange={(selectedOption) => {
+                                            if (selectedOption) {
+                                                setLocalidadId(selectedOption.value);
+                                            }
+                                        }}
+                                        isDisabled={!provinciaId}
+                                        placeholder="Seleccionar localidad"
+                                        isSearchable={true}
+                                        styles={customStyles}
+                                    />
+                                </div>
                             </div>
                         </div>
 
