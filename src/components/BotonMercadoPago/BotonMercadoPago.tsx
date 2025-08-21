@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {initMercadoPago, Wallet} from '@mercadopago/sdk-react';
+import {initMercadoPago} from '@mercadopago/sdk-react';
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import mercadoPagoLogo from '/assets/logo-mp.png';
 import Swal from "sweetalert2";
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
-    const [idPreference, setIdPreference] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -34,17 +33,19 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
 
         showLoading('Cargando Mercado Pago...');
 
-        const pedido = {
-            montoCarrito,
-            items
-        };
-        console.log(pedido);
+        const pedido = {montoCarrito, items};
 
         try {
             const response = await crearPeticionMP(pedido);
-            console.log(response);
-            setIdPreference(response.id);
-            Swal.close();
+
+            // redirige automaticamente al checkout de MP para evitar mostrar el segundo boton
+            if (response.initPoint) {
+                Swal.close();
+                window.location.href = response.initPoint;
+            } else {
+                await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
+            }
+
         } catch (err) {
             Swal.close();
             console.error("Error generando preferencia", err);
@@ -64,16 +65,8 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
         <div className={styles.divBoton}>
             <button className={styles.btnMercadoPago} onClick={handleComprar}>
                 <img src={mercadoPagoLogo} alt="Mercado Pago" className={styles.logoMercadoPago}/>
-                Ir a pagar
+                Pagar con Mercado Pago
             </button>
-
-            {idPreference && (
-                <div style={{width: '300px'}}>
-                    <Wallet initialization={{
-                        preferenceId: idPreference,
-                        redirectMode: 'self'}}/>
-                </div>
-            )}
         </div>
     );
 };
