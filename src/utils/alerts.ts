@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2';
+import Swal, {type SweetAlertResult} from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
@@ -8,7 +8,7 @@ export const showAlert = (
     icon: 'success' | 'error' | 'warning' | 'info' | 'question',
     text?: string,
     allowExit?: boolean
-) => {
+): Promise<SweetAlertResult> => {
     return MySwal.fire({
         title,
         icon,
@@ -23,7 +23,7 @@ export const showConfirm = async (
     text?: string,
     confirmButtonText: string = 'Si',
     cancelButtonText: string = 'No'
-) => {
+): Promise<boolean> => {
     const result = await MySwal.fire({
         title,
         html: text,
@@ -37,7 +37,7 @@ export const showConfirm = async (
     return result.isConfirmed;
 };
 
-export const showLoading = (message: string = 'Cargando...') => {
+export const showLoading = (message: string = 'Cargando...'): void => {
     void MySwal.fire({
         title: message,
         icon: 'info',

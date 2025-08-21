@@ -13,6 +13,11 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
+import { StockABM } from './pages/StockABM/StockABM.tsx';
+import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
+import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
+import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
+import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 
 const Router = () => {
@@ -66,6 +71,46 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <IngredientesABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.STOCK_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <StockABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.GESTION_EMPRESA}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <GestionEmpresa/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.PROMOCIONES_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <PromocionesABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.EMPRESA_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <EmpresaABM/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.SUCURSAL_ABM}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <SucursalABM/>
                         </ProtectedRoute>
                     }
                 />

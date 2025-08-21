@@ -8,15 +8,17 @@ import {
 import React, { useEffect, useState } from "react";
 import type { CategoriaArticulo } from "../../models/categoriaArticulo.ts";
 import type { UnidadMedida } from "../../models/unidadMedida.ts";
-import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
+import type { ArticuloInsumo, ArticuloInsumoCreacion } from "../../models/articuloInsumo.ts";
 import styles from "./FormularioArticuloInsumo.module.css";
 
 export const FormularioArticulosInsumo = ({
   onClose,
   articuloParaEditar,
+  onCreateSuccess
 }: {
   onClose: () => void;
   articuloParaEditar?: ArticuloInsumo;
+  onCreateSuccess: () => void;
 }) => {
   const [denominacion, setDenominacion] = useState("");
   const [precioCompra, setPrecioCompra] = useState(0);
@@ -38,27 +40,30 @@ export const FormularioArticulosInsumo = ({
 
         const unidadesObtenidas = await getUnidadesDeMedida();
         setUnidades(unidadesObtenidas);
+
+        if (articuloParaEditar) {
+          setDenominacion(articuloParaEditar.denominacion);
+          setPrecioCompra(articuloParaEditar.precioCompra);
+          setPrecioVenta(articuloParaEditar.precioVenta);
+          setEsParaElaborar(articuloParaEditar.esParaElaborar);
+
+          if (articuloParaEditar.nombreImagen) {
+            const url = `http://localhost:8080/uploads/images/${articuloParaEditar.nombreImagen}`;
+            setUrlImagen(url);
+            setImagenArticuloInsumo(url);
+          }
+          if (articuloParaEditar.categorias.length > 0) {
+            setCategoriaSeleccionada(articuloParaEditar.categorias[0]);
+          }
+
+          setUnidadSeleccionada(articuloParaEditar.nombreUnidadMedida);
+        }
       } catch (error) {
         console.error("Error al cargar los artículos o unidades:", error);
       }
     }
 
     void cargarDatos();
-  }, []);
-
-  // Si se pasa un artículo a editar, se cargan sus datos en el formulario
-  useEffect(() => {
-    if (articuloParaEditar) {
-      setDenominacion(articuloParaEditar.denominacion);
-      setPrecioCompra(articuloParaEditar.precioCompra);
-      setPrecioVenta(articuloParaEditar.precioVenta);
-      setEsParaElaborar(articuloParaEditar.esParaElaborar);
-      setUrlImagen(articuloParaEditar.imagenInsumo?.url ?? "");
-      setCategoriaSeleccionada(
-        articuloParaEditar.categoriaArticulo.denominacion
-      );
-      setUnidadSeleccionada(articuloParaEditar.unidadMedida.denominacion);
-    }
   }, [articuloParaEditar]);
   //
 
@@ -67,76 +72,57 @@ export const FormularioArticulosInsumo = ({
 
     setFormularioValidado(true);
 
-    // * no envia el formulario si falta algo obligatorio
     if (
       !denominacion.trim() ||
-      !categoriaSeleccionada.trim() ||
-      !imagenArticuloInsumo.trim() ||
+      !categoriaSeleccionada ||
+      !imagenArticuloInsumo ||
       !precioCompra ||
       !precioVenta ||
-      !unidadSeleccionada.trim()
+      !unidadSeleccionada
     ) {
-      //.trim() para evitar espacios en blanco
       return;
     }
 
-    const categoriaObj = categorias.find(
-      (cat) => cat.denominacion === categoriaSeleccionada
+
+    const nuevaCategoria = categorias.find(
+      (categoria) => categoria.denominacion === categoriaSeleccionada
     );
 
-    const unidadObj = unidades.find(
-      (uni) => uni.denominacion === unidadSeleccionada
-    );
+    const nuevaUnidad = unidades.find(
+      (unidad) => unidad.denominacion === unidadSeleccionada
+    )
 
-    //Eliminar
-    if (!categoriaObj || !unidadObj) {
-      alert("Categoría o unidad no encontrada");
+    if (!nuevaCategoria || !nuevaUnidad) {
+      console.error("No se encontro la categoria o unidad seleccionada");
       return;
     }
-    //
 
-    const articuloInsumo = {
-      estaActivo: true,
-      fechaAlta: null,
-      fechaBaja: null,
+    const nuevoArticulo:ArticuloInsumoCreacion = {
+      id: articuloParaEditar?.id,
       denominacion,
       precioCompra,
       precioVenta,
       esParaElaborar,
-      categoriaArticulo: {
-        id: categoriaObj.id,
-      },
-      unidadMedida: {
-        id: unidadObj.id,
-      },
+      categoriaArticuloInsumo: { id: nuevaCategoria.id },
+      unidadMedida: { id: nuevaUnidad.id },
       imagenInsumo: {
-        denominacion: imagenArticuloInsumo.split("/").pop() ?? "",
+        denominacion: String(imagenArticuloInsumo.split("/").pop() ?? null),
       },
     };
 
     try {
       if (articuloParaEditar) {
-        const articuloActualizado = {
-          ...articuloParaEditar,
-          denominacion,
-          precioCompra,
-          precioVenta,
-          esParaElaborar,
-          categoriaArticulo: {
-            id: categoriaObj.id,
-          },
-          unidadMedida: {
-            id: unidadObj.id,
-          },
-          imagenInsumo: {
-            url: urlImagen,
-          },
-        };
-        await editarArticuloInsumo(articuloActualizado);
+        console.log(nuevoArticulo);
+        await editarArticuloInsumo(nuevoArticulo);
       } else {
-        await crearArticuloInsumo(articuloInsumo);
+        await crearArticuloInsumo(nuevoArticulo);
       }
+
+      console.log("aca 1")
+      onCreateSuccess();
+      console.log("aca 2")
       onClose();
+      
     } catch (error) {
       console.error("Error al guardar el artículo:", error);
     }
@@ -188,7 +174,7 @@ export const FormularioArticulosInsumo = ({
               type="number"
               placeholder="Precio Compra"
               value={precioCompra}
-              onChange={(e) => setPrecioCompra(parseFloat(e.target.value))}
+              onChange={(e) => setPrecioCompra(Number(e.target.value) || 0)}
             />
             {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
             {formularioValidado && !precioCompra && (

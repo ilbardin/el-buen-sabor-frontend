@@ -34,7 +34,7 @@ export async function getArticulosManufacturados(): Promise<ArticuloManufacturad
 
 export async function getDetallesArticuloManufacturado(id: string): Promise<ArticuloManufacturado | undefined> {
     try {
-        const response = await axiosInstance.get<ArticuloManufacturado>(`${API_URL}/detalle/${id}`);
+        const response = await axiosInstance.get<ArticuloManufacturado>(`${API_URL}/${id}`);
 
         if (handleInvalidResponse(response, "Error al obtener los artículos manufacturados.")) {
             return;
