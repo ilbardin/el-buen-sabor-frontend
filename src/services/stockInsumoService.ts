@@ -1,11 +1,8 @@
-import type { AxiosResponse } from "axios";
+import type {AxiosResponse} from "axios";
 import axiosInstance from "../api/axiosInstance.ts";
-import type { StockInsumo } from "../models/stockInsumo";
-import { showAlert } from "../utils/alerts";
-import { useSucursalStore } from "../components/Sucursal/SucursalStore.tsx";
-const idSucursal = useSucursalStore.getState().idSucursal;
-
-const API_URL = import.meta.env.VITE_API_URL + "/sucursal/" + idSucursal + "/stock";
+import type {StockInsumo} from "../models/stockInsumo";
+import {showAlert} from "../utils/alerts";
+import {useSucursalStore} from "../components/Sucursal/SucursalStore.tsx";
 
 
 function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
@@ -15,8 +12,6 @@ function handleInvalidResponse(response: AxiosResponse, errorMessage: string): b
     }
     return false;
 }
-
-
 
 export async function getStockInsumos(): Promise<StockInsumo[]> {
     try {

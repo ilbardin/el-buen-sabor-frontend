@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
@@ -50,7 +50,7 @@ export const IngredientesABM = () => {
           onClose={async () => {
             setMostrarModal(false);
             setArticuloParaEditar(null);
-            cargarArticulosInsumo();
+            await cargarArticulosInsumo();
           }}
           onCreateSuccess={cargarArticulosInsumo}
           

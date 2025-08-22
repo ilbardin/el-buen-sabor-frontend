@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./formularioEmpresa.module.css";
+import styles from "./FormularioEmpresa.module.css";
 import { crearEmpresa, editarEmpresa } from "../../services/empresaService";
 import type { Empresa } from "../../models/empresa.ts";
 
