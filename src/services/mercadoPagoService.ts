@@ -12,4 +12,4 @@ interface PedidoMp {
 }
 
 export const crearPeticionMP = (pedido: PedidoMp) =>
-    axiosInstance.post<PreferenceIdResponse>('/checkout', pedido).then(res => res.data);
+    axiosInstance.post<PreferenceIdResponse>('/mercadopago/checkout', pedido).then(res => res.data);
