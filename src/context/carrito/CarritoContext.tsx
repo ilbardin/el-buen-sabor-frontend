@@ -5,24 +5,14 @@ import {showAlert} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
+import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
+import type {PedidoRequest} from "../../models/pedidoRequest.ts";
 
 const CHECK_INTERVAL = 60000;
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
     precio: number;
-}
-
-interface PedidoRequest {
-    subtotal: number;
-    gastosEnvio: number;
-    total: number;
-    tipoEnvio: 'delivery' | 'takeaway';
-    detalles: {
-        cantidad: number;
-        subTotal: number;
-        articuloManufacturado: { id: number };
-    }[];
 }
 
 export interface CartContextProps {
@@ -54,11 +44,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
         if (savedCart && expiration) {
             const isExpired = Date.now() > parseInt(expiration, 10);
-            
+
             if (!isExpired) {
                 return JSON.parse(savedCart);
             }
-            
+
             clearCart();
         }
 
@@ -148,13 +138,19 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     };
 
     const saveCart = async () => {
+        const tipoEnvioSeleccionado = await tipoEnvio();
+
+        if (!tipoEnvioSeleccionado) {
+            return;
+        }
+
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        const gastosEnvio = 500;
+        const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
         const total = subtotal + gastosEnvio;
 
         const detalles = cart.map((item) => ({
             cantidad: item.cantidad,
-            subTotal: item.precio * item.cantidad,
+            subtotal: item.precio * item.cantidad,
             articuloManufacturado: {id: item.id!},
         }));
 
@@ -162,8 +158,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             subtotal,
             gastosEnvio,
             total,
-            tipoEnvio: 'delivery',
+            tipoEnvio: tipoEnvioSeleccionado,
             detalles,
+            cliente: {id: 1},
+            sucursalEmpresa: {id: 1}
         };
 
         try {

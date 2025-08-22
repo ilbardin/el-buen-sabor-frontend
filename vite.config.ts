@@ -1,23 +1,26 @@
-// vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import {defineConfig} from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import fs from 'fs';
+import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5173,
-  },
-  // 👇 Esta parte es la importante
-  build: {
-    rollupOptions: {
-      input: '/index.html'
-    }
-  },
-  // 👇 Esta línea permite que al recargar en cualquier ruta funcione
-  resolve: {
-    alias: {
-      '/@': '/src'
-    }
-  }
-});
+    plugins: [react()],
+    server: {
+        port: 5173,
+        https: {
+            key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+            cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
+        },
+        host: 'localhost',
+    },
+    build: {
+        rollupOptions: {
+            input: '/index.html',
+        },
+    },
+    resolve: {
+        alias: {
+            '/@': '/src',
+        },
+    },
+})
