@@ -10,9 +10,10 @@ import type {ItemCarritoMp} from "../../models/pedidoRequest.ts";
 interface Props {
     montoCarrito: number;
     items: ItemCarritoMp[];
+    idPedido: string;
 }
 
-const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
+const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items, idPedido}) => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -33,7 +34,7 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items}) => {
 
         showLoading('Cargando Mercado Pago...');
 
-        const pedido = {montoCarrito, items};
+        const pedido = {montoCarrito, items, idPedido};
 
         try {
             const response = await crearPeticionMP(pedido);

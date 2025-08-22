@@ -9,6 +9,7 @@ interface PreferenceIdResponse {
 interface PedidoMp {
     montoCarrito: number;
     items: ItemCarritoMp[];
+    idPedido: string;
 }
 
 export const crearPeticionMP = (pedido: PedidoMp) =>

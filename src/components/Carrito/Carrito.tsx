@@ -79,6 +79,7 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onC
                         <BotonMercadoPago
                             montoCarrito={total}
                             items={mpItems}
+                            idPedido={""}
                         />
                         <button
                             className={`${styles.boton} ${styles.btnClear}`}
