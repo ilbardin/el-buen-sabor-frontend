@@ -41,7 +41,6 @@ const BotonMercadoPago: React.FC<Props> = ({montoCarrito, items, idPedido}) => {
 
             // redirige automaticamente al checkout de MP para evitar mostrar el segundo boton
             if (response.initPoint) {
-                Swal.close();
                 window.location.href = response.initPoint;
             } else {
                 await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
