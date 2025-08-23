@@ -23,10 +23,9 @@ type LoginProps = {
 };
 
 export const LandingPage = ({onLoginSuccess}: LoginProps) => {
-    const {logout, setIsLoggingOut} = useAuth();
+    const {logout, setIsLoggingOut, usuario} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useState<null | { nombre: string; apellido: string }>(null);
 
     // Componente carrito
     const [showCart, setShowCart] = useState(false);
@@ -76,7 +75,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const handleUserLogout = async () => {
         const performLogout = () => {
             logout();
-            setUser(null);
             navigate(ROUTES.HOME);
         };
 
@@ -94,12 +92,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const handleSuccess = (data: UserData) => {
         Swal.close();
         onLoginSuccess(data);
-
-        const storedUser = localStorage.getItem('usuario');
-
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
 
         const navigateByRole = (role: UserRole) => {
             switch (role) {
@@ -187,7 +179,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                 } else {
                     const top = rect.bottom + window.scrollY - 12;
                     const left = rect.right + window.scrollX - 370;
-                    setCartPosition({ top, left });
+                    setCartPosition({top, left});
                 }
             }
         };
@@ -207,13 +199,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     }, [setIsLoggingOut]);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('usuario');
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }
-    }, []);
-
-    useEffect(() => {
         if ((showLogin || isClosing) && userIconRef.current) {
             const rect = userIconRef.current.getBoundingClientRect();
             const top = rect.bottom + window.scrollY + 8;
@@ -229,12 +214,12 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     <span>EL BUEN SABOR™</span>
                 </div>
                 <nav className={styles.navLinks}>
-                    {user && <Link to={ROUTES.PRODUCTOS}>Menú</Link>}
+                    {usuario && <Link to={ROUTES.PRODUCTOS}>Menú</Link>}
                     <Link to="/especiales">Nuestros especiales</Link>
                     <Link to="/sucursales">Sucursales</Link>
                 </nav>
                 <div className={styles.actions}>
-                    {user && (
+                    {usuario && (
                         <span
                             className={styles.icon}
                             onClick={toggleCart}
@@ -252,9 +237,9 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                     />
 
                     <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
-                        {user ? (
+                        {usuario ? (
                             <div className={styles.userCircle}>
-                                {getInitials(user.nombre, user.apellido)}
+                                {getInitials(usuario.nombre, usuario.apellido)}
                             </div>
                         ) : (
                             <FaUser/>
@@ -294,7 +279,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                         <br/>
                         Tiene <span className={styles.buenSabor}>El Buen Sabor</span>.
                     </p>
-                    {user && <button
+                    {usuario && <button
                         className={styles.orderButton}
                         onClick={() => navigate(ROUTES.PRODUCTOS)}>
                         PEDIR
