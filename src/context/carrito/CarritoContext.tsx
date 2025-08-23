@@ -140,52 +140,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         });
     };
 
-    // const saveCart = async () => {
-    //     if (!clienteId) {
-    //         await showAlert("Error", "error", "No ha iniciado sesión.");
-    //         return;
-    //     }
-    //
-    //     const tipoEnvioSeleccionado = await tipoEnvio();
-    //
-    //     if (!tipoEnvioSeleccionado) {
-    //         return;
-    //     }
-    //
-    //     const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-    //     const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
-    //     const total = subtotal + gastosEnvio;
-    //
-    //     const detalles = cart.map((item) => ({
-    //         cantidad: item.cantidad,
-    //         subtotal: item.precio * item.cantidad,
-    //         articuloManufacturado: {id: item.id!},
-    //     }));
-    //
-    //     const pedido: PedidoRequest = {
-    //         subtotal,
-    //         gastosEnvio,
-    //         total,
-    //         tipoEnvio: tipoEnvioSeleccionado,
-    //         detalles,
-    //         cliente: {id: clienteId},
-    //         sucursalEmpresa: {id: 1}
-    //     };
-    //
-    //     try {
-    //         const response = await savePedido(pedido);
-    //         await showAlert(
-    //             '¡Pedido Guardado!',
-    //             'success',
-    //             `El pedido con ID ${response?.data.id} fue guardado correctamente.`
-    //         );
-    //         clearCart();
-    //     } catch (error) {
-    //         console.error('Error al guardar el pedido:', error);
-    //         await showAlert('Error', 'error', 'No se pudo guardar el pedido.');
-    //     }
-    // };
-
     const checkoutCart = async () => {
         if (!clienteId) {
             await showAlert("Error", "error", "No ha iniciado sesión.");
@@ -217,8 +171,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
         try {
             const response = await savePedido(pedido);
-            const idPedido = response?.data.id;
-            clearCart(); // ver esto
+            const idPedido: string = response?.data.id.toString();
 
             const mpItems = mapCartItemsToMpItems(cart);
 
@@ -227,11 +180,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             const mpResponse = await crearPeticionMP({
                 montoCarrito: total,
                 items: mpItems,
-                idPedido
+                idPedido,
             });
 
             if (mpResponse.initPoint) {
                 window.location.href = mpResponse.initPoint;
+                clearCart(); // TODO: despues limpiar carrito si el pago fue exitoso
             } else {
                 await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
             }
