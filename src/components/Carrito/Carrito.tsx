@@ -1,10 +1,8 @@
 import React from 'react';
-import {FaMinus, FaPlus, FaShoppingCart} from 'react-icons/fa';
+import {FaCartPlus, FaMinus, FaPlus, FaShoppingCart} from 'react-icons/fa';
 import {MdDelete} from "react-icons/md";
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
-import BotonMercadoPago from "../BotonMercadoPago/BotonMercadoPago.tsx";
 import styles from "./Carrito.module.css";
-import {mapCartItemsToMpItems} from "../../utils/funcionesReutilizables.ts";
 
 export interface ItemCarrito extends ArticuloManufacturado {
     cantidad: number;
@@ -14,12 +12,11 @@ interface CartProps {
     items: ItemCarrito[];
     onIncrease: (id: number) => void;
     onDecrease: (id: number) => void;
+    onCheckout: () => void;
     onClear: () => void;
 }
 
-export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onClear}) => {
-    const mpItems = mapCartItemsToMpItems(items);
-
+export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onClear, onCheckout}) => {
     const total = items.reduce((sum, it) => sum + it.precioVenta * it.cantidad, 0);
 
     return (
@@ -68,19 +65,14 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onC
                         <p className={styles.cartTotal}>
                             Total: <strong>${total.toFixed(2)}</strong>
                         </p>
-                        {/*<button*/}
-                        {/*    className={`${styles.boton} ${styles.btnSave}`}*/}
-                        {/*    disabled={items.length === 0}*/}
-                        {/*    onClick={onSave}*/}
-                        {/*>*/}
-                        {/*    <FaCartPlus size={20}/>*/}
-                        {/*    <span className={styles.btnText}>Enviar pedido</span>*/}
-                        {/*</button>*/}
-                        <BotonMercadoPago
-                            montoCarrito={total}
-                            items={mpItems}
-                            idPedido={""}
-                        />
+                        <button
+                            className={`${styles.boton} ${styles.btnSave}`}
+                            disabled={items.length === 0}
+                            onClick={onCheckout}
+                        >
+                            <FaCartPlus size={20}/>
+                            <span className={styles.btnText}>Enviar pedido</span>
+                        </button>
                         <button
                             className={`${styles.boton} ${styles.btnClear}`}
                             disabled={items.length === 0}

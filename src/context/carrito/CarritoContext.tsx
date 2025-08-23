@@ -1,12 +1,15 @@
 import React, {type ReactNode, useCallback, useEffect, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
-import {showAlert} from '../../utils/alerts.ts';
+import {showAlert, showLoading} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
 import type {PedidoRequest} from "../../models/pedidoRequest.ts";
+import Swal from "sweetalert2";
+import {crearPeticionMP} from "../../services/mercadoPagoService.ts";
+import {mapCartItemsToMpItems} from "../../utils/funcionesReutilizables.ts";
 
 const CHECK_INTERVAL = 60000;
 
@@ -22,7 +25,7 @@ export interface CartContextProps {
     increaseQuantity: (id: number) => void;
     decreaseQuantity: (id: number) => void;
     clearCart: () => void;
-    saveCart: () => Promise<void>;
+    checkoutCart: () => Promise<void>;
     isItemInCart: (id: number) => boolean;
 }
 
@@ -137,17 +140,60 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         });
     };
 
-    const saveCart = async () => {
+    // const saveCart = async () => {
+    //     if (!clienteId) {
+    //         await showAlert("Error", "error", "No ha iniciado sesión.");
+    //         return;
+    //     }
+    //
+    //     const tipoEnvioSeleccionado = await tipoEnvio();
+    //
+    //     if (!tipoEnvioSeleccionado) {
+    //         return;
+    //     }
+    //
+    //     const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+    //     const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
+    //     const total = subtotal + gastosEnvio;
+    //
+    //     const detalles = cart.map((item) => ({
+    //         cantidad: item.cantidad,
+    //         subtotal: item.precio * item.cantidad,
+    //         articuloManufacturado: {id: item.id!},
+    //     }));
+    //
+    //     const pedido: PedidoRequest = {
+    //         subtotal,
+    //         gastosEnvio,
+    //         total,
+    //         tipoEnvio: tipoEnvioSeleccionado,
+    //         detalles,
+    //         cliente: {id: clienteId},
+    //         sucursalEmpresa: {id: 1}
+    //     };
+    //
+    //     try {
+    //         const response = await savePedido(pedido);
+    //         await showAlert(
+    //             '¡Pedido Guardado!',
+    //             'success',
+    //             `El pedido con ID ${response?.data.id} fue guardado correctamente.`
+    //         );
+    //         clearCart();
+    //     } catch (error) {
+    //         console.error('Error al guardar el pedido:', error);
+    //         await showAlert('Error', 'error', 'No se pudo guardar el pedido.');
+    //     }
+    // };
+
+    const checkoutCart = async () => {
         if (!clienteId) {
             await showAlert("Error", "error", "No ha iniciado sesión.");
             return;
         }
 
         const tipoEnvioSeleccionado = await tipoEnvio();
-
-        if (!tipoEnvioSeleccionado) {
-            return;
-        }
+        if (!tipoEnvioSeleccionado) return;
 
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
         const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
@@ -166,22 +212,37 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             tipoEnvio: tipoEnvioSeleccionado,
             detalles,
             cliente: {id: clienteId},
-            sucursalEmpresa: {id: 1} // TODO: ajustar esto
+            sucursalEmpresa: {id: 1} // TODO: ajustar
         };
 
         try {
             const response = await savePedido(pedido);
-            await showAlert(
-                '¡Pedido Guardado!',
-                'success',
-                `El pedido con ID ${response?.data.id} fue guardado correctamente.`
-            );
-            clearCart();
+            const idPedido = response?.data.id;
+            clearCart(); // ver esto
+
+            const mpItems = mapCartItemsToMpItems(cart);
+
+            showLoading('Cargando Mercado Pago...');
+
+            const mpResponse = await crearPeticionMP({
+                montoCarrito: total,
+                items: mpItems,
+                idPedido
+            });
+
+            if (mpResponse.initPoint) {
+                window.location.href = mpResponse.initPoint;
+            } else {
+                await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
+            }
+
         } catch (error) {
-            console.error('Error al guardar el pedido:', error);
-            await showAlert('Error', 'error', 'No se pudo guardar el pedido.');
+            Swal.close();
+            console.error('Error en el checkout:', error);
+            await showAlert('Error', 'error', 'Ocurrió un error al procesar el checkout.');
         }
     };
+
 
     return (
         <CartContext.Provider
@@ -192,7 +253,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
                 increaseQuantity,
                 decreaseQuantity,
                 clearCart,
-                saveCart,
+                checkoutCart,
                 isItemInCart
             }}>
             {children}

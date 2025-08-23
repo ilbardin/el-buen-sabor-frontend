@@ -10,7 +10,7 @@ import {ROUTES} from "../../constants/routes.ts";
 
 const Productos: React.FC = () => {
     const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
-    const {cart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
+    const {cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart} = useCart();
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -58,6 +58,7 @@ const Productos: React.FC = () => {
                     items={cart}
                     onIncrease={increaseQuantity}
                     onDecrease={decreaseQuantity}
+                    onCheckout={checkoutCart}
                     onClear={clearCart}
                 />
             </div>
