@@ -1,6 +1,6 @@
 export interface PedidoRequest {
     subtotal: number;
-    gastosEnvio: number;
+    gastosEnvio: number | null;
     total: number;
     tipoEnvio: "delivery" | "takeaway";
     cliente: { id: number };

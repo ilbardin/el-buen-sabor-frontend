@@ -150,8 +150,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         if (!tipoEnvioSeleccionado) return;
 
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : 0;
-        const total = subtotal + gastosEnvio;
+        const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : null;
+        const total = subtotal + (gastosEnvio ?? 0);
 
         const detalles = cart.map((item) => ({
             cantidad: item.cantidad,
@@ -178,8 +178,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             showLoading('Cargando Mercado Pago...');
 
             const mpResponse = await crearPeticionMP({
-                montoCarrito: total,
                 items: mpItems,
+                shipment: gastosEnvio,
                 idPedido,
             });
 

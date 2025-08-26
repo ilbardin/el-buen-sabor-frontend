@@ -7,8 +7,8 @@ interface PreferenceIdResponse {
 }
 
 interface PedidoMp {
-    montoCarrito: number;
     items: ItemCarritoMp[];
+    shipment: number | null;
     idPedido: string;
 }
 
