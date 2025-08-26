@@ -1,9 +1,26 @@
 .container {
+    position: relative;
+    min-height: 100vh;
     font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     text-align: center;
-    padding: 1rem;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem 2rem 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.content {
     max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
+    z-index: 1;
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
 }
 
 .header {
@@ -17,10 +34,10 @@
     background-color: red;
     color: white;
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +117,17 @@
     font-size: 1.2rem;
 }
 
-/* Responsive */
+.bgPizza {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 100%;
+    height: auto;
+    /*opacity: 0.50;*/
+    pointer-events: none;
+    z-index: 0;
+}
+
 @media (max-width: 600px) {
     .infoGrid {
         grid-template-columns: 1fr;
@@ -117,5 +144,9 @@
         top: 40px;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    .bgPizza {
+        max-width: 200px;
     }
 }
