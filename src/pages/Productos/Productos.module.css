@@ -3,15 +3,20 @@
   flex-direction: row;
   padding: 1rem 1rem 1rem;
   position: relative;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px;
 }
 
 .mainContent {
-  flex: 1;
   padding-right: 1rem;
+  width: 70%; /* NO SE RESPETA EL 60% */
 }
 
 .gridContainer {
-  max-width: calc(100% - 120px);
+  width: 60%;
+  max-width: 65%;
 }
 
 .grid {
