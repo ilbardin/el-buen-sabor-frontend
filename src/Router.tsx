@@ -20,6 +20,7 @@ import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
 import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
+import { VistaCocina } from './pages/VistaCocina/VistaCocina.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -119,7 +120,15 @@ const Router = () => {
                     path={ROUTES.PRUEBA}
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                            <Prueba/>
+                            <Prueba productos={[]}/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.COCINA}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <VistaCocina/>
                         </ProtectedRoute>
                     }
                 />

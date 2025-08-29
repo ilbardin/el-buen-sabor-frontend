@@ -47,7 +47,7 @@ export default function ModuloProductoOferta(props: {
         onClick={handleAddToCart}
       >
         <MdAddShoppingCart size={20} />
-        &nbsp;Agregar al carrito
+        &nbsp;Agregar al <br /> carrito
       </button>
     </div>
   );

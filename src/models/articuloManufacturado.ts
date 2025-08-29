@@ -1,6 +1,6 @@
 export interface ArticuloManufacturado {
     id?: number;
-    estaActivo?: boolean;
+    fechaBaja?: string | null;
     denominacion: string;
     descripcion: string;
     precioVenta: number;

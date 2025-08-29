@@ -18,7 +18,7 @@ export default function ModuloArticuloManofacturado(props: {
       <td>{props.articulo.descripcion}</td>
       <td>{props.articulo.tiempoEstimado}</td>
       <td>{props.articulo.precioCosto}</td>
-      <td>{props.articulo.estaActivo ? "Activo" : "Inactivo"}</td>
+      <td>{props.articulo.fechaBaja ? "Inactivo" : "Activo"}</td>
       <td>
         {props.articulo.imagenes && props.articulo.imagenes.length > 0 ? (
           <img

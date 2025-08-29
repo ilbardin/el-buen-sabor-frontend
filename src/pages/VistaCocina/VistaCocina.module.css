@@ -1,0 +1,12 @@
+.vistaCocina {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  gap: 20px; /* espacio entre módulos */
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 90%;
+  width: 95%;
+  padding: 20px;
+  margin: 0 auto; /* centrar contenedor */
+  align-items: stretch;
+}

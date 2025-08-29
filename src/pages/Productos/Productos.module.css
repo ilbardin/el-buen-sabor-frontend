@@ -11,7 +11,7 @@
 
 .mainContent {
   padding-right: 1rem;
-  width: 70%; /* NO SE RESPETA EL 60% */
+  width: 70%;
 }
 
 .gridContainer {
@@ -83,4 +83,8 @@
 
 .statsButton:hover {
   background-color: #0e6c83;
+}
+
+.title{
+  margin-bottom: 0rem;
 }

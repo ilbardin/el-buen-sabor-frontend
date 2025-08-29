@@ -31,19 +31,6 @@ const Productos: React.FC = () => {
       void cargarOfertas();
       void cargarProductosManofacturados();
   }, []);
-/*
-  const cargarProductos = useCallback(() => {
-    getArticulosManufacturados()
-      .then((res) => setProductos(res))
-      .catch((err) => {
-        console.error("Error al cargar productos", err);
-      });
-  }, []);
-
-  useEffect(() => {
-    cargarProductos();
-  }, [cargarProductos]);
-  */
 
   // TODO: implementar una nueva pagina con el estado del pedido
   // TODO: este metodo va a estar en la pagina del estado del pedido
@@ -59,11 +46,12 @@ const Productos: React.FC = () => {
     <>
       <div className={styles.homepageLayout}>
         <div className={styles.mainContent}>
-          <h1>Productos Manufacturados</h1>
           <div>
+            <h3 className={styles.title}>Ofertas</h3>
             <Prueba productos={ofertas} />
           </div>
           <div>
+            <h3 className={styles.title}>Productos</h3>
             <Prueba productos={productos}/>
           </div>
           <div className={styles.gridContainer}>
