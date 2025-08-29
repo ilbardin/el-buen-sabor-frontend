@@ -6,4 +6,11 @@ export const ROUTES = {
     INSUMOS_ABM: '/insumo-abm',
     PRODUCTOS: '/productos',
     LOGIN: '/login',
+    STOCK_ABM: '/stock-abm',
+    GESTION_EMPRESA: '/gestion-empresa',
+    PROMOCIONES_ABM: '/promociones-abm',
+    GESTION_SUCURSALES: '/gestion-sucursales',
+    EMPRESA_ABM: '/empresa-abm',
+    SUCURSAL_ABM: '/sucursal-abm',
+    PRUEBA: '/prueba',
 };

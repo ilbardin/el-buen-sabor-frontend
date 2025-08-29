@@ -1,0 +1,45 @@
+.moduloProductoOferta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  height: 350px;
+  border-color: blue;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.moduloProductoOfertaImagen {
+  width: 150px;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  border-color: red;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.moduloProductoOfertaDenominacion {
+  font-size: 15px;
+  margin-top: 2px;
+  text-align: center;
+}
+
+.moduloProductoOfertaDescuento {
+  width: 100%;
+  font-size: 12px;
+  text-decoration: line-through;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  text-align: left;
+}
+
+.moduloProductoOfertaPrecio {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  text-align: left;
+}

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import {
-  eliminarArticuloManufacturado,
   getArticulosManufacturados,
 } from "../../services/articuloManufacturadoService.ts";
 import type { ArticuloManufacturado } from "../../models/articuloManufacturado.ts";
 import FormularioArticulosManufacturados from "../../components/FormularioArticulosManufacturados/FormularioArticulosManufacturados.tsx";
-import { showConfirm } from "../../utils/alerts.ts";
 import { AgregarCategoriaArticuloManufacturado } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from "./ProductosABM.module.css";
+import baseABM from "../../css/abmBase.module.css";
+import ModuloArticuloManofacturado from "../../components/ModuloArticuloManofacturado/ModuloArticuloManofacturado.tsx";
 
 export const ProductosABM = () => {
   const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
@@ -15,6 +15,8 @@ export const ProductosABM = () => {
   const [mostrarModalCategoria, setMostrarModalCategoria] = useState(false);
   const [articuloParaEditar, setArticuloParaEditar] =
     useState<ArticuloManufacturado | null>(null);
+
+  const [busqueda, setBusqueda] = useState("");
 
   const cargarArticulosManofacturados = async () => {
     try {
@@ -29,21 +31,14 @@ export const ProductosABM = () => {
     void cargarArticulosManofacturados();
   }, []);
 
-  async function handleEliminar(id: number) {
-    try {
-      const confirmacion = await showConfirm(
-        "Confirmación",
-        "¿Está seguro de que desea eliminar el producto?"
-      );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBusqueda(e.target.value.toLowerCase());
+  };
 
-      if (confirmacion) {
-        await eliminarArticuloManufacturado(id);
-        setArticulos(articulos.filter((articulo) => articulo.id !== id));
-      }
-    } catch (error) {
-      console.error("Error al eliminar el artículo:", error);
-    }
-  }
+  const articulosFiltrados = articulos.filter((articulo) =>
+    articulo.denominacion.toLowerCase().includes(busqueda)
+  );
+
 
   return (
     <div>
@@ -63,8 +58,8 @@ export const ProductosABM = () => {
         />
       )}
 
-      <div className={styles.container}>
-        <h1 className={styles.h1}>Productos Manufacturados</h1>
+      <div className={baseABM.container}>
+        <h1 className={baseABM.titulo}>Productos Manufacturados</h1>
 
         <div className={styles.botonesContainer}>
           <button
@@ -82,6 +77,16 @@ export const ProductosABM = () => {
           </button>
         </div>
 
+        <div className={baseABM.filtrosContainer}>
+          <input
+            type="text"
+            placeholder="Buscar"
+            onChange={handleChange}
+            className={baseABM.filtroInput}
+            value={busqueda}
+          />
+        </div>
+
         <table className={styles.tabla}>
           <thead>
             <tr>
@@ -90,53 +95,20 @@ export const ProductosABM = () => {
               <th>Tiempo estimadio</th>
               <th>Precio Costo</th>
               <th>Estado</th>
-              <th>Acciones</th>
               <th>Imagen</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {articulos.map((articulo) => (
-              <tr key={articulo.id}>
-                <td>{articulo.denominacion}</td>
-                <td>{articulo.descripcion}</td>
-                <td>{articulo.tiempoEstimado}</td>
-                <td>{articulo.precioCosto}</td>
-                <td>{articulo.estaActivo ? "Activo" : "Inactivo"}</td>
-                <td>
-                  {articulo.imagenes && articulo.imagenes.length > 0 ? (
-                    <img
-                      src={`http://localhost:8080/uploads/images/${articulo.imagenes[0].denominacion}`}
-                      alt="Producto"
-                      style={{ width: "80px", height: "auto", maxHeight: "80px"  }}
-                    />
-                  ) : (
-                    "Sin imagen"
-                  )}
-                </td>
-                <td>
-                  <div className={styles.accionesBotones}>
-                    <button
-                      className={`${styles.boton} ${styles.botonSecundario}`}
-                      onClick={() => {
-                        setArticuloParaEditar(articulo);
-                        setMostrarModal(true);
-                      }}
-                    >
-                      Modificar
-                    </button>
-                    <button
-                      className={styles.boton}
-                      onClick={async () => {
-                        if (articulo.id !== undefined) {
-                          await handleEliminar(articulo.id);
-                        }
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                </td>
-              </tr>
+            {articulosFiltrados.map((articulo) => (
+              <ModuloArticuloManofacturado
+                key={articulo.id}
+                articulo={articulo}
+                onModificar={(articulo) => {
+                  setArticuloParaEditar(articulo);
+                  setMostrarModal(true);
+                }}
+              />
             ))}
           </tbody>
         </table>

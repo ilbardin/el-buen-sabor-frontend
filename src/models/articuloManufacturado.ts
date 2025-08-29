@@ -11,13 +11,13 @@ export interface ArticuloManufacturado {
 }
 
 export interface ArticuloManufacturadoCreacion {
-    denominacion:   string;
-    descripcion:    string;
-    precioVenta:    number;
+    denominacion: string;
+    descripcion: string;
+    precioVenta: number;
     tiempoEstimado: number;
-    categoria:      Categoria;
-    detalles:       Detalle[];
-    imagenes:       ImagenManofacturado[]; 
+    categoria: Categoria;
+    detalles: Detalle[];
+    imagenes: ImagenManofacturado[];
 }
 
 export interface Categoria {
@@ -26,7 +26,7 @@ export interface Categoria {
 
 export interface Detalle {
     cantidad: number;
-    insumo:   Categoria;
+    insumo: Categoria;
 }
 
 export interface ImagenManofacturado {

@@ -1,28 +1,21 @@
 import React, {type ReactNode, useCallback, useEffect, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
-import {showAlert} from '../../utils/alerts.ts';
+import {showAlert, showLoading} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
+import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
+import type {PedidoRequest} from "../../models/pedidoRequest.ts";
+import Swal from "sweetalert2";
+import {crearPeticionMP} from "../../services/mercadoPagoService.ts";
+import {mapCartItemsToMpItems} from "../../utils/funcionesReutilizables.ts";
 
 const CHECK_INTERVAL = 60000;
 
 interface CartItem extends ArticuloManufacturado {
     cantidad: number;
     precio: number;
-}
-
-interface PedidoRequest {
-    subtotal: number;
-    gastosEnvio: number;
-    total: number;
-    tipoEnvio: 'delivery' | 'takeaway';
-    detalles: {
-        cantidad: number;
-        subTotal: number;
-        articuloManufacturado: { id: number };
-    }[];
 }
 
 export interface CartContextProps {
@@ -32,38 +25,38 @@ export interface CartContextProps {
     increaseQuantity: (id: number) => void;
     decreaseQuantity: (id: number) => void;
     clearCart: () => void;
-    saveCart: () => Promise<void>;
+    checkoutCart: () => Promise<void>;
     isItemInCart: (id: number) => boolean;
 }
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const {usuario} = useAuth();
-    const userId = usuario?.email || 'guest';
+    const clienteId = usuario?.cliente?.id || 1; // seteo en 1 para el caso del usuario admin
 
     const [cart, setCart] = useState<CartItem[]>([]);
 
     const clearCart = useCallback(() => {
         setCart([]);
-        localStorage.removeItem(`cart_${userId}`);
-        localStorage.removeItem(`cart_${userId}_expires`);
-    }, [userId]);
+        localStorage.removeItem(`cart_${clienteId}`);
+        localStorage.removeItem(`cart_${clienteId}_expires`);
+    }, [clienteId]);
 
     const loadCart = useCallback(() => {
-        const savedCart = localStorage.getItem(`cart_${userId}`);
-        const expiration = localStorage.getItem(`cart_${userId}_expires`);
+        const savedCart = localStorage.getItem(`cart_${clienteId}`);
+        const expiration = localStorage.getItem(`cart_${clienteId}_expires`);
 
         if (savedCart && expiration) {
             const isExpired = Date.now() > parseInt(expiration, 10);
-            
+
             if (!isExpired) {
                 return JSON.parse(savedCart);
             }
-            
+
             clearCart();
         }
 
         return [];
-    }, [clearCart, userId]);
+    }, [clearCart, clienteId]);
 
     useEffect(() => {
         const initialCart = loadCart();
@@ -76,7 +69,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         }
 
         const interval = setInterval(() => {
-            const expiration = localStorage.getItem(`cart_${userId}_expires`);
+            const expiration = localStorage.getItem(`cart_${clienteId}_expires`);
 
             if (expiration && Date.now() > parseInt(expiration, 10)) {
                 clearCart();
@@ -85,11 +78,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         }, CHECK_INTERVAL);
 
         return () => clearInterval(interval);
-    }, [cart, clearCart, userId]);
+    }, [cart, clearCart, clienteId]);
 
     const saveCartToLocalStorage = (updatedCart: CartItem[]) => {
-        localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
-        localStorage.setItem(`cart_${userId}_expires`, (Date.now() + CARRITO_EXPIRATION_TIME).toString());
+        localStorage.setItem(`cart_${clienteId}`, JSON.stringify(updatedCart));
+        localStorage.setItem(`cart_${clienteId}_expires`, (Date.now() + CARRITO_EXPIRATION_TIME).toString());
     };
 
     const addToCart = (producto: ArticuloManufacturado) => {
@@ -147,14 +140,22 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
         });
     };
 
-    const saveCart = async () => {
+    const checkoutCart = async () => {
+        if (!clienteId) {
+            await showAlert("Error", "error", "No ha iniciado sesión.");
+            return;
+        }
+
+        const tipoEnvioSeleccionado = await tipoEnvio();
+        if (!tipoEnvioSeleccionado) return;
+
         const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
-        const gastosEnvio = 500;
-        const total = subtotal + gastosEnvio;
+        const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : null;
+        const total = subtotal + (gastosEnvio ?? 0);
 
         const detalles = cart.map((item) => ({
             cantidad: item.cantidad,
-            subTotal: item.precio * item.cantidad,
+            subtotal: item.precio * item.cantidad,
             articuloManufacturado: {id: item.id!},
         }));
 
@@ -162,23 +163,40 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             subtotal,
             gastosEnvio,
             total,
-            tipoEnvio: 'delivery',
+            tipoEnvio: tipoEnvioSeleccionado,
             detalles,
+            cliente: {id: clienteId},
+            sucursalEmpresa: {id: 1} // TODO: ajustar
         };
 
         try {
             const response = await savePedido(pedido);
-            await showAlert(
-                '¡Pedido Guardado!',
-                'success',
-                `El pedido con ID ${response?.data.id} fue guardado correctamente.`
-            );
-            clearCart();
+            const idPedido: string = response?.data.id.toString();
+
+            const mpItems = mapCartItemsToMpItems(cart);
+
+            showLoading('Cargando Mercado Pago...');
+
+            const mpResponse = await crearPeticionMP({
+                items: mpItems,
+                shipment: gastosEnvio,
+                idPedido,
+            });
+
+            if (mpResponse.initPoint) {
+                window.location.href = mpResponse.initPoint;
+                clearCart(); // TODO: despues limpiar carrito si el pago fue exitoso
+            } else {
+                await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
+            }
+
         } catch (error) {
-            console.error('Error al guardar el pedido:', error);
-            await showAlert('Error', 'error', 'No se pudo guardar el pedido.');
+            Swal.close();
+            console.error('Error en el checkout:', error);
+            await showAlert('Error', 'error', 'Ocurrió un error al procesar el checkout.');
         }
     };
+
 
     return (
         <CartContext.Provider
@@ -189,7 +207,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
                 increaseQuantity,
                 decreaseQuantity,
                 clearCart,
-                saveCart,
+                checkoutCart,
                 isItemInCart
             }}>
             {children}

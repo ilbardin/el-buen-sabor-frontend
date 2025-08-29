@@ -4,19 +4,19 @@ import {MdDelete} from "react-icons/md";
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import styles from "./Carrito.module.css";
 
-interface CartItem extends ArticuloManufacturado {
+export interface ItemCarrito extends ArticuloManufacturado {
     cantidad: number;
 }
 
 interface CartProps {
-    items: CartItem[];
+    items: ItemCarrito[];
     onIncrease: (id: number) => void;
     onDecrease: (id: number) => void;
-    onSave: () => void;
+    onCheckout: () => void;
     onClear: () => void;
 }
 
-export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onSave, onClear}) => {
+export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onClear, onCheckout}) => {
     const total = items.reduce((sum, it) => sum + it.precioVenta * it.cantidad, 0);
 
     return (
@@ -68,10 +68,10 @@ export const Carrito: React.FC<CartProps> = ({items, onIncrease, onDecrease, onS
                         <button
                             className={`${styles.boton} ${styles.btnSave}`}
                             disabled={items.length === 0}
-                            onClick={onSave}
+                            onClick={onCheckout}
                         >
                             <FaCartPlus size={20}/>
-                            <span className={styles.btnText}>Guardar carrito</span>
+                            <span className={styles.btnText}>Enviar pedido</span>
                         </button>
                         <button
                             className={`${styles.boton} ${styles.btnClear}`}

@@ -1,0 +1,41 @@
+/*! Fila de la tabla */
+.fila {
+  transition: background-color 0.2s ease;
+}
+
+.fila:hover {
+  background-color: #f8f9fa;
+}
+
+.botonEditar,
+.boatonEliminar {
+  padding: 6px 12px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: "Poppins", sans-serif;
+  margin-right: 8px;
+}
+/*! Boton editar */
+.botonEditar {
+  background-color: var(--color-secundario);
+  color: var(--color-terciario);
+}
+
+.botonEditar:hover {
+  background-color: #d4ac0d;
+  transform: scale(1.05);
+}
+
+/*! Boton eliminar */
+.boatonEliminar {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.boatonEliminar:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}

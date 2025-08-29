@@ -1,0 +1,123 @@
+.divContenedor {
+  margin-top: 2.5%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(44, 62, 80, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.formulario {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  width: 420px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  color: var(--color-terciario);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.formArticuloLabel {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  color: var(--color-terciario);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.formulario input[type="text"],
+.formulario input[type="number"],
+.formulario input[list] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fdfdfd;
+  box-sizing: border-box;
+}
+
+.formulario input[type="text"]:focus,
+.formulario input[type="number"]:focus,
+.formulario input[list]:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 3px rgba(231, 76, 60, 0.4);
+}
+
+.botones {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.boton {
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botonGuardar {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.botonGuardar:hover {
+  background-color: #c0392b;
+}
+
+.botonCancelar {
+  background-color: var(--color-secundario);
+  color: var(--color-terciario);
+}
+
+.botonCancelar:hover {
+  background-color: #d4ac0d;
+}
+
+.botonConMargenInferior {
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* Estilo para errores */
+.error {
+  color: red;
+  font-size: 0.6rem;
+  margin: 0 0;
+}
+
+.inputConIcono {
+  position: relative;
+  width: 100%;
+}
+
+.inputConIcono .formArticuloInput {
+  padding-right: 36px;
+}
+
+.iconoInput {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #999;
+}
+
+

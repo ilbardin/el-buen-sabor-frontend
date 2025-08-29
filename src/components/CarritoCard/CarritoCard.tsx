@@ -13,7 +13,7 @@ type CarritoCardProps = {
 
 const CarritoCard = forwardRef<HTMLDivElement, CarritoCardProps>(
     ({showCart, isClosing, position}, ref) => {
-        const {cart, saveCart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
+        const {cart, checkoutCart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
 
         if (!showCart && !isClosing) return null;
 
@@ -31,7 +31,7 @@ const CarritoCard = forwardRef<HTMLDivElement, CarritoCardProps>(
                     items={cart}
                     onIncrease={increaseQuantity}
                     onDecrease={decreaseQuantity}
-                    onSave={saveCart}
+                    onCheckout={checkoutCart}
                     onClear={clearCart}
                 />
             </div>

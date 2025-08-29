@@ -5,10 +5,15 @@ import styles from "./Productos.module.css";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {Carrito} from "../../components/Carrito/Carrito.tsx";
 import {useCart} from "../../context/carrito/useCart.ts";
+import {useLocation, useNavigate} from "react-router-dom";
+import {ROUTES} from "../../constants/routes.ts";
 
 const Productos: React.FC = () => {
     const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
-    const {cart, saveCart, increaseQuantity, decreaseQuantity, clearCart} = useCart();
+    const {cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart} = useCart();
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const cargarProductos = useCallback(() => {
         getArticulosManufacturados()
@@ -21,6 +26,16 @@ const Productos: React.FC = () => {
     useEffect(() => {
         cargarProductos();
     }, [cargarProductos]);
+
+    // TODO: implementar una nueva pagina con el estado del pedido
+    // TODO: este metodo va a estar en la pagina del estado del pedido
+    // limpia la url
+    useEffect(() => {
+        if (location.search.includes("preference_id")) {
+            clearCart();
+            navigate(ROUTES.PRODUCTOS, {replace: true});
+        }
+    }, [clearCart, location, navigate]);
 
     return (
         <div className={styles.homepageLayout}>
@@ -43,7 +58,7 @@ const Productos: React.FC = () => {
                     items={cart}
                     onIncrease={increaseQuantity}
                     onDecrease={decreaseQuantity}
-                    onSave={saveCart}
+                    onCheckout={checkoutCart}
                     onClear={clearCart}
                 />
             </div>
