@@ -10,6 +10,7 @@ import type {CategoriaArticulo} from "../../models/categoriaArticulo.ts";
 import type {UnidadMedida} from "../../models/unidadMedida.ts";
 import type {ArticuloInsumo, ArticuloInsumoCreacion} from "../../models/articuloInsumo.ts";
 import styles from "./FormularioArticuloInsumo.module.css";
+import baseFormulario from "../../css/baseFormulario.module.css";
 
 export const FormularioArticulosInsumo = ({
                                               onClose,
@@ -140,17 +141,17 @@ export const FormularioArticulosInsumo = ({
     };
 
     return (
-        <div className={styles.divContenedor}>
-            <div className={styles.formulario}>
-                <h2 style={{marginTop: "0px"}}>Nuevo Articulo Insumo</h2>
+        <div className={baseFormulario.divContenedor}>
+            <div className={baseFormulario.formulario}>
+                <h2 className={baseFormulario.titulo}>Nuevo Articulo Insumo</h2>
                 <form onSubmit={handleSubmit}>
-                    <label className={styles.formArticuloLabel}>Nombre:</label>
+                    <label className={baseFormulario.formArticuloLabel}>Nombre:</label>
 
                     {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                     {formularioValidado && !denominacion.trim() && (
-                        <p className={styles.error}>Este campo es obligatorio</p>
+                        <p className={baseFormulario.error}>Este campo es obligatorio</p>
                     )}
-                    <div className={styles.inputConIcono}>
+                    <div className={baseFormulario.inputConIcono}>
                         <input
                             type="text"
                             placeholder="Nombre del producto"
@@ -159,17 +160,17 @@ export const FormularioArticulosInsumo = ({
                         />
                         {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                         {formularioValidado && !denominacion.trim() && (
-                            <span className={styles.iconoInput}>❗</span>
+                            <span className={baseFormulario.iconoInput}>❗</span>
                         )}
                     </div>
 
-                    <label className={styles.formArticuloLabel}>Precio de compra:</label>
+                    <label className={baseFormulario.formArticuloLabel}>Precio de compra:</label>
 
                     {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                     {formularioValidado && !precioCompra && (
-                        <p className={styles.error}>Este campo es obligatorio</p>
+                        <p className={baseFormulario.error}>Este campo es obligatorio</p>
                     )}
-                    <div className={styles.inputConIcono}>
+                    <div className={baseFormulario.inputConIcono}>
                         <input
                             type="number"
                             placeholder="Precio Compra"
@@ -178,17 +179,17 @@ export const FormularioArticulosInsumo = ({
                         />
                         {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                         {formularioValidado && !precioCompra && (
-                            <span className={styles.iconoInput}>❗</span>
+                            <span className={baseFormulario.iconoInput}>❗</span>
                         )}
                     </div>
 
-                    <label className={styles.formArticuloLabel}>Precio de venta:</label>
+                    <label className={baseFormulario.formArticuloLabel}>Precio de venta:</label>
 
                     {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                     {formularioValidado && !precioVenta && (
-                        <p className={styles.error}>Este campo es obligatorio</p>
+                        <p className={baseFormulario.error}>Este campo es obligatorio</p>
                     )}
-                    <div className={styles.inputConIcono}>
+                    <div className={baseFormulario.inputConIcono}>
                         <input
                             type="number"
                             placeholder="Precio Venta"
@@ -197,7 +198,7 @@ export const FormularioArticulosInsumo = ({
                         />
                         {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                         {formularioValidado && !precioVenta && (
-                            <span className={styles.iconoInput}>❗</span>
+                            <span className={baseFormulario.iconoInput}>❗</span>
                         )}
                     </div>
 
@@ -212,15 +213,15 @@ export const FormularioArticulosInsumo = ({
                         </label>
                     </div>
 
-                    <label className={styles.formArticuloLabel}>
+                    <label className={baseFormulario.formArticuloLabel}>
                         Lista de categorias:
                     </label>
 
                     {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                     {formularioValidado && !categoriaSeleccionada.trim() && (
-                        <p className={styles.error}>Este campo es obligatorio</p>
+                        <p className={baseFormulario.error}>Este campo es obligatorio</p>
                     )}
-                    <div className={styles.inputConIcono}>
+                    <div className={baseFormulario.inputConIcono}>
                         <input
                             list="lista-categorias"
                             value={categoriaSeleccionada}
@@ -235,17 +236,17 @@ export const FormularioArticulosInsumo = ({
 
                         {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                         {formularioValidado && !categoriaSeleccionada.trim() && (
-                            <span className={styles.iconoInput}>❗</span>
+                            <span className={baseFormulario.iconoInput}>❗</span>
                         )}
                     </div>
 
-                    <label className={styles.formArticuloLabel}>Lista de unidades:</label>
+                    <label className={baseFormulario.formArticuloLabel}>Lista de unidades:</label>
 
                     {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                     {formularioValidado && !unidadSeleccionada.trim() && (
-                        <p className={styles.error}>Este campo es obligatorio</p>
+                        <p className={baseFormulario.error}>Este campo es obligatorio</p>
                     )}
-                    <div className={styles.inputConIcono}>
+                    <div className={baseFormulario.inputConIcono}>
                         <input
                             list="lista-unidades"
                             value={unidadSeleccionada}
@@ -260,26 +261,26 @@ export const FormularioArticulosInsumo = ({
 
                         {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                         {formularioValidado && !unidadSeleccionada.trim() && (
-                            <span className={styles.iconoInput}>❗</span>
+                            <span className={baseFormulario.iconoInput}>❗</span>
                         )}
                     </div>
 
-                    <label className={styles.formArticuloLabel}>
+                    <label className={baseFormulario.formArticuloLabel}>
                         {/* Muestra el mensaje de error si se apretó "Guardar" y no hay imagen */}
                         {formularioValidado && !imagenArticuloInsumo.trim() && (
-                            <p className={styles.error}>Este campo es obligatorio</p>
+                            <p className={baseFormulario.error}>Este campo es obligatorio</p>
                         )}
-                        <div className={styles.inputConIcono}>
+                        <div className={baseFormulario.inputConIcono}>
                             <label
                                 htmlFor="imagenUpload"
-                                className={`${styles.botonGuardar} ${styles.boton} ${styles.botonConMargenInferior}`}
+                                className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
                             >
                                 Subir Imagen
                             </label>
 
                             {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                             {formularioValidado && !imagenArticuloInsumo.trim() && (
-                                <span className={styles.iconoInput}>❗</span>
+                                <span className={baseFormulario.iconoInput}>❗</span>
                             )}
                         </div>
                         <input
@@ -303,16 +304,16 @@ export const FormularioArticulosInsumo = ({
                         />
                     )}
 
-                    <div className={styles.botones}>
+                    <div className={baseFormulario.botones}>
                         <button
-                            className={`${styles.boton} ${styles.botonCancelar}`}
+                            className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
                             type="button"
                             onClick={onClose}
                         >
                             Cancelar
                         </button>
                         <button
-                            className={`${styles.boton} ${styles.botonGuardar}`}
+                            className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
                             type="submit"
                         >
                             Guardar

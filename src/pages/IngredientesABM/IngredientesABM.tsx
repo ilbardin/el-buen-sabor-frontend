@@ -4,7 +4,7 @@ import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import { AgregarCategoriaArticulo } from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
 import styles from "./IngredientesABM.module.css";
-import baseABM from "../../css/abmBase.module.css"
+import baseABM from "../../css/baseABM.module.css"
 import ModuloArticuloInsumo from "../../components/ModuloArticuloInsumo/ModuloArticuloInsumo.tsx";
 
 export const IngredientesABM = () => {

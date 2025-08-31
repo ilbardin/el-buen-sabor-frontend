@@ -6,7 +6,7 @@ import type { ArticuloManufacturado } from "../../models/articuloManufacturado.t
 import FormularioArticulosManufacturados from "../../components/FormularioArticulosManufacturados/FormularioArticulosManufacturados.tsx";
 import { AgregarCategoriaArticuloManufacturado } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from "./ProductosABM.module.css";
-import baseABM from "../../css/abmBase.module.css";
+import baseABM from "../../css/baseABM.module.css";
 import ModuloArticuloManofacturado from "../../components/ModuloArticuloManofacturado/ModuloArticuloManofacturado.tsx";
 
 export const ProductosABM = () => {
