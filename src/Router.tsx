@@ -13,7 +13,7 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
-import { StockABM } from './pages/StockABM/StockABM.tsx';
+import {StockABM} from './pages/StockABM/StockABM.tsx';
 import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
 import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
@@ -124,18 +124,18 @@ const Router = () => {
                         </ProtectedRoute>
                     }
                 />
-                <Route
-                    path={ROUTES.ESTADO_PEDIDO}
-                    element={
-                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                            <EstadoPedido/>
-                        </ProtectedRoute>
-                    }
-                />
             </Route>
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
             <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
+            <Route
+                path={ROUTES.ESTADO_PEDIDO}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <EstadoPedido/>
+                    </ProtectedRoute>
+                }
+            />
             <Route path="/" element={<Navigate to={ROUTES.HOME} replace/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
