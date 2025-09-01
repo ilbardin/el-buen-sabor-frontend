@@ -1,9 +1,8 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
-import {FaShoppingCart, FaUser} from 'react-icons/fa';
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";
 import type {UserData} from "../../models/usuario/usuario.ts";
@@ -12,11 +11,10 @@ import Swal from "sweetalert2";
 import {UserRole} from "../../models/usuario/userRoles.ts";
 import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
-import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
-import CarritoCard from "../../components/CarritoCard/CarritoCard.tsx";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
+import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -209,57 +207,35 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
 
     return (
         <div className={styles.container}>
-            <header className={styles.navbar}>
-                <div className={styles.logo}>
-                    <span>EL BUEN SABOR™</span>
-                </div>
-                <nav className={styles.navLinks}>
-                    {usuario && <Link to={ROUTES.PRODUCTOS}>Menú</Link>}
-                    <Link to="/especiales">Nuestros especiales</Link>
-                    <Link to="/sucursales">Sucursales</Link>
-                </nav>
-                <div className={styles.actions}>
-                    {usuario && (
-                        <span
-                            className={styles.icon}
-                            onClick={toggleCart}
-                            ref={cartIconRef}
-                        >
-                        <FaShoppingCart/>
-                        </span>
-                    )}
-                    <CarritoCard
-                        showCart={showCart}
-                        isClosing={isCartClosing}
-                        position={cartPosition}
-                        onHide={handleHideCart}
-                        ref={cartRef}
-                    />
-
-                    <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
-                        {usuario ? (
-                            <div className={styles.userCircle}>
-                                {getInitials(usuario.nombre, usuario.apellido)}
-                            </div>
-                        ) : (
-                            <FaUser/>
-                        )}
-                    </span>
-                    <LoginCard
-                        showLogin={showLogin}
-                        isClosing={isClosing}
-                        loginCardPosition={loginCardPosition}
-                        handleLogin={handleLogin}
-                        username={username}
-                        password={password}
-                        setUsername={setUsername}
-                        setPassword={setPassword}
-                        onLogout={handleUserLogout}
-                        onHide={handleHide}
-                        ref={loginRef}
-                    />
-                </div>
-            </header>
+            <NavbarCliente
+                usuario={usuario}
+                navLinks={[
+                    { label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true },
+                    { label: "Nuestros especiales", to: "/especiales" },
+                    { label: "Sucursales", to: "/sucursales" },
+                ]}
+                showCart={showCart}
+                isCartClosing={isCartClosing}
+                cartPosition={cartPosition}
+                toggleCart={toggleCart}
+                handleHideCart={handleHideCart}
+                cartRef={cartRef}
+                cartIconRef={cartIconRef}
+                showLogin={showLogin}
+                isClosing={isClosing}
+                loginCardPosition={loginCardPosition}
+                toggleLogin={toggleLogin}
+                handleLogin={handleLogin}
+                username={username}
+                password={password}
+                setUsername={setUsername}
+                setPassword={setPassword}
+                onLogout={handleUserLogout}
+                handleHide={handleHide}
+                loginRef={loginRef}
+                userIconRef={userIconRef}
+                getInitials={getInitials}
+            />
 
             <main className={styles.main}>
                 <div className={styles.left}>
