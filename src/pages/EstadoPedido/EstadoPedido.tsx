@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./EstadoPedido.module.css";
-import {FaFacebook, FaInstagram, FaPhone} from "react-icons/fa";
 import imagenPizza from '/pizza.png';
+import {FaArrowLeft} from "react-icons/fa6";
+import {useNavigate} from "react-router-dom";
 
 interface OrderData {
     restaurant: string;
@@ -14,6 +15,8 @@ interface OrderData {
 }
 
 export const EstadoPedido: React.FC = () => {
+    const navigate = useNavigate();
+
     const data: OrderData = {
         restaurant: "El Buen Sabor",
         orderNumber: "#123456789",
@@ -33,15 +36,17 @@ export const EstadoPedido: React.FC = () => {
 
     return (
         <div className={styles.container}>
+            <button
+                className="volver-button"
+                aria-label="Volver"
+                title="Volver"
+                onClick={() => navigate(-1)}>
+                <FaArrowLeft/>
+            </button>
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
                     <h1>{data.restaurant}</h1>
-                    <div className={styles.socials}>
-                        <FaPhone />
-                        <FaInstagram />
-                        <FaFacebook />
-                    </div>
                 </header>
 
                 <section className={styles.orderInfo}>
@@ -77,7 +82,7 @@ export const EstadoPedido: React.FC = () => {
                 </section>
             </div>
 
-            <img src={imagenPizza} alt="Pizza" className={styles.bgPizza} />
+            <img src={imagenPizza} alt="Pizza" className={styles.bgPizza}/>
         </div>
     );
 };
