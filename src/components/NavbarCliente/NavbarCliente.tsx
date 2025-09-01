@@ -1,0 +1,139 @@
+import React, {type RefObject} from "react";
+import {Link} from "react-router-dom";
+import {FaShoppingCart, FaUser} from "react-icons/fa";
+import styles from "./NavbarCliente.module.css";
+import CarritoCard from "../CarritoCard/CarritoCard.tsx";
+import LoginCard from "../LoginCard/LoginCard.tsx";
+
+export interface NavLink {
+    label: string;
+    to: string;
+    requiresAuth?: boolean;
+}
+
+export interface NavbarProps {
+    usuario: { nombre: string; apellido: string } | null;
+    navLinks: NavLink[];
+
+    // props carrito
+    showCart: boolean;
+    isCartClosing: boolean;
+    cartPosition: { top: number; left: number };
+    toggleCart: () => void;
+    handleHideCart: () => void;
+    cartRef: RefObject<HTMLDivElement | null>;
+    cartIconRef: RefObject<HTMLSpanElement | null>;
+
+    // props login
+    showLogin: boolean;
+    isClosing: boolean;
+    loginCardPosition: { top: number; left: number };
+    toggleLogin: () => void;
+    handleLogin: (e: React.FormEvent) => void;
+    username: string;
+    password: string;
+    setUsername: (val: string) => void;
+    setPassword: (val: string) => void;
+    onLogout: () => void;
+    handleHide: () => void;
+    loginRef: RefObject<HTMLDivElement | null>;
+    userIconRef: RefObject<HTMLSpanElement | null>;
+
+    // iniciales usuario
+    getInitials: (nombre: string, apellido: string) => string;
+}
+
+const NavbarCliente: React.FC<NavbarProps> = ({
+                                                  usuario,
+                                                  navLinks,
+                                                  showCart,
+                                                  isCartClosing,
+                                                  cartPosition,
+                                                  toggleCart,
+                                                  handleHideCart,
+                                                  cartRef,
+                                                  cartIconRef,
+                                                  showLogin,
+                                                  isClosing,
+                                                  loginCardPosition,
+                                                  toggleLogin,
+                                                  handleLogin,
+                                                  username,
+                                                  password,
+                                                  setUsername,
+                                                  setPassword,
+                                                  onLogout,
+                                                  handleHide,
+                                                  loginRef,
+                                                  userIconRef,
+                                                  getInitials,
+                                              }) => {
+    return (
+        <header className={styles.navbar}>
+            <div className={styles.logo}>
+                <span>EL BUEN SABOR™</span>
+            </div>
+
+            <nav className={styles.navLinks}>
+                {navLinks.map(({label, to, requiresAuth}, idx) => {
+                    if (requiresAuth && !usuario) return null;
+                    return (
+                        <Link key={idx} to={to}>
+                            {label}
+                        </Link>
+                    );
+                })}
+            </nav>
+
+            <div className={styles.actions}>
+                {usuario && (
+                    <span
+                        className={styles.icon}
+                        onClick={toggleCart}
+                        ref={cartIconRef}
+                    >
+            <FaShoppingCart/>
+          </span>
+                )}
+
+                <CarritoCard
+                    showCart={showCart}
+                    isClosing={isCartClosing}
+                    position={cartPosition}
+                    onHide={handleHideCart}
+                    ref={cartRef}
+                />
+
+                <span
+                    className={styles.icon}
+                    onClick={toggleLogin}
+                    ref={userIconRef}
+                >
+          {usuario ? (
+              <div className={styles.userCircle}>
+                  {getInitials(usuario.nombre, usuario.apellido)}
+              </div>
+          ) : (
+              <FaUser/>
+          )}
+        </span>
+
+                <LoginCard
+                    showLogin={showLogin}
+                    isClosing={isClosing}
+                    loginCardPosition={loginCardPosition}
+                    handleLogin={handleLogin}
+                    username={username}
+                    password={password}
+                    setUsername={setUsername}
+                    setPassword={setPassword}
+                    onLogout={onLogout}
+                    onHide={handleHide}
+                    ref={loginRef}
+                />
+            </div>
+        </header>
+    );
+};
+
+export default NavbarCliente;

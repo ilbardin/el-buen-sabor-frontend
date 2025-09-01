@@ -1,0 +1,76 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-terciario);
+}
+
+.navLinks a {
+    margin: 0 1rem;
+    color: var(--color-terciario);
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+}
+
+.navLinks a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--color-primario);
+    transition: width 0.3s ease;
+}
+
+.navLinks a:hover::after {
+    width: 100%;
+}
+
+.navLinks a:first-child {
+    color: var(--color-primario);
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actions .icon {
+    margin-left: 1.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-terciario);
+    transition: color 0.3s;
+}
+
+.actions .icon:hover {
+    color: var(--color-primario);
+}
+
+.userCircle {
+    background-color: var(--color-primario);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    user-select: none;
+    vertical-align: middle;
+    margin-bottom: 0.2rem;
+}
