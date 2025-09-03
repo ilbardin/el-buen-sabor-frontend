@@ -55,6 +55,10 @@ export const BarraSuperior = () => {
     };
 
     useEffect(() => {
+        if (!usuario) {
+            return;
+        }
+
         async function obtenerDatos() {
             const sucursales = await getSucursal();
             setSucursales(sucursales);
