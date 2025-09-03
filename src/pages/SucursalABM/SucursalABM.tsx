@@ -3,8 +3,7 @@ import type {Sucursal} from "../../models/sucursal";
 import {getSucursal} from "../../services/sucursalService";
 import {ModuloSucursal} from "../../components/ModuloSucursal/ModuloSucursal";
 import {FormularioSucursal} from "../../components/FormularioSucursal/formularioSucursal";
-import styles from "./SucursalABM.module.css";
-import baseABM from "../../css/abmBase.module.css";
+import baseABM from "../../css/baseABM.module.css";
 import type {Empresa} from "../../models/empresa";
 import {getEmpresas} from "../../services/empresaService";
 
@@ -84,7 +83,7 @@ export default function SucursalABM() {
                 <select
                     value={idEmpresa}
                     onChange={handleChangeCategorias}
-                    className={styles.filtroSelect}
+                    className={baseABM.filtroSelect}
                 >
                     <option value="">Todas las Empresas</option>
                     {empresas.map((empresa, idx) => (

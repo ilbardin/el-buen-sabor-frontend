@@ -14,4 +14,5 @@ export const ROUTES = {
     SUCURSAL_ABM: '/sucursal-abm',
     PRUEBA: '/prueba',
     ESTADO_PEDIDO: '/estado-pedido',
+    COCINA: '/cocina',
 };

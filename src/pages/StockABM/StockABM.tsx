@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import styles from "./StockABM.module.css";
 import type { StockInsumo } from "../../models/stockInsumo.ts";
 import { InsumoStock } from "../../components/InsumoStock/InsumoStock";
 import { getStockInsumos } from "../../services/stockInsumoService.ts";
 import { FormularioStockInsumo } from "../../components/FormularioStockInsumo/FormularioStockInsumo.tsx";
 import { useSucursalStore } from "../../components/Sucursal/SucursalStore.tsx";
-
+import baseABM from "../../css/baseABM.module.css";
 export const StockABM = () => {
   const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -56,7 +55,7 @@ export const StockABM = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={baseABM.container}>
       {mostrarModal && (
         <FormularioStockInsumo
           onClose={async () => {
@@ -66,28 +65,28 @@ export const StockABM = () => {
         />
       )}
 
-      <h1 className={styles.titulo}>Gestión de Stock</h1>
+      <h1 className={baseABM.titulo}>Gestión de Stock</h1>
       <button
         value={""}
-        className={styles.boton}
+        className={baseABM.boton}
         onClick={() => setMostrarModal(true)}
       >
         Cargar Stock
       </button>
 
-      <div className={styles.filtrosContainer}>
+      <div className={baseABM.filtrosContainer}>
         <input
           type="text"
           placeholder="Buscar"
           onChange={handleChange}
-          className={styles.filtroInput}
+          className={baseABM.filtroInput}
           value={busqueda}
         />
 
         <select
           value={unidadMedida}
           onChange={handleChangeUnidadMedida}
-          className={styles.filtroSelect}
+          className={baseABM.filtroSelect}
         >
           <option value="">Todas las Unidades</option>
           {unidadesUnicas.map((unidad, idx) => (
@@ -100,7 +99,7 @@ export const StockABM = () => {
         <select
           value={categorias}
           onChange={handleChangeCategorias}
-          className={styles.filtroSelect}
+          className={baseABM.filtroSelect}
         >
           <option value="">Todas las Categorias</option>
           {categoriasUnicas.map((categoria, idx) => (
@@ -111,7 +110,7 @@ export const StockABM = () => {
         </select>
       </div>
 
-      <table className={styles.tabla}>
+      <table className={baseABM.tabla}>
         <thead>
           <tr>
             <th>ID</th>

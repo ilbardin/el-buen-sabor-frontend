@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {getEmpresas} from "../../services/empresaService";
 import {FormularioEmpresa} from "../../components/FormularioEmpresa/FormularioEmpresa";
 import {ModuloEmpresa} from "../../components/ModuloEmpresa/ModuloEmpresa";
-import baseABM from "../../css/abmBase.module.css"
+import baseABM from "../../css/baseABM.module.css"
 
 export default function EmpresaABM() {
   const [empresa, setEmpresa] = useState<Empresa[]>([]);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { StockInsumo } from "../../models/stockInsumo.ts";
 import { editarStockInsumo } from "../../services/stockInsumoService.ts";
 import styles from "./InsumoStock.module.css";
+import baseModulo from "../../css/baseModulo.module.css";
 export function InsumoStock(props: { stockInsumo: StockInsumo }) {
   const [stockActual, setStockActual] = useState(
     props.stockInsumo.cantidadActual
@@ -55,7 +56,7 @@ export function InsumoStock(props: { stockInsumo: StockInsumo }) {
       <td>{props.stockInsumo.cantidadMinima}</td>
       <td>{props.stockInsumo.cantidadMaxima}</td>
       <td>{props.stockInsumo.unidadMedida}</td>
-      <td>
+      <td className={baseModulo.tdBotonera}>
         <div className={styles.celdaStock}>
           <button onClick={() => manejarStock(-1)}>-</button>
           <input
@@ -72,7 +73,7 @@ export function InsumoStock(props: { stockInsumo: StockInsumo }) {
       </td>
 
       {stockActual !== stockInicial && (
-        <td>
+        <td className={baseModulo.tdBotonera}>
           <div className={styles.botonesAcciones}>
             <button onClick={() => rechazarStock()}>❌</button>
             <button onClick={() => aceptarStock()}>✔️</button>

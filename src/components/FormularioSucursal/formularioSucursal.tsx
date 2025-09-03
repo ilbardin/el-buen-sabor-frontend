@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { crearSucursal, getSucursal, editarSucursal } from "../../services/sucursalService";
 import type { Sucursal } from "../../models/sucursal";
 import styles from "./FormularioSucursal.module.css";
+import baseFormulario from "../../css/baseFormulario.module.css";
 import type { Empresa } from "../../models/empresa";
 import { getEmpresas } from "../../services/empresaService";
 
@@ -70,18 +71,18 @@ export function FormularioSucursal({
     onClose();
   };
   return (
-    <div className={styles.contenedor}>
-      <div className={styles.formulario}>
-        <h2>{sucursal ? "Editar Sucursal" : "Crear Sucursal"}</h2>
+    <div className={baseFormulario.divContenedor}>
+      <div className={baseFormulario.formulario}>
+        <h2 className={baseFormulario.titulo}>{sucursal ? "Editar Sucursal" : "Crear Sucursal"}</h2>
       <form onSubmit={handleSubmit}>
 
         <div>
-          <label className={styles.formArticuloLabel}>Nombre:</label>
+          <label className={baseFormulario.formArticuloLabel}>Nombre:</label>
 
           {formularioValidado && nombre === "" && (
-            <p className={styles.error}>Este campo es obligatorio</p>
+            <p className={baseFormulario.error}>Este campo es obligatorio</p>
           )}
-          <div className={styles.inputConIcono}>
+          <div className={baseFormulario.inputConIcono}>
             <input
               type="text"
               placeholder="Nombre"
@@ -89,18 +90,18 @@ export function FormularioSucursal({
               onChange={(e) => setNombre(e.target.value)}
             />
             {formularioValidado && nombre === "" && (
-              <span className={styles.iconoInput}>❗</span>
+              <span className={baseFormulario.iconoInput}>❗</span>
             )}
           </div>
         </div>
 
         <div>
-          <label className={styles.formArticuloLabel}>Horario Apertura:</label>
+          <label className={baseFormulario.formArticuloLabel}>Horario Apertura:</label>
 
           {formularioValidado && horarioApertura === "" && (
-            <p className={styles.error}>Este campo es obligatorio</p>
+            <p className={baseFormulario.error}>Este campo es obligatorio</p>
           )}
-          <div className={styles.inputConIcono}>
+          <div className={baseFormulario.inputConIcono}>
             <input
               type="time"
               placeholder="horarioApertura"
@@ -108,18 +109,18 @@ export function FormularioSucursal({
               onChange={(e) => setHorarioApertura(e.target.value)}
             />
             {formularioValidado && horarioApertura === "" && (
-              <span className={styles.iconoInput}>❗</span>
+              <span className={baseFormulario.iconoInput}>❗</span>
             )}
           </div>
         </div>
 
         <div>
-          <label className={styles.formArticuloLabel}>Horario Cierre:</label>
+          <label className={baseFormulario.formArticuloLabel}>Horario Cierre:</label>
 
           {formularioValidado && horarioCierre === "" && (
-            <p className={styles.error}>Este campo es obligatorio</p>
+            <p className={baseFormulario.error}>Este campo es obligatorio</p>
           )}
-          <div className={styles.inputConIcono}>
+          <div className={baseFormulario.inputConIcono}>
             <input
               type="time"
               placeholder="horarioCierre"
@@ -127,21 +128,21 @@ export function FormularioSucursal({
               onChange={(e) => setHorarioCierre(e.target.value)}
             />
             {formularioValidado && horarioCierre === "" && (
-              <span className={styles.iconoInput}>❗</span>
+              <span className={baseFormulario.iconoInput}>❗</span>
             )}
           </div>
         </div>
 
         <div>
-          <label className={styles.formArticuloLabel}>
+          <label className={baseFormulario.formArticuloLabel}>
             Empresa perteneciente:
           </label>
 
           {formularioValidado && empresaSeleccionada === "" && (
-            <p className={styles.error}>Este campo es obligatorio</p>
+            <p className={baseFormulario.error}>Este campo es obligatorio</p>
           )}
           {/*
-          <div className={styles.inputConIcono}>
+          <div className={baseFormulario.inputConIcono}>
             <input
               list="lista-empresas"
               placeholder="empresa"
@@ -170,20 +171,20 @@ export function FormularioSucursal({
             </select>
           </div>
           {formularioValidado && empresaSeleccionada === "" && (
-            <span className={styles.iconoInput}>❗</span>
+            <span className={baseFormulario.iconoInput}>❗</span>
           )}
         </div>
 
-        <div className={styles.botones}>
+        <div className={baseFormulario.botones}>
           <button
-            className={`${styles.boton} ${styles.botonCancelar}`}
+            className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
             type="button"
             onClick={onClose}
           >
             Cancelar
           </button>
           <button
-            className={`${styles.boton} ${styles.botonGuardar}`}
+            className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
             type="submit"
           >
             Guardar
