@@ -25,7 +25,7 @@ export const BarraSuperior = () => {
         const performLogout = () => {
             setIsLoggingOut(true);
             logout();
-            navigate(ROUTES.HOME, {replace: true});
+            navigate(ROUTES.PRODUCTOS, {replace: true});
         };
 
         if (existeCarrito()) {
@@ -70,10 +70,6 @@ export const BarraSuperior = () => {
         <div>
             <nav className={styles.topbar}>
                 <ul className={styles.nav}>
-                    <li>
-                        <Link to={ROUTES.HOME}>Home</Link>
-                    </li>
-
                     <li>
                         <Link to={ROUTES.PRODUCTOS}>Productos</Link>
                     </li>
