@@ -2,16 +2,6 @@ import {showConfirm} from "./alerts.ts";
 import type {ItemCarritoMp} from "../models/pedidoRequest.ts";
 import type {ItemCarrito} from "../components/Carrito/Carrito.tsx";
 
-export const existeCarrito = (): boolean => {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('cart_')) {
-            return true;
-        }
-    }
-    return false;
-};
-
 export const alertaCarrito = async (): Promise<boolean> => {
     return await showConfirm(
         "Confirmación",
