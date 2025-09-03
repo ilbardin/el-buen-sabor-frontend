@@ -1,11 +1,11 @@
-import React, {type RefObject} from "react";
-import {useContext} from "react";
+import React, {type RefObject, useContext, useState} from "react";
 import {Link} from "react-router-dom";
 import {FaShoppingCart, FaUser} from "react-icons/fa";
 import styles from "./NavbarCliente.module.css";
 import CarritoCard from "../CarritoCard/CarritoCard.tsx";
 import LoginCard from "../LoginCard/LoginCard.tsx";
 import {CartContext} from "../../context/carrito/cartContext.ts";
+import {useAuthHandlers} from "../../hooks/useAuthHandlers.ts";
 
 export interface NavLink {
     label: string;
@@ -17,31 +17,24 @@ export interface NavbarProps {
     usuario: { nombre: string; apellido: string } | null;
     navLinks: NavLink[];
 
-    // props carrito
-    showCart: boolean;
-    isCartClosing: boolean;
-    cartPosition: { top: number; left: number };
-    toggleCart: () => void;
-    handleHideCart: () => void;
-    cartRef: RefObject<HTMLDivElement | null>;
-    cartIconRef: RefObject<HTMLSpanElement | null>;
+    // props carrito opcionales
+    showCart?: boolean;
+    isCartClosing?: boolean;
+    cartPosition?: { top: number; left: number };
+    toggleCart?: () => void;
+    handleHideCart?: () => void;
+    cartRef?: RefObject<HTMLDivElement | null>;
+    cartIconRef?: RefObject<HTMLSpanElement | null>;
 
     // props login
     showLogin: boolean;
     isClosing: boolean;
     loginCardPosition: { top: number; left: number };
     toggleLogin: () => void;
-    handleLogin: (e: React.FormEvent) => void;
-    username: string;
-    password: string;
-    setUsername: (val: string) => void;
-    setPassword: (val: string) => void;
-    onLogout: () => void;
     handleHide: () => void;
     loginRef: RefObject<HTMLDivElement | null>;
     userIconRef: RefObject<HTMLSpanElement | null>;
 
-    // iniciales usuario
     getInitials: (nombre: string, apellido: string) => string;
 }
 
@@ -59,12 +52,6 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                                                   isClosing,
                                                   loginCardPosition,
                                                   toggleLogin,
-                                                  handleLogin,
-                                                  username,
-                                                  password,
-                                                  setUsername,
-                                                  setPassword,
-                                                  onLogout,
                                                   handleHide,
                                                   loginRef,
                                                   userIconRef,
@@ -72,6 +59,11 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                                               }) => {
     const {cart} = useContext(CartContext);
     const existeCarrito = cart.length > 0;
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const {handleLogin, handleUserLogout} = useAuthHandlers(username, password);
 
     return (
         <header className={styles.navbar}>
@@ -91,45 +83,43 @@ const NavbarCliente: React.FC<NavbarProps> = ({
             </nav>
 
             <div className={styles.actions}>
-                {usuario && (
+                {/* Renderizar carrito solo si todas las props necesarias están definidas */}
+                {usuario && toggleCart && cartIconRef && showCart !== undefined && isCartClosing !== undefined && cartPosition && handleHideCart && cartRef && (
+                    <>
+            <span
+                className={styles.icon}
+                onClick={toggleCart}
+                ref={cartIconRef}
+                style={{position: "relative"}}
+            >
+              <FaShoppingCart/>
+                {existeCarrito && (
                     <span
-                        className={styles.icon}
-                        onClick={toggleCart}
-                        ref={cartIconRef}
-                        style={{position: "relative"}}
-                    >
-    <FaShoppingCart/>
+                        className={styles.cartDot}
+                        style={{
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                            backgroundColor: "red",
+                        }}
+                    />
+                )}
+            </span>
 
-                        {existeCarrito && (
-                            <span
-                                className={styles.cartDot}
-                                style={{
-                                    position: "absolute",
-                                    bottom: 0,
-                                    right: 0,
-                                    width: "10px",
-                                    height: "10px",
-                                    borderRadius: "50%",
-                                    backgroundColor: "red",
-                                }}
-                            />
-                        )}
-  </span>
+                        <CarritoCard
+                            showCart={showCart}
+                            isClosing={isCartClosing}
+                            position={cartPosition}
+                            onHide={handleHideCart}
+                            ref={cartRef}
+                        />
+                    </>
                 )}
 
-                <CarritoCard
-                    showCart={showCart}
-                    isClosing={isCartClosing}
-                    position={cartPosition}
-                    onHide={handleHideCart}
-                    ref={cartRef}
-                />
-
-                <span
-                    className={styles.icon}
-                    onClick={toggleLogin}
-                    ref={userIconRef}
-                >
+                <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
           {usuario ? (
               <div className={styles.userCircle}>
                   {getInitials(usuario.nombre, usuario.apellido)}
@@ -148,7 +138,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                     password={password}
                     setUsername={setUsername}
                     setPassword={setPassword}
-                    onLogout={onLogout}
+                    onLogout={handleUserLogout}
                     onHide={handleHide}
                     ref={loginRef}
                 />
