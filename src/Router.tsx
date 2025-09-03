@@ -45,22 +45,6 @@ const Router = () => {
                     }
                 />
                 <Route
-                    path={ROUTES.PRODUCTOS}
-                    element={
-                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                            <Productos/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path={`${ROUTES.PRODUCTOS}/:id`}
-                    element={
-                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                            <ProductoDetalle/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
                     path={ROUTES.PRODUCTOS_ABM}
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
@@ -133,6 +117,22 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
                         <EstadoPedido/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={ROUTES.PRODUCTOS}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <Productos/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={`${ROUTES.PRODUCTOS}/:id`}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <ProductoDetalle/>
                     </ProtectedRoute>
                 }
             />
