@@ -1,4 +1,4 @@
-import React, {type RefObject, useContext, useState} from "react";
+import React, {type RefObject, useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {FaShoppingCart, FaUser} from "react-icons/fa";
 import styles from "./NavbarCliente.module.css";
@@ -6,6 +6,7 @@ import CarritoCard from "../CarritoCard/CarritoCard.tsx";
 import LoginCard from "../LoginCard/LoginCard.tsx";
 import {CartContext} from "../../context/carrito/cartContext.ts";
 import {useAuthHandlers} from "../../hooks/useAuthHandlers.ts";
+import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 
 export interface NavLink {
     label: string;
@@ -13,57 +14,89 @@ export interface NavLink {
     requiresAuth?: boolean;
 }
 
+export interface CartOptions {
+    showCart: boolean;
+    isCartClosing: boolean;
+    cartPosition: { top: number; left: number };
+    toggleCart: () => void;
+    handleHideCart: () => void;
+    cartRef: RefObject<HTMLDivElement | null>;
+    cartIconRef: RefObject<HTMLSpanElement | null>;
+}
+
 export interface NavbarProps {
     usuario: { nombre: string; apellido: string } | null;
     navLinks: NavLink[];
+    cartOptions?: CartOptions;
 
-    // props carrito opcionales
-    showCart?: boolean;
-    isCartClosing?: boolean;
-    cartPosition?: { top: number; left: number };
-    toggleCart?: () => void;
-    handleHideCart?: () => void;
-    cartRef?: RefObject<HTMLDivElement | null>;
-    cartIconRef?: RefObject<HTMLSpanElement | null>;
-
-    // props login
-    showLogin: boolean;
-    isClosing: boolean;
-    loginCardPosition: { top: number; left: number };
-    toggleLogin: () => void;
-    handleHide: () => void;
     loginRef: RefObject<HTMLDivElement | null>;
     userIconRef: RefObject<HTMLSpanElement | null>;
-
-    getInitials: (nombre: string, apellido: string) => string;
 }
 
 const NavbarCliente: React.FC<NavbarProps> = ({
                                                   usuario,
                                                   navLinks,
-                                                  showCart,
-                                                  isCartClosing,
-                                                  cartPosition,
-                                                  toggleCart,
-                                                  handleHideCart,
-                                                  cartRef,
-                                                  cartIconRef,
-                                                  showLogin,
-                                                  isClosing,
-                                                  loginCardPosition,
-                                                  toggleLogin,
-                                                  handleHide,
+                                                  cartOptions,
                                                   loginRef,
                                                   userIconRef,
-                                                  getInitials,
                                               }) => {
     const {cart} = useContext(CartContext);
     const existeCarrito = cart.length > 0;
 
+    // Login interno
+    const [showLogin, setShowLogin] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+    const [loginCardPosition, setLoginCardPosition] = useState({top: 0, left: 0});
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const {handleLogin, handleUserLogout} = useAuthHandlers(username, password);
+
+    const toggleLogin = () => {
+        if (showLogin) {
+            setIsClosing(true);
+            setTimeout(() => {
+                setShowLogin(false);
+                setIsClosing(false);
+            }, 300);
+        } else {
+            setShowLogin(true);
+        }
+    };
+
+    const handleHideLogin = () => {
+        setShowLogin(false);
+        setIsClosing(false);
+    };
+
+    const getInitials = (name: string, surname: string) => {
+        const parts = `${name} ${surname}`.trim().split(" ");
+        return parts.map((p) => p[0].toUpperCase()).join("").slice(0, 2);
+    };
+
+    useEffect(() => {
+        if ((showLogin || isClosing) && userIconRef.current) {
+            const rect = userIconRef.current.getBoundingClientRect();
+            const top = rect.bottom + window.scrollY + 8;
+            const left = rect.right + window.scrollX - 320;
+            setLoginCardPosition({top, left});
+        }
+    }, [showLogin, isClosing, userIconRef]);
+
+    // Hook para cerrar LoginCard al hacer click afuera
+    useOutsideClick({
+        refs: [loginRef],
+        enabled: showLogin,
+        onOutsideClick: () => {
+            if (showLogin) toggleLogin();
+        },
+    });
+
+    useOutsideClick({
+        refs: cartOptions ? [cartOptions.cartRef, cartOptions.cartIconRef] : [],
+        enabled: !!cartOptions && cartOptions.showCart,
+        onOutsideClick: cartOptions?.handleHideCart || (() => {}),
+    });
 
     return (
         <header className={styles.navbar}>
@@ -83,13 +116,12 @@ const NavbarCliente: React.FC<NavbarProps> = ({
             </nav>
 
             <div className={styles.actions}>
-                {/* Renderizar carrito solo si todas las props necesarias están definidas */}
-                {usuario && toggleCart && cartIconRef && showCart !== undefined && isCartClosing !== undefined && cartPosition && handleHideCart && cartRef && (
+                {usuario && cartOptions && (
                     <>
             <span
                 className={styles.icon}
-                onClick={toggleCart}
-                ref={cartIconRef}
+                onClick={cartOptions.toggleCart}
+                ref={cartOptions.cartIconRef}
                 style={{position: "relative"}}
             >
               <FaShoppingCart/>
@@ -110,11 +142,11 @@ const NavbarCliente: React.FC<NavbarProps> = ({
             </span>
 
                         <CarritoCard
-                            showCart={showCart}
-                            isClosing={isCartClosing}
-                            position={cartPosition}
-                            onHide={handleHideCart}
-                            ref={cartRef}
+                            showCart={cartOptions.showCart}
+                            isClosing={cartOptions.isCartClosing}
+                            position={cartOptions.cartPosition}
+                            onHide={cartOptions.handleHideCart}
+                            ref={cartOptions.cartRef}
                         />
                     </>
                 )}
@@ -139,7 +171,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                     setUsername={setUsername}
                     setPassword={setPassword}
                     onLogout={handleUserLogout}
-                    onHide={handleHide}
+                    onHide={handleHideLogin}
                     ref={loginRef}
                 />
             </div>

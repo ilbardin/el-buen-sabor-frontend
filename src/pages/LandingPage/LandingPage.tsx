@@ -1,10 +1,9 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 
 export const LandingPage = () => {
@@ -18,36 +17,10 @@ export const LandingPage = () => {
     const cartIconRef = useRef<HTMLSpanElement>(null);
 
     // Componente LoginCard
-    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
-    const [showLogin, setShowLogin] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
     const navigate = useNavigate();
-
-    const handleHide = () => {
-        setShowLogin(false);
-        setIsClosing(false);
-    };
-
-    const toggleLogin = useCallback(() => {
-        if (showLogin) {
-            setIsClosing(true);
-            setTimeout(() => {
-                setShowLogin(false);
-                setIsClosing(false);
-            }, 300);
-        } else {
-            setShowLogin(true);
-        }
-    }, [showLogin]);
-
-    const getInitials = (name: string, surname: string) => {
-        const fullName = `${name} ${surname}`;
-        const parts = fullName.trim().split(' ');
-        return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
-    };
 
     const toggleCart = () => {
         if (showCart) {
@@ -68,20 +41,6 @@ export const LandingPage = () => {
             setIsCartClosing(false);
         }, 300);
     };
-
-    useOutsideClick({
-        refs: [loginRef],
-        enabled: showLogin,
-        onOutsideClick: () => {
-            if (showLogin) toggleLogin();
-        }
-    });
-
-    useOutsideClick({
-        refs: [cartRef, cartIconRef],
-        enabled: showCart,
-        onOutsideClick: handleHideCart
-    });
 
     useEffect(() => {
         const updateCartPosition = () => {
@@ -116,15 +75,6 @@ export const LandingPage = () => {
         setIsLoggingOut(false);
     }, [setIsLoggingOut]);
 
-    useEffect(() => {
-        if ((showLogin || isClosing) && userIconRef.current) {
-            const rect = userIconRef.current.getBoundingClientRect();
-            const top = rect.bottom + window.scrollY + 8;
-            const left = rect.right + window.scrollX - 320;
-            setLoginCardPosition({top, left});
-        }
-    }, [showLogin, isClosing]);
-
     return (
         <div className={styles.container}>
             <NavbarCliente
@@ -134,21 +84,17 @@ export const LandingPage = () => {
                     {label: "Nuestros especiales", to: "/especiales"},
                     {label: "Sucursales", to: "/sucursales"},
                 ]}
-                showCart={showCart}
-                isCartClosing={isCartClosing}
-                cartPosition={cartPosition}
-                toggleCart={toggleCart}
-                handleHideCart={handleHideCart}
-                cartRef={cartRef}
-                cartIconRef={cartIconRef}
-                showLogin={showLogin}
-                isClosing={isClosing}
-                loginCardPosition={loginCardPosition}
-                toggleLogin={toggleLogin}
-                handleHide={handleHide}
+                cartOptions={{
+                    showCart,
+                    isCartClosing,
+                    cartPosition,
+                    toggleCart,
+                    handleHideCart,
+                    cartRef,
+                    cartIconRef,
+                }}
                 loginRef={loginRef}
                 userIconRef={userIconRef}
-                getInitials={getInitials}
             />
 
             <main className={styles.main}>

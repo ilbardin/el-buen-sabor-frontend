@@ -9,14 +9,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 
 const Productos: React.FC = () => {
     const {setIsLoggingOut, usuario} = useAuth();
 
-    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
-    const [showLogin, setShowLogin] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
@@ -25,37 +21,6 @@ const Productos: React.FC = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
-
-    const handleHide = () => {
-        setShowLogin(false);
-        setIsClosing(false);
-    };
-
-    const toggleLogin = useCallback(() => {
-        if (showLogin) {
-            setIsClosing(true);
-            setTimeout(() => {
-                setShowLogin(false);
-                setIsClosing(false);
-            }, 300);
-        } else {
-            setShowLogin(true);
-        }
-    }, [showLogin]);
-
-    const getInitials = (name: string, surname: string) => {
-        const fullName = `${name} ${surname}`;
-        const parts = fullName.trim().split(' ');
-        return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
-    };
-
-    useOutsideClick({
-        refs: [loginRef],
-        enabled: showLogin,
-        onOutsideClick: () => {
-            if (showLogin) toggleLogin();
-        }
-    });
 
     const cargarProductos = useCallback(() => {
         getArticulosManufacturados()
@@ -79,15 +44,6 @@ const Productos: React.FC = () => {
     }, [clearCart, location, navigate]);
 
     useEffect(() => {
-        if ((showLogin || isClosing) && userIconRef.current) {
-            const rect = userIconRef.current.getBoundingClientRect();
-            const top = rect.bottom + window.scrollY + 8;
-            const left = rect.right + window.scrollX - 320;
-            setLoginCardPosition({top, left});
-        }
-    }, [showLogin, isClosing]);
-
-    useEffect(() => {
         setIsLoggingOut(false);
     }, [setIsLoggingOut]);
 
@@ -100,14 +56,8 @@ const Productos: React.FC = () => {
                     {label: "Nuestros especiales", to: "/especiales"},
                     {label: "Sucursales", to: "/sucursales"},
                 ]}
-                showLogin={showLogin}
-                isClosing={isClosing}
-                loginCardPosition={loginCardPosition}
-                toggleLogin={toggleLogin}
-                handleHide={handleHide}
                 loginRef={loginRef}
                 userIconRef={userIconRef}
-                getInitials={getInitials}
             />
             <div className={styles.homepageLayout}>
                 <div className={styles.mainContent}>
