@@ -55,4 +55,5 @@ export interface ArticuloInsumo {
     nombreUnidadMedida: string;    
     esParaElaborar: boolean;
     nombreImagen: string | null;   
+    imagenes: string[];
 }

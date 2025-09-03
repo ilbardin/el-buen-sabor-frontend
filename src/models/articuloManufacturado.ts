@@ -6,7 +6,7 @@ export interface ArticuloManufacturado {
     precioVenta: number;
     precioCosto: number;
     tiempoEstimado: number;
-    categoriaArticulo: string;
+    categoria: string;
     imagenes?: ImagenManofacturado[];
 }
 

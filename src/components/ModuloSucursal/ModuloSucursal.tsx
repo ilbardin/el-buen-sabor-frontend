@@ -1,6 +1,5 @@
 import type { Sucursal } from "../../models/sucursal";
 import { deleteSucursal } from "../../services/sucursalService";
-import styles from "./ModuloSucursal.module.css";
 import baseModulo from "../../css/baseModulo.module.css";
 
 export function ModuloSucursal(props: {
