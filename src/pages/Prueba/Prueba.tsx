@@ -1,49 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Promocion } from "../../models/promocion";
-import { getPromociones } from "../../services/promocionService";
+import type { ArticuloManufacturado } from "../../models/articuloManufacturado";
 import ModuloProductoOferta from "../../components/ModuloProductoOferta/ModuloProductoOferta";
 import styles from "./Prueba.module.css";
-export default function Prueba() {
-  const [ofertas, setOfertas] = useState<Promocion[]>();
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+
+export default function Prueba(props: {
+  productos: Promocion[] | ArticuloManufacturado[];
+}) {
   const [contador, setContador] = useState(0);
 
-  useEffect(() => {
-    async function cargarOfertas() {
-      const ofertas = await getPromociones();
-      setOfertas(ofertas);
-    }
-
-    void cargarOfertas();
-  }, []);
-
-  /*
   function aumentarContador(num: number) {
-    if (ofertas) {
-      console.log("1");
-      if (contador + num < 0) {
-        console.log("2");
-        setContador(ofertas.length - 5);
-        while (contador % 5 !== 0 || contador < 0) {
-            
-          setContador(contador - 1);
-          console.log(contador);
-        }
-      } else if (contador + num < ofertas.length) {
-        console.log("3");
-        setContador(contador + num);
-      }
-    } else {
-      console.log("4");
-      setContador(0);
-    }
-    console.log("Contador actual:", contador);
-  }
-    */
+    if (!props.productos) return;
 
-  function aumentarContador(num: number) {
-    if (!ofertas) return;
-
-    const total = ofertas.length;
+    const total = props.productos.length;
     const nuevaPosicion = contador + num;
 
     if (nuevaPosicion < 0) {
@@ -52,25 +22,39 @@ export default function Prueba() {
       } else {
         setContador(0);
       }
-    }
-    else if (nuevaPosicion + 5 <= total) {
+    } else if (nuevaPosicion + 5 <= total) {
       setContador(nuevaPosicion);
-    }
-    else if (nuevaPosicion < total) {
+    } else if (nuevaPosicion < total) {
       setContador(total - 5);
+    } else {
+      setContador(0);
     }
   }
 
   return (
-    <div className={styles.contenedor}>
-      <p>{contador}</p>
-      <button onClick={() => aumentarContador(-5)}>{"<"}</button>
-      <div className={styles.prueba}>
-        {ofertas?.slice(contador, contador + 5).map((oferta) => (
-          <ModuloProductoOferta promocion={oferta} key={oferta.id} />
-        ))}
+    <>
+      <div className={styles.contenedor}>
+        <div className={styles.carrusel}>
+          <button
+            className={`${styles.boton} ${styles.izquierda}`}
+            onClick={() => aumentarContador(-5)}
+          >
+            {<SlArrowLeft />}
+          </button>
+
+          <div className={styles.prueba}>
+            {props.productos?.slice(contador, contador + 5).map((oferta) => (
+              <ModuloProductoOferta promocion={oferta} key={oferta.id} />
+            ))}
+          </div>
+          <button
+            className={`${styles.boton} ${styles.derecha}`}
+            onClick={() => aumentarContador(5)}
+          >
+            {<SlArrowRight />}
+          </button>
+        </div>
       </div>
-      <button onClick={() => aumentarContador(5)}>{">"}</button>
-    </div>
+    </>
   );
 }

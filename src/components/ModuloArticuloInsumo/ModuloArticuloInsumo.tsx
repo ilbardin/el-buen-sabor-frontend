@@ -1,5 +1,6 @@
 import type { ArticuloInsumo } from "../../models/articuloInsumo";
 import styles from "./ModuloArticuloInsumo.module.css";
+import baseModulo from "../../css/baseModulo.module.css";
 import { eliminarArticuloInsumo } from "../../services/ingredientesService";
 
 export default function ModuloArticuloInsumo(props: {
@@ -12,16 +13,22 @@ export default function ModuloArticuloInsumo(props: {
     }
   }
   return (
-    <tr>
+    <tr className={baseModulo.filaTabla}>
       <td>{props.articulo.denominacion}</td>
-      <td>{props.articulo.categoria}</td>
+      <td>
+        <div className={styles.listaCategorias}>
+          {props.articulo.categorias.map((categoria) => (
+            <span>{categoria}</span>
+          ))}
+        </div>
+      </td>
       <td>{props.articulo.precioCompra}</td>
       <td>{props.articulo.precioVenta}</td>
       <td>
-        {props.articulo.imagenInsumo &&
-        props.articulo.imagenInsumo.denominacion?.trim()?.length > 0 ? (
+        {props.articulo.nombreImagen &&
+        props.articulo.nombreImagen?.trim()?.length > 0 ? (
           <img
-            src={`http://localhost:8080/uploads/images/${props.articulo.imagenInsumo.denominacion}`}
+            src={`http://localhost:8080/uploads/images/${props.articulo.nombreImagen}`}
             alt="Producto"
             style={{ width: "80px", height: "auto", maxHeight: "80px" }}
           />
@@ -30,8 +37,8 @@ export default function ModuloArticuloInsumo(props: {
         )}
       </td>
 
-      <td>
-        <div className={styles.botonesAcciones}>
+      <td className={baseModulo.tdBotonera}>
+        <div className={baseModulo.botonesAcciones}>
           <button onClick={() => props.onModificar(props.articulo)}>
             Modificar
           </button>

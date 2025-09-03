@@ -1,13 +1,14 @@
 .container {
-  padding: 2rem;
+  padding: 0rem 2rem;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .titulo {
   font-size: 2rem;
   color: var(--color-terciario);
   margin-bottom: 1.5rem;
+  margin-top: 0rem;
 }
 
 .boton {
@@ -65,7 +66,8 @@
   align-items: center;
 }
 
-.filtroInput {
+.filtroInput,
+.filtroSelect {
   padding: 10px 14px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -76,7 +78,8 @@
   font-family: "Poppins", sans-serif;
 }
 
-.filtroInput:focus {
+.filtroInput:focus,
+.filtroSelect:focus {
   border-color: var(--color-primario);
   outline: none;
   box-shadow: 0 0 4px rgba(231, 76, 60, 0.3);
@@ -87,3 +90,21 @@
 }
 
 /*! FIN FILTRO DE BUSQUEDA */
+
+/*! BOTONES */
+
+.botonesContainer {
+    margin-bottom: 0rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.botonSecundario {
+    background-color: var(--color-secundario);
+    color: var(--color-terciario);
+}
+
+.botonSecundario:hover {
+    background-color: #d4ac0d;
+}

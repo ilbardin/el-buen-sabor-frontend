@@ -1,6 +1,6 @@
 import type { Sucursal } from "../../models/sucursal";
 import { deleteSucursal } from "../../services/sucursalService";
-import styles from "./ModuloSucursal.module.css";
+import baseModulo from "../../css/baseModulo.module.css";
 
 export function ModuloSucursal(props: {
   sucursal: Sucursal;
@@ -13,7 +13,7 @@ export function ModuloSucursal(props: {
   }
 
   return (
-    <tr>
+    <tr className={baseModulo.filaTabla}>
       <td>{props.sucursal.id}</td>
       <td>{props.sucursal.nombre}</td>
       <td>{props.sucursal.horarioApertura}</td>
@@ -26,8 +26,8 @@ export function ModuloSucursal(props: {
         {props.sucursal.fechaBaja ? String(props.sucursal.fechaBaja) : "Activo"}
       </td>
 
-      <td>
-        <div className={styles.botonesAcciones}>
+      <td className={baseModulo.tdBotonera}>
+        <div className={baseModulo.botonesAcciones}>
           <button onClick={() => props.onModificar(props.sucursal)}>
             Modificar
           </button>

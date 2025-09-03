@@ -25,7 +25,7 @@ export const BarraSuperior = () => {
         const performLogout = () => {
             setIsLoggingOut(true);
             logout();
-            navigate(ROUTES.HOME, {replace: true});
+            navigate(ROUTES.PRODUCTOS, {replace: true});
         };
 
         if (existeCarrito()) {
@@ -36,9 +36,7 @@ export const BarraSuperior = () => {
             }
         }
 
-        performLogout();
-        // hack para cambiar el estado de setIsLoggingOut una vez haya finalizado la navegacion
-        // setTimeout(() => setIsLoggingOut(false), 500);
+        performLogout(); 
     };
 
     const cambioIdSucursal = (id: number, denominacion: string) => {
@@ -71,18 +69,14 @@ export const BarraSuperior = () => {
             <nav className={styles.topbar}>
                 <ul className={styles.nav}>
                     <li>
-                        <Link to={ROUTES.HOME}>Home</Link>
-                    </li>
-
-                    <li>
                         <Link to={ROUTES.PRODUCTOS}>Productos</Link>
                     </li>
 
                     <li className={styles.dropdown}>
-                        <Link className={styles.dropdownToggle} to={ROUTES.GESTION_EMPRESA}>
-                            Gestion de Empresa
+                        <div className={styles.dropdownToggle}>
+                            Empresa
                             <SlArrowDown style={{marginLeft: 10}}/>
-                        </Link>
+                        </div>
                         <ul className={styles.dropdownMenu}>
                             <li>
                                 <Link to={ROUTES.PRODUCTOS_ABM}>Productos Manofacturados</Link>
@@ -98,7 +92,7 @@ export const BarraSuperior = () => {
 
                     <li className={styles.dropdown}>
                         <div className={styles.dropdownToggle}>
-                            Gestion de Sucursales
+                            Sucursal
                             <SlArrowDown style={{marginLeft: 10}}/>
                         </div>
                         <ul className={styles.dropdownMenu}>

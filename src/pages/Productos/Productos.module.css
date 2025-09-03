@@ -3,15 +3,20 @@
   flex-direction: row;
   padding: 1rem 1rem 1rem;
   position: relative;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px;
 }
 
 .mainContent {
-  flex: 1;
   padding-right: 1rem;
+  width: 70%;
 }
 
 .gridContainer {
-  max-width: calc(100% - 120px);
+  width: 70%;
+  max-width: 65%;
 }
 
 .grid {
@@ -22,7 +27,7 @@
 }
 
 .sidebar {
-  width: 250px;
+  width: 35%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -78,4 +83,24 @@
 
 .statsButton:hover {
   background-color: #0e6c83;
+}
+
+.title{
+  margin-bottom: 0rem;
+}
+
+.filtrosContainer {
+  width: 100%;
+  align-items: center;
+}
+.filtroInput {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: var(--color-terciario);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Poppins", sans-serif;
 }

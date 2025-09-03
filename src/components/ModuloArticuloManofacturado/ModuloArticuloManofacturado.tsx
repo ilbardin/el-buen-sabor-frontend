@@ -1,24 +1,24 @@
 import type { ArticuloManufacturado } from "../../models/articuloManufacturado";
 import styles from "./ModuloArticuloManofacturado.module.css";
 import { eliminarArticuloManufacturado } from "../../services/articuloManufacturadoService";
+import baseModulo from "../../css/baseModulo.module.css";
 export default function ModuloArticuloManofacturado(props: {
   articulo: ArticuloManufacturado;
   onModificar: (articulo: ArticuloManufacturado) => void;
 }) {
+  async function eliminarManofacturado() {
+    if (props.articulo.id) {
+      await eliminarArticuloManufacturado(props.articulo.id);
+    }
+  }
 
-    async function eliminarManofacturado() {
-        if (props.articulo.id) {
-          await eliminarArticuloManufacturado(props.articulo.id);
-        }
-      }
-
-    return(
-    <tr>
+  return (
+    <tr className={baseModulo.filaTabla}>
       <td>{props.articulo.denominacion}</td>
       <td>{props.articulo.descripcion}</td>
       <td>{props.articulo.tiempoEstimado}</td>
       <td>{props.articulo.precioCosto}</td>
-      <td>{props.articulo.estaActivo ? "Activo" : "Inactivo"}</td>
+      <td>{props.articulo.fechaBaja ? "Inactivo" : "Activo"}</td>
       <td>
         {props.articulo.imagenes && props.articulo.imagenes.length > 0 ? (
           <img
@@ -30,17 +30,12 @@ export default function ModuloArticuloManofacturado(props: {
           "Sin imagen"
         )}
       </td>
-      <td>
-        <div className={styles.accionesBotones}>
+      <td  className={baseModulo.tdBotonera}>
+        <div className={baseModulo.botonesAcciones}>
           <button onClick={() => props.onModificar(props.articulo)}>
             Modificar
           </button>
-          <button
-            className={styles.boton}
-            onClick={() => eliminarManofacturado()}
-          >
-            Eliminar
-          </button>
+          <button onClick={() => eliminarManofacturado()}>Eliminar</button>
         </div>
       </td>
     </tr>

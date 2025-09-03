@@ -1,0 +1,114 @@
+:root {
+  --normal: #ccc;
+  --demorado: #f3e245;
+  --muyDemorado: #ff7e06;
+  --finalizado: #666;
+}
+
+
+.moduloCocina {
+  position: relative; /* necesario para el botón */
+  padding-bottom: 50px; /* espacio suficiente para el botón */
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--demorado);
+  overflow: hidden;
+}
+
+
+.descripcion {
+  font-size: 16px;
+  color: #666;
+}
+.boton {
+  margin-top: auto;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 0 0 1px 1px;
+  cursor: pointer;
+  width: calc(100% - 0px);
+  height: auto;
+}
+.boton {
+  position: absolute;
+  bottom: 0px;
+}
+
+.moduloCocinaHeader {
+  background-color: var(--demorado);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+  border-radius: 1px 1px 0 0;
+    padding: 2px 8px;
+}
+
+.moduloCocinaHeader p {
+  margin: 2px;
+}
+
+.left,
+.right {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+.right {
+  align-items: flex-end;
+}
+
+.detallesContainer {
+  padding: 5px 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+  align-items: center;
+}
+
+.detalle {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%; 
+}
+
+.detalle p {
+  margin: 0;
+}
+
+
+.normal {
+  border-color: var(--normal);
+}
+
+.demorado {
+  border-color: var(--demorado);
+}
+
+.muyDemorado {
+  border-color: var(--muyDemorado);
+}
+
+.finalizado {
+  border-color: var(--finalizado);
+}
+
+
+.moduloCocinaHeader.normal {
+  background-color: var(--normal);
+}
+.moduloCocinaHeader.demorado {
+  background-color: var(--demorado);
+}
+.moduloCocinaHeader.muyDemorado {
+  background-color: var(--muyDemorado);
+}
+.moduloCocinaHeader.finalizado {
+  background-color: var(--finalizado);
+}
