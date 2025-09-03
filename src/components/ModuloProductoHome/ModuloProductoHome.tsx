@@ -15,7 +15,7 @@ export const ModuloProductoHome = (props: {
   item: Promocion | ArticuloManufacturado | ArticuloInsumo;
 }) => {
   const { addToCart } = useCart();
-/*
+  /*
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!esPromocion(props.item)) {
@@ -24,20 +24,20 @@ export const ModuloProductoHome = (props: {
   };
 */
   const handleAddToCart = (e: React.MouseEvent) => {
-  e.stopPropagation();
+    e.stopPropagation();
 
-  const cartItem = {
-    ...props.item,
-    id:
-      "descripcion" in props.item
-        ? `M-${props.item.id}` 
-        : "precioSinDescuento" in props.item
-        ? `P-${props.item.id}` 
-        : `I-${props.item.id}`,
+    const cartItem = {
+      ...props.item,
+      id:
+        "descripcion" in props.item
+          ? `M-${props.item.id}`
+          : "precioSinDescuento" in props.item
+          ? `P-${props.item.id}`
+          : `I-${props.item.id}`,
+    };
+
+    addToCart(cartItem as any);
   };
-
-  addToCart(cartItem as any);
-};
 
   return (
     <div className={styles.moduloProductoHome}>
@@ -50,7 +50,13 @@ export const ModuloProductoHome = (props: {
         <div className={styles.imagenProducto}>
           <img
             className={styles.moduloProductoOfertaImagen}
-            src={`http://localhost:8080/uploads/images/${props.item.imagenes?.[0] ?? "defauld.jpg"}`}
+            src={`http://localhost:8080/uploads/images/${
+              esPromocion(props.item)
+                ? props.item.imagenes?.[0] // string[]
+                : "descripcion" in props.item // manufacturado
+                ? props.item.imagenes?.[0]?.denominacion
+                : props.item.nombreImagen ?? "default.jpg"
+            }`}
             alt=""
           />
         </div>
