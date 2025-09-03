@@ -38,29 +38,31 @@ const Productos: React.FC = () => {
     }, [clearCart, location, navigate]);
 
     return (
-        <div className={styles.homepageLayout}>
-            <div className={styles.mainContent}>
-                <h1>Productos Manufacturados</h1>
-                <div className={styles.gridContainer}>
-                    <div className={styles.grid}>
-                        {productos.map((prod) => (
-                            <ArticuloManufacturadoCard
-                                key={prod.id}
-                                producto={prod}
-                            />
-                        ))}
+        <div className={styles.contenedorProductos}>
+            <div className={styles.homepageLayout}>
+                <div className={styles.mainContent}>
+                    <h1>Productos Manufacturados</h1>
+                    <div className={styles.gridContainer}>
+                        <div className={styles.grid}>
+                            {productos.map((prod) => (
+                                <ArticuloManufacturadoCard
+                                    key={prod.id}
+                                    producto={prod}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className={styles.sidebar}>
-                <Carrito
-                    items={cart}
-                    onIncrease={increaseQuantity}
-                    onDecrease={decreaseQuantity}
-                    onCheckout={checkoutCart}
-                    onClear={clearCart}
-                />
+                <div className={styles.sidebar}>
+                    <Carrito
+                        items={cart}
+                        onIncrease={increaseQuantity}
+                        onDecrease={decreaseQuantity}
+                        onCheckout={checkoutCart}
+                        onClear={clearCart}
+                    />
+                </div>
             </div>
         </div>
     );
