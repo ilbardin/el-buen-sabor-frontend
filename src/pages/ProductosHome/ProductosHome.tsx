@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import type { Promocion } from "../../models/promocion";
 import type { ArticuloManufacturado } from "../../models/articuloManufacturado";
-import { getArticulosManufacturados } from "../../services/articuloManufacturadoService";
 import { ModuloProductoHome } from "../../components/ModuloProductoHome/ModuloProductoHome";
 import styles from "./ProductosHome.module.css";
 import type { ArticuloInsumo } from "../../models/articuloInsumo";

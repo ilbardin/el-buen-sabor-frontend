@@ -52,8 +52,8 @@ export const ModuloProductoHome = (props: {
             className={styles.moduloProductoOfertaImagen}
             src={`http://localhost:8080/uploads/images/${
               esPromocion(props.item)
-                ? props.item.imagenes?.[0] // string[]
-                : "descripcion" in props.item // manufacturado
+                ? props.item.imagenes?.[0]
+                : "descripcion" in props.item
                 ? props.item.imagenes?.[0]?.denominacion
                 : props.item.nombreImagen ?? "default.jpg"
             }`}

@@ -51,7 +51,7 @@ const Productos: React.FC = () => {
     );
   };
 
-  // BUSCADOR
+  // BUSCADOR FILTRO
 
   const handleChangeBusqueda = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBusqueda(e.target.value);

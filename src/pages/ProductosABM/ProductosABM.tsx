@@ -61,16 +61,16 @@ export const ProductosABM = () => {
       <div className={baseABM.container}>
         <h1 className={baseABM.titulo}>Productos Manufacturados</h1>
 
-        <div className={styles.botonesContainer}>
+        <div className={baseABM.botonesContainer}>
           <button
-            className={styles.boton}
+            className={baseABM.boton}
             onClick={() => setMostrarModal(true)}
           >
             Añadir nuevo Producto
           </button>
 
           <button
-            className={`${styles.boton} ${styles.botonSecundario}`}
+            className={`${baseABM.boton} ${baseABM.botonSecundario}`}
             onClick={() => setMostrarModalCategoria(true)}
           >
             Añadir nueva Categoria
@@ -87,7 +87,7 @@ export const ProductosABM = () => {
           />
         </div>
 
-        <table className={styles.tabla}>
+        <table className={baseABM.tabla}>
           <thead>
             <tr>
               <th>Nombre</th>
