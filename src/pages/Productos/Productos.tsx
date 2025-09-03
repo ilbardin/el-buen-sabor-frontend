@@ -61,7 +61,7 @@ const Productos: React.FC = () => {
             />
             <div className={styles.homepageLayout}>
                 <div className={styles.mainContent}>
-                    <h1>Productos Manufacturados</h1>
+                    <h1>Nuestros productos</h1>
                     <div className={styles.gridContainer}>
                         <div className={styles.grid}>
                             {productos.map((prod) => (

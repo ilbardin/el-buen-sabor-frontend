@@ -75,30 +75,25 @@ export const LandingPage = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.headerRow}>
-                <div className={styles.logo}>
-                    <span>EL BUEN SABOR™</span>
-                </div>
-                <NavbarCliente
-                    usuario={usuario}
-                    navLinks={[
-                        {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
-                        {label: "Nuestros especiales", to: "/especiales"},
-                        {label: "Sucursales", to: "/sucursales"},
-                    ]}
-                    cartOptions={{
-                        showCart,
-                        isCartClosing,
-                        cartPosition,
-                        toggleCart,
-                        handleHideCart,
-                        cartRef,
-                        cartIconRef,
-                    }}
-                    loginRef={loginRef}
-                    userIconRef={userIconRef}
-                />
-            </div>
+            <NavbarCliente
+                usuario={usuario}
+                navLinks={[
+                    {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
+                    {label: "Nuestros especiales", to: "/especiales"},
+                    {label: "Sucursales", to: "/sucursales"},
+                ]}
+                cartOptions={{
+                    showCart,
+                    isCartClosing,
+                    cartPosition,
+                    toggleCart,
+                    handleHideCart,
+                    cartRef,
+                    cartIconRef,
+                }}
+                loginRef={loginRef}
+                userIconRef={userIconRef}
+            />
 
             <main className={styles.main}>
                 <div className={styles.left}>

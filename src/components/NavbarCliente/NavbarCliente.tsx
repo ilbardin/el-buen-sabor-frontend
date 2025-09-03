@@ -7,6 +7,7 @@ import LoginCard from "../LoginCard/LoginCard.tsx";
 import {CartContext} from "../../context/carrito/cartContext.ts";
 import {useAuthHandlers} from "../../hooks/useAuthHandlers.ts";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
+import Logo from "../Logo/Logo.tsx";
 
 export interface NavLink {
     label: string;
@@ -93,25 +94,28 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     useOutsideClick({
         refs: cartOptions ? [cartOptions.cartRef, cartOptions.cartIconRef] : [],
         enabled: !!cartOptions && cartOptions.showCart,
-        onOutsideClick: cartOptions?.handleHideCart || (() => {}),
+        onOutsideClick: cartOptions?.handleHideCart || (() => {
+        }),
     });
 
     return (
         <header className={styles.navbar}>
-            <nav className={styles.navLinks}>
-                {navLinks.map(({label, to, requiresAuth}, idx) => {
-                    if (requiresAuth && !usuario) return null;
-                    return (
-                        <Link key={idx} to={to}>
-                            {label}
-                        </Link>
-                    );
-                })}
-            </nav>
+            <Logo/>
+            <div className={styles.navbarRight}>
+                <nav className={styles.navLinks}>
+                    {navLinks.map(({label, to, requiresAuth}, idx) => {
+                        if (requiresAuth && !usuario) return null;
+                        return (
+                            <Link key={idx} to={to}>
+                                {label}
+                            </Link>
+                        );
+                    })}
+                </nav>
 
-            <div className={styles.actions}>
-                {usuario && cartOptions && (
-                    <>
+                <div className={styles.actions}>
+                    {usuario && cartOptions && (
+                        <>
             <span
                 className={styles.icon}
                 onClick={cartOptions.toggleCart}
@@ -135,17 +139,17 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                 )}
             </span>
 
-                        <CarritoCard
-                            showCart={cartOptions.showCart}
-                            isClosing={cartOptions.isCartClosing}
-                            position={cartOptions.cartPosition}
-                            onHide={cartOptions.handleHideCart}
-                            ref={cartOptions.cartRef}
-                        />
-                    </>
-                )}
+                            <CarritoCard
+                                showCart={cartOptions.showCart}
+                                isClosing={cartOptions.isCartClosing}
+                                position={cartOptions.cartPosition}
+                                onHide={cartOptions.handleHideCart}
+                                ref={cartOptions.cartRef}
+                            />
+                        </>
+                    )}
 
-                <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
+                    <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
           {usuario ? (
               <div className={styles.userCircle}>
                   {getInitials(usuario.nombre, usuario.apellido)}
@@ -155,19 +159,20 @@ const NavbarCliente: React.FC<NavbarProps> = ({
           )}
         </span>
 
-                <LoginCard
-                    showLogin={showLogin}
-                    isClosing={isClosing}
-                    loginCardPosition={loginCardPosition}
-                    handleLogin={handleLogin}
-                    username={username}
-                    password={password}
-                    setUsername={setUsername}
-                    setPassword={setPassword}
-                    onLogout={handleUserLogout}
-                    onHide={handleHideLogin}
-                    ref={loginRef}
-                />
+                    <LoginCard
+                        showLogin={showLogin}
+                        isClosing={isClosing}
+                        loginCardPosition={loginCardPosition}
+                        handleLogin={handleLogin}
+                        username={username}
+                        password={password}
+                        setUsername={setUsername}
+                        setPassword={setPassword}
+                        onLogout={handleUserLogout}
+                        onHide={handleHideLogin}
+                        ref={loginRef}
+                    />
+                </div>
             </div>
         </header>
     );

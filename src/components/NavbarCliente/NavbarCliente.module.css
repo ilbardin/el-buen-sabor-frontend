@@ -1,8 +1,15 @@
 .navbar {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.navbarRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .navLinks a {
