@@ -1,17 +1,8 @@
 .navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     margin-bottom: 2rem;
-}
-
-.logo {
-    font-weight: bold;
-    font-size: 3rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-terciario);
 }
 
 .navLinks a {

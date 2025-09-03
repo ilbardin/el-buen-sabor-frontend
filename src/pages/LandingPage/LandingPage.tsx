@@ -9,14 +9,12 @@ import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 export const LandingPage = () => {
     const {setIsLoggingOut, usuario} = useAuth();
 
-    // Componente carrito
     const [showCart, setShowCart] = useState(false);
     const [isCartClosing, setIsCartClosing] = useState(false);
     const [cartPosition, setCartPosition] = useState({top: 0, left: 0});
     const cartRef = useRef<HTMLDivElement>(null);
     const cartIconRef = useRef<HTMLSpanElement>(null);
 
-    // Componente LoginCard
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
@@ -77,25 +75,30 @@ export const LandingPage = () => {
 
     return (
         <div className={styles.container}>
-            <NavbarCliente
-                usuario={usuario}
-                navLinks={[
-                    {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
-                    {label: "Nuestros especiales", to: "/especiales"},
-                    {label: "Sucursales", to: "/sucursales"},
-                ]}
-                cartOptions={{
-                    showCart,
-                    isCartClosing,
-                    cartPosition,
-                    toggleCart,
-                    handleHideCart,
-                    cartRef,
-                    cartIconRef,
-                }}
-                loginRef={loginRef}
-                userIconRef={userIconRef}
-            />
+            <div className={styles.headerRow}>
+                <div className={styles.logo}>
+                    <span>EL BUEN SABOR™</span>
+                </div>
+                <NavbarCliente
+                    usuario={usuario}
+                    navLinks={[
+                        {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
+                        {label: "Nuestros especiales", to: "/especiales"},
+                        {label: "Sucursales", to: "/sucursales"},
+                    ]}
+                    cartOptions={{
+                        showCart,
+                        isCartClosing,
+                        cartPosition,
+                        toggleCart,
+                        handleHideCart,
+                        cartRef,
+                        cartIconRef,
+                    }}
+                    loginRef={loginRef}
+                    userIconRef={userIconRef}
+                />
+            </div>
 
             <main className={styles.main}>
                 <div className={styles.left}>

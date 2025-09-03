@@ -43,7 +43,6 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     const {cart} = useContext(CartContext);
     const existeCarrito = cart.length > 0;
 
-    // Login interno
     const [showLogin, setShowLogin] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [loginCardPosition, setLoginCardPosition] = useState({top: 0, left: 0});
@@ -83,7 +82,6 @@ const NavbarCliente: React.FC<NavbarProps> = ({
         }
     }, [showLogin, isClosing, userIconRef]);
 
-    // Hook para cerrar LoginCard al hacer click afuera
     useOutsideClick({
         refs: [loginRef],
         enabled: showLogin,
@@ -100,10 +98,6 @@ const NavbarCliente: React.FC<NavbarProps> = ({
 
     return (
         <header className={styles.navbar}>
-            <div className={styles.logo}>
-                <span>EL BUEN SABOR™</span>
-            </div>
-
             <nav className={styles.navLinks}>
                 {navLinks.map(({label, to, requiresAuth}, idx) => {
                     if (requiresAuth && !usuario) return null;
