@@ -1,32 +1,14 @@
-import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
-import {showAlert, showLoading} from "../../utils/alerts.ts";
-import axiosInstance from "../../api/axiosInstance.ts";
-import type {UserData} from "../../models/usuario/usuario.ts";
-import {LOGIN_URL} from "../../constants/constants.ts";
-import Swal from "sweetalert2";
-import {UserRole} from "../../models/usuario/userRoles.ts";
-import type {AxiosError} from "axios";
-import type {GenericError} from "../../models/errorResponseModel.ts";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {alertaCarrito} from "../../utils/funcionesReutilizables.ts";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
-import {CartContext} from "../../context/carrito/cartContext.ts";
 
-type LoginProps = {
-    onLoginSuccess: (userData: UserData) => void;
-};
-
-export const LandingPage = ({onLoginSuccess}: LoginProps) => {
-    const {logout, setIsLoggingOut, usuario} = useAuth();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const {cart} = useContext(CartContext);
-    const existeCarrito = cart.length > 0;
+export const LandingPage = () => {
+    const {setIsLoggingOut, usuario} = useAuth();
 
     // Componente carrito
     const [showCart, setShowCart] = useState(false);
@@ -60,71 +42,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             setShowLogin(true);
         }
     }, [showLogin]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            showLoading('Iniciando sesión...');
-            const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
-            handleSuccess(response.data);
-        } catch (err: any) {
-            await handleError(err);
-        }
-    };
-
-    const handleUserLogout = async () => {
-        const performLogout = () => {
-            logout();
-            navigate(ROUTES.HOME);
-        };
-
-        if (existeCarrito) {
-            const confirmacion = await alertaCarrito();
-
-            if (!confirmacion) {
-                return;
-            }
-        }
-
-        performLogout();
-    };
-
-    const handleSuccess = (data: UserData) => {
-        Swal.close();
-        onLoginSuccess(data);
-
-        const navigateByRole = (role: UserRole) => {
-            switch (role) {
-                case UserRole.Admin:
-                    navigate(ROUTES.HOME_ADMIN);
-                    break;
-                case UserRole.Cliente:
-                    navigate(ROUTES.HOME);
-                    break;
-                default:
-                    console.warn(`Rol sin programar: ${role}`);
-                    navigate(ROUTES.HOME);
-            }
-        };
-
-        navigateByRole(data.user.rol);
-    };
-
-    const handleError = async (err: AxiosError | never) => {
-        Swal.close();
-
-        if ((err as GenericError).response?.data) {
-            const backendError = err as GenericError;
-            console.error(backendError.response.data);
-            await showAlert('Error', 'error', backendError.response.data);
-        } else {
-            console.error(err);
-            if (err.isAxiosError) {
-                await showAlert('Error', 'error', 'Error de red.');
-            }
-        }
-    };
 
     const getInitials = (name: string, surname: string) => {
         const fullName = `${name} ${surname}`;
@@ -194,7 +111,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         };
     }, [showCart]);
 
-    // Seteo el estado de isLoggingOut al montar este componente
+    // seteo el estado de isLoggingOut al montar este componente
     useEffect(() => {
         setIsLoggingOut(false);
     }, [setIsLoggingOut]);
@@ -228,12 +145,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
                 isClosing={isClosing}
                 loginCardPosition={loginCardPosition}
                 toggleLogin={toggleLogin}
-                handleLogin={handleLogin}
-                username={username}
-                password={password}
-                setUsername={setUsername}
-                setPassword={setPassword}
-                onLogout={handleUserLogout}
                 handleHide={handleHide}
                 loginRef={loginRef}
                 userIconRef={userIconRef}
