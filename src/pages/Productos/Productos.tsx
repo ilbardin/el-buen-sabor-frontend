@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { getArticulosManufacturados } from "../../services/articuloManufacturadoService";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {getArticulosManufacturados} from "../../services/articuloManufacturadoService";
+import {ArticuloManufacturadoCard} from "../../components/ProductoManufacturadoCard/ProductoManufacturadoCard.tsx";
 import styles from "./Productos.module.css";
-import type { ArticuloManufacturado } from "../../models/articuloManufacturado.ts";
-import { Carrito } from "../../components/Carrito/Carrito.tsx";
+import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
+import {Carrito} from "../../components/Carrito/Carrito.tsx";
+import {useCart} from "../../context/carrito/useCart.ts";
+import {useLocation, useNavigate} from "react-router-dom";
+import {ROUTES} from "../../constants/routes.ts";
+import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
+import {useAuth} from "../../context/auth/useAuth.ts";
 import { useCart } from "../../context/carrito/useCart.ts";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../constants/routes.ts";
 import type { Promocion } from "../../models/promocion.ts";
 import { getPromociones } from "../../services/promocionService.ts";
 import { ProductosHome } from "../ProductosHome/ProductosHome.tsx";
@@ -13,14 +17,19 @@ import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 
 const Productos: React.FC = () => {
-  const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
-  const { cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart } =
-    useCart();
-  const [ofertas, setOfertas] = useState<Promocion[]>([]);
-  const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [busqueda, setBusqueda] = useState("");
+    const {setIsLoggingOut, usuario} = useAuth();
+
+    const loginRef = useRef<HTMLDivElement>(null);
+    const userIconRef = useRef<HTMLSpanElement>(null);
+
+    const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
+    const {cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart} = useCart();
+    const [ofertas, setOfertas] = useState<Promocion[]>([]);
+    const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [busqueda, setBusqueda] = useState("");
+
 
   useEffect(() => {
     async function cargarProductos() {
@@ -45,7 +54,20 @@ const Productos: React.FC = () => {
     }
   }, [clearCart, location, navigate]);
 
-  const filtrarPorCategoria = (nombreCategoria: string) => {
+    // TODO: este metodo va a estar en la pagina del estado del pedido
+    // limpia la url
+    useEffect(() => {
+        if (location.search.includes("preference_id")) {
+            clearCart();
+            navigate(ROUTES.PRODUCTOS, {replace: true});
+        }
+    }, [clearCart, location, navigate]);
+
+    useEffect(() => {
+        setIsLoggingOut(false);
+    }, [setIsLoggingOut]);
+      
+      const filtrarPorCategoria = (nombreCategoria: string) => {
     return productos.filter(
       (producto) => producto.categoria === nombreCategoria
     );
@@ -68,8 +90,20 @@ const Productos: React.FC = () => {
   const ofertasFiltradas = ofertas.filter((o) =>
     o.denominacion.toLowerCase().includes(busqueda.toLowerCase())
   );
+  
 
   return (
+          <div className={styles.contenedorProductos}>
+            <NavbarCliente
+                usuario={usuario}
+                navLinks={[
+                    {label: "Home", to: ROUTES.HOME, requiresAuth: true},
+                    {label: "Nuestros especiales", to: "/especiales"},
+                    {label: "Sucursales", to: "/sucursales"},
+                ]}
+                loginRef={loginRef}
+                userIconRef={userIconRef}
+            />
     <>
       <div className={styles.homepageLayout}>
         <div className={styles.mainContent}>
@@ -92,6 +126,7 @@ const Productos: React.FC = () => {
                   ...ofertasFiltradas,
                 ]}
               />
+
             </div>
           ) : (
             <>
@@ -140,6 +175,7 @@ const Productos: React.FC = () => {
         </div>
       </div>
     </>
+        </div>    
   );
 };
 

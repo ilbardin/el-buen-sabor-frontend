@@ -13,5 +13,6 @@ export const ROUTES = {
     EMPRESA_ABM: '/empresa-abm',
     SUCURSAL_ABM: '/sucursal-abm',
     PRUEBA: '/prueba',
+    ESTADO_PEDIDO: '/estado-pedido',
     COCINA: '/cocina',
 };

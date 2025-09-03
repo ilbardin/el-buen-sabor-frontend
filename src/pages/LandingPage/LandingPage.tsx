@@ -1,135 +1,24 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useEffect, useRef, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
-import {FaShoppingCart, FaUser} from 'react-icons/fa';
-import {showAlert, showLoading} from "../../utils/alerts.ts";
-import axiosInstance from "../../api/axiosInstance.ts";
-import type {UserData} from "../../models/usuario/usuario.ts";
-import {LOGIN_URL} from "../../constants/constants.ts";
-import Swal from "sweetalert2";
-import {UserRole} from "../../models/usuario/userRoles.ts";
-import type {AxiosError} from "axios";
-import type {GenericError} from "../../models/errorResponseModel.ts";
-import LoginCard from "../../components/LoginCard/LoginCard.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
-import CarritoCard from "../../components/CarritoCard/CarritoCard.tsx";
-import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
+import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 
-type LoginProps = {
-    onLoginSuccess: (userData: UserData) => void;
-};
+export const LandingPage = () => {
+    const {setIsLoggingOut, usuario} = useAuth();
 
-export const LandingPage = ({onLoginSuccess}: LoginProps) => {
-    const {logout, setIsLoggingOut, usuario} = useAuth();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-
-    // Componente carrito
     const [showCart, setShowCart] = useState(false);
     const [isCartClosing, setIsCartClosing] = useState(false);
     const [cartPosition, setCartPosition] = useState({top: 0, left: 0});
     const cartRef = useRef<HTMLDivElement>(null);
     const cartIconRef = useRef<HTMLSpanElement>(null);
 
-    // Componente LoginCard
-    const [loginCardPosition, setLoginCardPosition] = useState<{ top: number; left: number }>({top: 0, left: 0});
-    const [showLogin, setShowLogin] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
     const navigate = useNavigate();
-
-    const handleHide = () => {
-        setShowLogin(false);
-        setIsClosing(false);
-    };
-
-    const toggleLogin = useCallback(() => {
-        if (showLogin) {
-            setIsClosing(true);
-            setTimeout(() => {
-                setShowLogin(false);
-                setIsClosing(false);
-            }, 300);
-        } else {
-            setShowLogin(true);
-        }
-    }, [showLogin]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            showLoading('Iniciando sesión...');
-            const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
-            handleSuccess(response.data);
-        } catch (err: any) {
-            await handleError(err);
-        }
-    };
-
-    const handleUserLogout = async () => {
-        const performLogout = () => {
-            logout();
-            navigate(ROUTES.HOME);
-        };
-
-        if (existeCarrito()) {
-            const confirmacion = await alertaCarrito();
-
-            if (!confirmacion) {
-                return;
-            }
-        }
-
-        performLogout();
-    };
-
-    const handleSuccess = (data: UserData) => {
-        Swal.close();
-        onLoginSuccess(data);
-
-        const navigateByRole = (role: UserRole) => {
-            switch (role) {
-                case UserRole.Admin:
-                    navigate(ROUTES.HOME_ADMIN);
-                    break;
-                case UserRole.Cliente:
-                    navigate(ROUTES.HOME);
-                    break;
-                default:
-                    console.warn(`Rol sin programar: ${role}`);
-                    navigate(ROUTES.HOME);
-            }
-        };
-
-        navigateByRole(data.user.rol);
-    };
-
-    const handleError = async (err: AxiosError | never) => {
-        Swal.close();
-
-        if ((err as GenericError).response?.data) {
-            const backendError = err as GenericError;
-            console.error(backendError.response.data);
-            await showAlert('Error', 'error', backendError.response.data);
-        } else {
-            console.error(err);
-            if (err.isAxiosError) {
-                await showAlert('Error', 'error', 'Error de red.');
-            }
-        }
-    };
-
-    const getInitials = (name: string, surname: string) => {
-        const fullName = `${name} ${surname}`;
-        const parts = fullName.trim().split(' ');
-        return parts.map((p) => p[0].toUpperCase()).join('').slice(0, 2);
-    };
 
     const toggleCart = () => {
         if (showCart) {
@@ -150,20 +39,6 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             setIsCartClosing(false);
         }, 300);
     };
-
-    useOutsideClick({
-        refs: [loginRef],
-        enabled: showLogin,
-        onOutsideClick: () => {
-            if (showLogin) toggleLogin();
-        }
-    });
-
-    useOutsideClick({
-        refs: [cartRef, cartIconRef],
-        enabled: showCart,
-        onOutsideClick: handleHideCart
-    });
 
     useEffect(() => {
         const updateCartPosition = () => {
@@ -193,73 +68,32 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
         };
     }, [showCart]);
 
-    // Seteo el estado de isLoggingOut al montar este componente
+    // seteo el estado de isLoggingOut al montar este componente
     useEffect(() => {
         setIsLoggingOut(false);
     }, [setIsLoggingOut]);
 
-    useEffect(() => {
-        if ((showLogin || isClosing) && userIconRef.current) {
-            const rect = userIconRef.current.getBoundingClientRect();
-            const top = rect.bottom + window.scrollY + 8;
-            const left = rect.right + window.scrollX - 320;
-            setLoginCardPosition({top, left});
-        }
-    }, [showLogin, isClosing]);
-
     return (
         <div className={styles.container}>
-            <header className={styles.navbar}>
-                <div className={styles.logo}>
-                    <span>EL BUEN SABOR™</span>
-                </div>
-                <nav className={styles.navLinks}>
-                    {usuario && <Link to={ROUTES.PRODUCTOS}>Menú</Link>}
-                    <Link to="/especiales">Nuestros especiales</Link>
-                    <Link to="/sucursales">Sucursales</Link>
-                </nav>
-                <div className={styles.actions}>
-                    {usuario && (
-                        <span
-                            className={styles.icon}
-                            onClick={toggleCart}
-                            ref={cartIconRef}
-                        >
-                        <FaShoppingCart/>
-                        </span>
-                    )}
-                    <CarritoCard
-                        showCart={showCart}
-                        isClosing={isCartClosing}
-                        position={cartPosition}
-                        onHide={handleHideCart}
-                        ref={cartRef}
-                    />
-
-                    <span className={styles.icon} onClick={toggleLogin} ref={userIconRef}>
-                        {usuario ? (
-                            <div className={styles.userCircle}>
-                                {getInitials(usuario.nombre, usuario.apellido)}
-                            </div>
-                        ) : (
-                            <FaUser/>
-                        )}
-                    </span>
-                    <LoginCard
-                        showLogin={showLogin}
-                        isClosing={isClosing}
-                        loginCardPosition={loginCardPosition}
-                        handleLogin={handleLogin}
-                        username={username}
-                        password={password}
-                        setUsername={setUsername}
-                        setPassword={setPassword}
-                        onLogout={handleUserLogout}
-                        onHide={handleHide}
-                        ref={loginRef}
-                    />
-                </div>
-            </header>
+            <NavbarCliente
+                usuario={usuario}
+                navLinks={[
+                    {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
+                    {label: "Nuestros especiales", to: "/especiales"},
+                    {label: "Sucursales", to: "/sucursales"},
+                ]}
+                cartOptions={{
+                    showCart,
+                    isCartClosing,
+                    cartPosition,
+                    toggleCart,
+                    handleHideCart,
+                    cartRef,
+                    cartIconRef,
+                }}
+                loginRef={loginRef}
+                userIconRef={userIconRef}
+            />
 
             <main className={styles.main}>
                 <div className={styles.left}>

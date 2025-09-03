@@ -1,6 +1,6 @@
 import {SlArrowDown} from "react-icons/sl";
 import GestionEmpresa from "../../pages/GestionEmpresa/GestionEmpresa.tsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getSucursal} from "../../services/sucursalService.ts";
 import type {Sucursal} from "../../models/sucursal.ts";
 import {useSucursalStore} from "../Sucursal/SucursalStore.tsx";
@@ -9,17 +9,21 @@ import {useAuth} from "../../context/auth/useAuth.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import styles from "./BarraSuperior.module.css";
 import {BiSolidLogOut} from "react-icons/bi";
-import {alertaCarrito, existeCarrito,} from "../../utils/funcionesReutilizables.ts";
+import {alertaCarrito} from "../../utils/funcionesReutilizables.ts";
+import {CartContext} from "../../context/carrito/cartContext.ts";
 
 export const BarraSuperior = () => {
     const {logout, setIsLoggingOut, usuario} = useAuth();
     const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+    const {cart} = useContext(CartContext);
     const navigate = useNavigate();
     const sucursalNombre = useSucursalStore(
         (state) => state.denominacionSucursal
     );
     const setIdSucursal = useSucursalStore((state) => state.setIdSucursal);
     const setDenominacion = useSucursalStore((state) => state.setDenominacion);
+
+    const existeCarrito = cart.length > 0;
 
     const handleUserLogout = async () => {
         const performLogout = () => {
@@ -28,7 +32,7 @@ export const BarraSuperior = () => {
             navigate(ROUTES.PRODUCTOS, {replace: true});
         };
 
-        if (existeCarrito()) {
+        if (existeCarrito) {
             const confirmacion = await alertaCarrito();
 
             if (!confirmacion) {
@@ -49,6 +53,10 @@ export const BarraSuperior = () => {
     };
 
     useEffect(() => {
+        if (!usuario) {
+            return;
+        }
+
         async function obtenerDatos() {
             const sucursales = await getSucursal();
             setSucursales(sucursales);

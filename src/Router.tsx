@@ -13,12 +13,13 @@ import Productos from './pages/Productos/Productos';
 import {BarraSuperior} from "./components/BarraSuperior/BarraSuperior.tsx";
 import {ProductoDetalle} from "./pages/ProductoDetalle/ProductoDetalle.tsx";
 import {Pagina404} from "./pages/Pagina404/Pagina404.tsx";
-import { StockABM } from './pages/StockABM/StockABM.tsx';
+import {StockABM} from './pages/StockABM/StockABM.tsx';
 import GestionEmpresa from './pages/GestionEmpresa/GestionEmpresa.tsx';
 import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
 import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
+import {EstadoPedido} from "./pages/EstadoPedido/EstadoPedido.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
 import { VistaCocina } from './pages/VistaCocina/VistaCocina.tsx';
 
@@ -41,22 +42,6 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <HomeAdmin/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path={ROUTES.PRODUCTOS}
-                    element={
-                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                            <Productos/>
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path={`${ROUTES.PRODUCTOS}/:id`}
-                    element={
-                        <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                            <ProductoDetalle/>
                         </ProtectedRoute>
                     }
                 />
@@ -136,6 +121,30 @@ const Router = () => {
             <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
             <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
+            <Route
+                path={ROUTES.ESTADO_PEDIDO}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <EstadoPedido/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={ROUTES.PRODUCTOS}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <Productos/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={`${ROUTES.PRODUCTOS}/:id`}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <ProductoDetalle/>
+                    </ProtectedRoute>
+                }
+            />
             <Route path="/" element={<Navigate to={ROUTES.HOME} replace/>}/>
             <Route path="*" element={<Pagina404/>}/>
         </Routes>
