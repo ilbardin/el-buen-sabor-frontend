@@ -74,3 +74,17 @@
     vertical-align: middle;
     margin-bottom: 0.2rem;
 }
+
+.cartDot {
+    position: absolute;
+    bottom: 0;
+    top: -3px;
+    right: 0;
+    left: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-primario);
+    border: 1px solid white;
+}
+

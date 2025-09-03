@@ -1,9 +1,11 @@
 import React, {type RefObject} from "react";
+import {useContext} from "react";
 import {Link} from "react-router-dom";
 import {FaShoppingCart, FaUser} from "react-icons/fa";
 import styles from "./NavbarCliente.module.css";
 import CarritoCard from "../CarritoCard/CarritoCard.tsx";
 import LoginCard from "../LoginCard/LoginCard.tsx";
+import {CartContext} from "../../context/carrito/cartContext.ts";
 
 export interface NavLink {
     label: string;
@@ -68,6 +70,9 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                                                   userIconRef,
                                                   getInitials,
                                               }) => {
+    const {cart} = useContext(CartContext);
+    const existeCarrito = cart.length > 0;
+
     return (
         <header className={styles.navbar}>
             <div className={styles.logo}>
@@ -91,9 +96,25 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                         className={styles.icon}
                         onClick={toggleCart}
                         ref={cartIconRef}
+                        style={{position: "relative"}}
                     >
-            <FaShoppingCart/>
-          </span>
+    <FaShoppingCart/>
+
+                        {existeCarrito && (
+                            <span
+                                className={styles.cartDot}
+                                style={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    right: 0,
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    backgroundColor: "red",
+                                }}
+                            />
+                        )}
+  </span>
                 )}
 
                 <CarritoCard

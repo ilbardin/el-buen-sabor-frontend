@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes.ts';
 import imagenPizza from '/pizza.png';
@@ -12,9 +12,10 @@ import {UserRole} from "../../models/usuario/userRoles.ts";
 import type {AxiosError} from "axios";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {alertaCarrito, existeCarrito} from "../../utils/funcionesReutilizables.ts";
+import {alertaCarrito} from "../../utils/funcionesReutilizables.ts";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
+import {CartContext} from "../../context/carrito/cartContext.ts";
 
 type LoginProps = {
     onLoginSuccess: (userData: UserData) => void;
@@ -24,6 +25,8 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
     const {logout, setIsLoggingOut, usuario} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const {cart} = useContext(CartContext);
+    const existeCarrito = cart.length > 0;
 
     // Componente carrito
     const [showCart, setShowCart] = useState(false);
@@ -76,7 +79,7 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             navigate(ROUTES.HOME);
         };
 
-        if (existeCarrito()) {
+        if (existeCarrito) {
             const confirmacion = await alertaCarrito();
 
             if (!confirmacion) {
@@ -210,9 +213,9 @@ export const LandingPage = ({onLoginSuccess}: LoginProps) => {
             <NavbarCliente
                 usuario={usuario}
                 navLinks={[
-                    { label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true },
-                    { label: "Nuestros especiales", to: "/especiales" },
-                    { label: "Sucursales", to: "/sucursales" },
+                    {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
+                    {label: "Nuestros especiales", to: "/especiales"},
+                    {label: "Sucursales", to: "/sucursales"},
                 ]}
                 showCart={showCart}
                 isCartClosing={isCartClosing}
