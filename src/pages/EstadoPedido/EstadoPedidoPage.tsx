@@ -8,8 +8,9 @@ import {getEstadoPedido} from "../../services/pedidosService.ts";
 import type {DatosEstadoPedido} from "../../models/pedido/datosEstadoPedido.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {formatHora} from "../../utils/funcionesReutilizables.ts";
+import {EstadoPedido} from "../../models/pedido/estadoPedido.ts";
 
-export const EstadoPedido: React.FC = () => {
+export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
     const [datosPedido, setDatosPedido] = useState<DatosEstadoPedido | undefined>(undefined);
     const [externalRefNumber, setExternalRefNumber] = useState<number | null>(() => {
@@ -46,12 +47,30 @@ export const EstadoPedido: React.FC = () => {
         setDatosPedido(response);
     }
 
-    const steps = [
-        {key: "confirmed", label: "Pedido confirmado"},
-        {key: "preparing", label: "En preparación"},
-        {key: "ready", label: "Listo para retirar"},
-        {key: "delivered", label: "Entregado"},
+    const normalSteps = [
+        {key: "pendiente", label: EstadoPedido.pendiente},
+        {key: "preparacion", label: EstadoPedido.preparacion},
+        {key: "delivery", label: EstadoPedido.delivery},
+        {key: "entregado", label: EstadoPedido.entregado},
     ];
+
+    let cancelledOrRejectedSteps: { key: string; label: string }[] = [];
+
+    if (datosPedido?.estado) {
+        const estadoKey = datosPedido.estado.toLowerCase();
+        if (estadoKey === "cancelado" || estadoKey === "rechazado") {
+            cancelledOrRejectedSteps = [
+                {
+                    key: estadoKey,
+                    label: EstadoPedido[datosPedido.estado as keyof typeof EstadoPedido],
+                },
+            ];
+        }
+    }
+
+    const steps = [...normalSteps, ...cancelledOrRejectedSteps];
+
+    const isEntregado = datosPedido?.estado?.toLowerCase() === "entregado";
 
     return (
         <div className={styles.container}>
@@ -81,26 +100,36 @@ export const EstadoPedido: React.FC = () => {
                 </section>
 
                 <div className={styles.progressBar}>
-                    {steps.map((step, index) => (
-                        <div
-                            key={step.key}
-                            className={`${styles.step} ${
-                                datosPedido?.estado === step.key ? styles.active : ""
-                            }`}
-                        >
-                            <div className={styles.circle}>{index + 1}</div>
-                            <span>{step.label}</span>
-                        </div>
-                    ))}
+                    {steps.map((step, index) => {
+                        const isActive = datosPedido?.estado?.toLowerCase() === step.key;
+                        const isCancelledOrRejected = step.key === "cancelado" || step.key === "rechazado";
+
+                        return (
+                            <div
+                                key={step.key}
+                                className={`${styles.step} ${isActive ? styles.active : ""} ${
+                                    isCancelledOrRejected ? styles.cancelled : ""
+                                }`}
+                            >
+                                <div className={styles.circle}>{index + 1}</div>
+                                <span>{step.label}</span>
+                            </div>
+                        );
+                    })}
                 </div>
 
-                <section className={styles.finalMessage}>
-                    <h3>Tu pedido fue entregado 🎁</h3>
-                    <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
+                {!isEntregado && datosPedido?.fechaHoraPedido && (
                     <p className={styles.update}>
-                        Últ. vez actualizado: {formatHora(datosPedido?.fechaHoraPedido)}
+                        Últ. vez actualizado: {formatHora(datosPedido.fechaHoraPedido)}
                     </p>
-                </section>
+                )}
+
+                {isEntregado && (
+                    <section className={styles.finalMessage}>
+                        <h3>Tu pedido fue entregado 🎁</h3>
+                        <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
+                    </section>
+                )}
             </div>
 
             <img src={imagenPizza} alt="Pizza" className={styles.bgPizza}/>
