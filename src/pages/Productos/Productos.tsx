@@ -4,7 +4,6 @@ import styles from "./Productos.module.css";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {Carrito} from "../../components/Carrito/Carrito.tsx";
 import {useCart} from "../../context/carrito/useCart.ts";
-import {useLocation, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
 import {useAuth} from "../../context/auth/useAuth.ts";
@@ -24,8 +23,6 @@ const Productos: React.FC = () => {
     const {cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart} = useCart();
     const [ofertas, setOfertas] = useState<Promocion[]>([]);
     const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
-    const location = useLocation();
-    const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState("");
 
 
@@ -41,25 +38,6 @@ const Productos: React.FC = () => {
 
         void cargarProductos();
     }, []);
-
-    // TODO: implementar una nueva pagina con el estado del pedido
-    // TODO: este metodo va a estar en la pagina del estado del pedido
-    // limpia la url
-    useEffect(() => {
-        if (location.search.includes("preference_id")) {
-            clearCart();
-            navigate(ROUTES.PRODUCTOS, {replace: true});
-        }
-    }, [clearCart, location, navigate]);
-
-    // TODO: este metodo va a estar en la pagina del estado del pedido
-    // limpia la url
-    useEffect(() => {
-        if (location.search.includes("preference_id")) {
-            clearCart();
-            navigate(ROUTES.PRODUCTOS, {replace: true});
-        }
-    }, [clearCart, location, navigate]);
 
     useEffect(() => {
         setIsLoggingOut(false);
