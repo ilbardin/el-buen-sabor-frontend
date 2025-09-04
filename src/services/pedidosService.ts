@@ -82,3 +82,18 @@ export async function savePedido(pedido: PedidoRequest) {
         throw error;
     }
 }
+
+export async function cambioEstadoPedido(id: number, estado: string) {
+    try {
+        const response = await axiosInstance.put(`${API_URL_PEDIDOS + "/" + id + "?" + "estado=" + estado}`);
+
+        if (handleInvalidResponse(response, "Error al guardar el pedido.")) {
+            return;
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error al guardar el pedido:", error);
+        throw error;
+    }
+}

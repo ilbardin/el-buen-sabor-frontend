@@ -1,20 +1,36 @@
 import { useState, useEffect } from "react";
 import type { PedidoRequest } from "../../models/pedidoRequest";
 import styles from "./ModuloCocina.module.css";
-
+import { cambioEstadoPedido } from "../../services/pedidosService";
+type EstadoPedido =
+  | "pendiente"
+  | "preparacion"
+  | "cancelado"
+  | "rechazado"
+  | "delivery"
+  | "entregado";
 export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
-  const [estadoPedido, setEstadoPedido] = useState<
-    "Iniciar" | "Listo" | "Terminar"
-  >("Iniciar");
+  const [estadoPedido, setEstadoPedido] = useState<EstadoPedido>(
+    (props.pedido.estadoPedido as EstadoPedido) ?? "pendiente"
+  );
   const [elapsedTime, setElapsedTime] = useState<string>("");
   const [colorState, setColorState] = useState<
     "normal" | "demorado" | "muyDemorado" | "finalizado"
   >("normal");
 
-  const calcularColorEstado = () => {
-    if (estadoPedido === "Terminar") return "finalizado";
+  const cambioEstado = async (nuevoEstado: typeof estadoPedido) => {
+    try {
+      await cambioEstadoPedido(props.pedido.idPedido, nuevoEstado);
+      setEstadoPedido(nuevoEstado);
+    } catch (error) {
+      console.error("Error al cambiar estado:", error);
+    }
+  };
 
-    const pedidoDate = new Date(props.pedido.fechaHoraPedido);
+  const calcularColorEstado = () => {
+    if (estadoPedido === "entregado") return "finalizado";
+
+    const pedidoDate = new Date(props.pedido.fechaCreacion);
     const now = new Date();
     const diffMinutes = Math.floor(
       (now.getTime() - pedidoDate.getTime()) / 60000
@@ -26,9 +42,13 @@ export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
   };
 
   useEffect(() => {
-    const pedidoDate = new Date(props.pedido.fechaHoraPedido);
+    const pedidoDate = new Date(props.pedido.fechaCreacion);
 
     const updateElapsedTime = () => {
+      if (estadoPedido === "entregado") {
+        setColorState("finalizado");
+        return;
+      }
       const now = new Date();
       const diff = Math.floor((now.getTime() - pedidoDate.getTime()) / 1000);
 
@@ -44,36 +64,29 @@ export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
 
       setElapsedTime(formatted);
 
-      if (estadoPedido !== "Terminar") {
-        setColorState(calcularColorEstado());
-      }
+      setColorState(calcularColorEstado());
     };
 
     updateElapsedTime();
     const interval = setInterval(updateElapsedTime, 1000);
 
     return () => clearInterval(interval);
-  }, [props.pedido.fechaHoraPedido, estadoPedido]);
+  }, [props.pedido.fechaCreacion, estadoPedido]);
 
-  function cambioEstado() {
-    if (estadoPedido === "Iniciar") {
-      setEstadoPedido("Listo");
-    } else if (estadoPedido === "Listo") {
-      setEstadoPedido("Terminar");
-    } else {
-      setColorState("finalizado");
-    }
-  }
   return (
     <div className={`${styles.moduloCocina} ${styles[colorState]}`}>
       <div className={`${styles.moduloCocinaHeader} ${styles[colorState]}`}>
         <div className={styles.left}>
-          <p>{props.pedido.id}</p>
-          <p>{colorState === "finalizado" ? "Finalizado" : elapsedTime}</p>
+          <p>{props.pedido.idPedido}</p>
+          {estadoPedido !== "entregado" ? (
+            <p>{elapsedTime}</p>
+          ) : (
+            <p>Entregado</p>
+          )}
         </div>
         <div className={styles.right}>
           <p>{props.pedido.tipoEnvio}</p>
-          <p>{props.pedido.fechaHoraPedido.substring(11, 16)}</p>
+          <p>{props.pedido.fechaCreacion.substring(11, 16) ?? "Sin hora"}</p>
         </div>
       </div>
       <div>
@@ -81,22 +94,29 @@ export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
           {props.pedido.detalles.map((detalle) => (
             <div key={detalle.id} className={styles.detalle}>
               <p>{detalle.cantidad}</p>
-              <p>
-                {detalle.articuloInsumo?.denominacion ??
-                  detalle.articuloManufacturado?.denominacion ??
-                  ""}
-              </p>
+              <p>{detalle.denominacion}</p>
             </div>
           ))}
         </div>
       </div>
-      {colorState !== "finalizado" && (
-        <div>
-          <button className={styles.boton} onClick={() => cambioEstado()}>
-            {estadoPedido}
-          </button>
-        </div>
-      )}
+      <div>
+        <button
+          className={`${styles.boton} ${
+            estadoPedido === "entregado" ? styles.botonDeshabilitado : ""
+          }`}
+          onClick={() =>
+            cambioEstado(
+              estadoPedido === "pendiente" ? "preparacion" : "entregado"
+            )
+          }
+        >
+          {estadoPedido === "pendiente"
+            ? "Iniciar"
+            : estadoPedido === "preparacion"
+            ? "Terminar"
+            : "Entregado"}
+        </button>
+      </div>
     </div>
   );
 };

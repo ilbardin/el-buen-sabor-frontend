@@ -1,14 +1,14 @@
 :root {
   --normal: #ccc;
   --demorado: #f3e245;
-  --muyDemorado: #ff7e06;
+  --muyDemorado: #ff6106;
   --finalizado: #666;
 }
 
 
 .moduloCocina {
-  position: relative; /* necesario para el botón */
-  padding-bottom: 50px; /* espacio suficiente para el botón */
+  position: relative; 
+  padding-bottom: 50px; 
   border-radius: 5px;
   background-color: #f9f9f9;
   display: flex;
@@ -25,7 +25,7 @@
 .boton {
   margin-top: auto;
   padding: 10px 20px;
-  background-color: #28a745;
+  background-color: var(--color-primario);
   color: white;
   border: none;
   border-radius: 0 0 1px 1px;
@@ -111,4 +111,10 @@
 }
 .moduloCocinaHeader.finalizado {
   background-color: var(--finalizado);
+}
+
+.botonDeshabilitado{
+
+  background-color: var(--finalizado);
+  cursor: not-allowed
 }

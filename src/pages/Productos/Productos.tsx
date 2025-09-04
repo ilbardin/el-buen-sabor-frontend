@@ -1,10 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import {getArticulosManufacturados} from "../../services/articuloManufacturadoService";
-import {ArticuloManufacturadoCard} from "../../components/ProductoManufacturadoCard/ProductoManufacturadoCard.tsx";
 import styles from "./Productos.module.css";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
 import {Carrito} from "../../components/Carrito/Carrito.tsx";
-import {useCart} from "../../context/carrito/useCart.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
