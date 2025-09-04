@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./EstadoPedido.module.css";
 import imagenPizza from '/pizza.png';
 import {FaArrowLeft} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
+import {getEstadoPedido} from "../../services/pedidosService.ts";
+import type {DatosEstadoPedido} from "../../models/datosEstadoPedido.ts";
+import {useCart} from "../../context/carrito/useCart.ts";
 
 interface OrderData {
     restaurant: string;
@@ -16,7 +19,37 @@ interface OrderData {
 }
 
 export const EstadoPedido: React.FC = () => {
+    const {clearCart} = useCart();
+    const [datosPedido, setDatosPedido] = useState<DatosEstadoPedido | undefined>(undefined);
+    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const externalRef = params.get("external_reference");
+
+        if (externalRef) {
+            const num = Number(externalRef);
+            if (!isNaN(num)) {
+                console.log("External Reference:", num);
+                setExternalRefNumber(num);
+                clearCart();
+                navigate(ROUTES.ESTADO_PEDIDO, {replace: true});
+            }
+        }
+    }, [clearCart, navigate]);
+
+    useEffect(() => {
+        if (externalRefNumber !== null) {
+            obtenerDatosPedido(externalRefNumber);
+        }
+    }, [externalRefNumber]);
+
+    const obtenerDatosPedido = async (idPedido: number) => {
+        const response = await getEstadoPedido(idPedido);
+        console.log(response);
+        setDatosPedido(response);
+    }
 
     const data: OrderData = {
         restaurant: "El Buen Sabor",
