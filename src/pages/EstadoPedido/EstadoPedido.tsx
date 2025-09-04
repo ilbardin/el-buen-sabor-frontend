@@ -3,6 +3,7 @@ import styles from "./EstadoPedido.module.css";
 import imagenPizza from '/pizza.png';
 import {FaArrowLeft} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../constants/routes.ts";
 
 interface OrderData {
     restaurant: string;
@@ -40,7 +41,7 @@ export const EstadoPedido: React.FC = () => {
                 className="volver-button"
                 aria-label="Volver"
                 title="Volver"
-                onClick={() => navigate(-1)}>
+                onClick={() => navigate(ROUTES.HOME, {replace: true})}>
                 <FaArrowLeft/>
             </button>
             <div className={styles.content}>
