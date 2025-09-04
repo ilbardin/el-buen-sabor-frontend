@@ -21,7 +21,11 @@ interface OrderData {
 export const EstadoPedido: React.FC = () => {
     const {clearCart} = useCart();
     const [datosPedido, setDatosPedido] = useState<DatosEstadoPedido | undefined>(undefined);
-    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(null);
+    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(() => {
+        const stored = sessionStorage.getItem("external_reference");
+        return stored ? Number(stored) : null;
+    });
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,8 +35,8 @@ export const EstadoPedido: React.FC = () => {
         if (externalRef) {
             const num = Number(externalRef);
             if (!isNaN(num)) {
-                console.log("External Reference:", num);
                 setExternalRefNumber(num);
+                sessionStorage.setItem("external_reference", num.toString());
                 clearCart();
                 navigate(ROUTES.ESTADO_PEDIDO, {replace: true});
             }
