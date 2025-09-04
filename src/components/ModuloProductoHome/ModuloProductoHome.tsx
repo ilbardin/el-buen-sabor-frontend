@@ -30,10 +30,10 @@ export const ModuloProductoHome = (props: {
       ...props.item,
       id:
         "descripcion" in props.item
-          ? `M-${props.item.id}`
+          ? `${props.item.id}`
           : "precioSinDescuento" in props.item
-          ? `P-${props.item.id}`
-          : `I-${props.item.id}`,
+          ? `${props.item.id}`
+          : `${props.item.id}`,
     };
 
     addToCart(cartItem as any);
