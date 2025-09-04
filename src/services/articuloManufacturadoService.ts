@@ -3,7 +3,7 @@ import type {ArticuloManufacturado, ArticuloManufacturadoCreacion} from "../mode
 import {showAlert} from "../utils/alerts.ts";
 import type {CategoriaArticuloManufacturado} from "../models/categoriaArticuloManufacturado.ts";
 import type {AxiosResponse} from "axios";
-import type { PedidoRequest } from "../models/pedidoRequest.ts";
+import type { PedidoRequest } from "../models/pedido/pedidoRequest.ts";
 
 const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";

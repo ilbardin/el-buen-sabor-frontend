@@ -1,5 +1,5 @@
 import axiosInstance from "../api/axiosInstance.ts";
-import type {ItemCarritoMp} from "../models/pedidoRequest.ts";
+import type {ItemCarritoMp} from "../models/pedido/pedidoRequest.ts";
 
 interface PreferenceIdResponse {
     id: string;

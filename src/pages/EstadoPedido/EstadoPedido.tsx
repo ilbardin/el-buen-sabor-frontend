@@ -5,18 +5,9 @@ import {FaArrowLeft} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import {getEstadoPedido} from "../../services/pedidosService.ts";
-import type {DatosEstadoPedido} from "../../models/datosEstadoPedido.ts";
+import type {DatosEstadoPedido} from "../../models/pedido/datosEstadoPedido.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
-
-interface OrderData {
-    restaurant: string;
-    orderNumber: string;
-    total: string;
-    pickupAddress: string;
-    estimatedTime: string;
-    lastUpdate: string;
-    status: "confirmed" | "preparing" | "ready" | "delivered";
-}
+import {formatHora} from "../../utils/funcionesReutilizables.ts";
 
 export const EstadoPedido: React.FC = () => {
     const {clearCart} = useCart();
@@ -55,16 +46,6 @@ export const EstadoPedido: React.FC = () => {
         setDatosPedido(response);
     }
 
-    const data: OrderData = {
-        restaurant: "El Buen Sabor",
-        orderNumber: "#123456789",
-        total: "$ 1,234.56",
-        pickupAddress: "Domicilio de la empresa",
-        estimatedTime: "20 min.",
-        lastUpdate: "12:45 hs",
-        status: "delivered",
-    };
-
     const steps = [
         {key: "confirmed", label: "Pedido confirmado"},
         {key: "preparing", label: "En preparación"},
@@ -84,16 +65,18 @@ export const EstadoPedido: React.FC = () => {
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
-                    <h1>{data.restaurant}</h1>
+                    <h1>{datosPedido?.sucursalEmpresa.nombre}</h1>
                 </header>
 
                 <section className={styles.orderInfo}>
                     <h2>Datos de tu pedido</h2>
                     <div className={styles.infoGrid}>
-                        <p><strong>Orden:</strong> {data.orderNumber}</p>
-                        <p><strong>Retiro por restaurante:</strong> {data.pickupAddress}</p>
-                        <p><strong>Total:</strong> {data.total}</p>
-                        <p><strong>Tiempo estimado:</strong> {data.estimatedTime}</p>
+                        <p><strong>Orden:</strong> {datosPedido?.id}</p>
+                        {/*<p><strong>Retiro por restaurante:</strong> {datosPedido.pickupAddress}</p>*/}
+                        <p><strong>Total:</strong> ${datosPedido?.total}</p>
+                        <p>
+                            <strong>Tiempo estimado:</strong> {formatHora(datosPedido?.horaEstimadaFinalizacion)}
+                        </p>
                     </div>
                 </section>
 
@@ -102,7 +85,7 @@ export const EstadoPedido: React.FC = () => {
                         <div
                             key={step.key}
                             className={`${styles.step} ${
-                                data.status === step.key ? styles.active : ""
+                                datosPedido?.estado === step.key ? styles.active : ""
                             }`}
                         >
                             <div className={styles.circle}>{index + 1}</div>
@@ -115,7 +98,7 @@ export const EstadoPedido: React.FC = () => {
                     <h3>Tu pedido fue entregado 🎁</h3>
                     <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
                     <p className={styles.update}>
-                        Últ. vez actualizado {data.lastUpdate}
+                        Últ. vez actualizado: {formatHora(datosPedido?.fechaHoraPedido)}
                     </p>
                 </section>
             </div>

@@ -6,7 +6,7 @@ import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
-import type {PedidoRequest} from "../../models/pedidoRequest.ts";
+import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import Swal from "sweetalert2";
 import {crearPeticionMP} from "../../services/mercadoPagoService.ts";
 import {mapCartItemsToMpItems} from "../../utils/funcionesReutilizables.ts";
