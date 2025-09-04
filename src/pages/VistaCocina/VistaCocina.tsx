@@ -1,8 +1,8 @@
-import styles from "./VistaCocina.module.css";
-import { ModuloCocina } from "../../components/ModuloCocina/ModuloCocina";
-import type { PedidoRequest } from "../../models/pedidoRequest";
-import { useEffect, useState } from "react";
-import { getPedidos } from "../../services/pedidosService";
+import styles from './VistaCocina.module.css';
+import { ModuloCocina } from '../../components/ModuloCocina/ModuloCocina';
+import type { PedidoRequest } from '../../models/pedido/pedidoRequest.ts';
+import { useEffect, useState } from 'react';
+import { getPedidos } from '../../services/pedidosService';
 
 export const VistaCocina = () => {
   const [pedidos, setPedidos] = useState<PedidoRequest[]>([]);

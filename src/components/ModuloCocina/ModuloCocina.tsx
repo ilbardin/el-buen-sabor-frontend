@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { PedidoRequest } from "../../models/pedidoRequest";
+import type { PedidoRequest } from "../../models/pedido/pedidoRequest.ts";
 import styles from "./ModuloCocina.module.css";
 import { cambioEstadoPedido } from "../../services/pedidosService";
 type EstadoPedido =

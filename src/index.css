@@ -1,3 +1,7 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 :root {
     --color-primario: #e74c3c;
     --color-secundario: #f1c40f;

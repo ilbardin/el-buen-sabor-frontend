@@ -19,7 +19,7 @@ import {PromocionesABM} from './pages/PromocionesABM/PromocionesABM.tsx';
 import EmpresaABM from './pages/EmpresaABM/empresaABM.tsx';
 import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
-import {EstadoPedido} from "./pages/EstadoPedido/EstadoPedido.tsx";
+import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
 import { VistaCocina } from './pages/VistaCocina/VistaCocina.tsx';
 
@@ -125,7 +125,7 @@ const Router = () => {
                 path={ROUTES.ESTADO_PEDIDO}
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                        <EstadoPedido/>
+                        <EstadoPedidoPage/>
                     </ProtectedRoute>
                 }
             />
