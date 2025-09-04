@@ -1,11 +1,11 @@
 import {showConfirm} from "./alerts.ts";
-import type {ItemCarritoMp} from "../models/pedidoRequest.ts";
+import type {ItemCarritoMp} from "../models/pedido/pedidoRequest.ts";
 import type {ItemCarrito} from "../components/Carrito/Carrito.tsx";
 
 export const alertaCarrito = async (): Promise<boolean> => {
     return await showConfirm(
         "Confirmación",
-        "Si cerra sesión, perderá los productos guardados en el carrito."
+        "Si cierra sesión, perderá los productos guardados en el carrito."
     );
 };
 
@@ -15,10 +15,24 @@ export const mapCartItemsToMpItems = (cartItems: ItemCarrito[]): ItemCarritoMp[]
         title: item.denominacion,
         description: item.descripcion,
         pictureUrl: item.imagenes && item.imagenes.length > 0 ? item.imagenes[0].denominacion : undefined,
-        categoryId: item.categoriaArticulo,
+        categoryId: item.categoria,
         quantity: item.cantidad,
         currencyId: "ARS",
         unitPrice: item.precioVenta.toString()
     }));
 };
+
+export function formatHora(fecha?: string | Date): string {
+    if (!fecha) return "-";
+
+    const dateObj = typeof fecha === "string" ? new Date(fecha) : fecha;
+
+    return dateObj.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
+
+
 
