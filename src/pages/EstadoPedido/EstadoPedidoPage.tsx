@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import {getEstadoPedido} from "../../services/pedidosService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
-import {EstadoPedido} from "../../models/pedido/estadoPedido.ts";
+import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
@@ -61,10 +61,10 @@ export const EstadoPedidoPage: React.FC = () => {
     }
 
     const normalSteps = [
-        {key: "pendiente", label: EstadoPedido.pendiente},
-        {key: "preparacion", label: EstadoPedido.preparacion},
-        {key: "delivery", label: EstadoPedido.delivery},
-        {key: "entregado", label: EstadoPedido.entregado},
+        {key: "pendiente", label: EstadoPedidoEnum.pendiente},
+        {key: "preparacion", label: EstadoPedidoEnum.preparacion},
+        {key: "delivery", label: EstadoPedidoEnum.delivery},
+        {key: "entregado", label: EstadoPedidoEnum.entregado},
     ];
 
     let cancelledOrRejectedSteps: { key: string; label: string }[] = [];
@@ -75,7 +75,7 @@ export const EstadoPedidoPage: React.FC = () => {
             cancelledOrRejectedSteps = [
                 {
                     key: estadoKey,
-                    label: EstadoPedido[datosPedido.estadoPedido as keyof typeof EstadoPedido],
+                    label: EstadoPedidoEnum[datosPedido.estadoPedido as keyof typeof EstadoPedidoEnum],
                 },
             ];
         }

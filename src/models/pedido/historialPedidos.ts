@@ -1,11 +1,11 @@
-import type {EstadoPedido} from "./estadoPedido.ts";
+import type {EstadoPedidoEnum} from "./estadoPedidoEnum.ts";
 
 export interface HistorialPedidos {
     idPedido: number;
     idSucursal: number;
     nombreSucursal: string;
     idCliente: number;
-    estadoPedido: EstadoPedido;
+    estadoPedido: EstadoPedidoEnum;
     tipoEnvio: "delivery" | "takeaway";
     idDireccionEntrega: number;
     fechaCreacion: Date;

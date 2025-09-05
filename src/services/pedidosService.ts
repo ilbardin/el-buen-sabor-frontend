@@ -3,6 +3,7 @@ import type {ArticuloManufacturado} from "../models/articuloManufacturado.ts";
 import {showAlert} from "../utils/alerts.ts";
 import type {AxiosResponse} from "axios";
 import type {PedidoRequest} from "../models/pedido/pedidoRequest.ts";
+import type {HistorialPedidos} from "../models/pedido/historialPedidos.ts";
 
 const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
@@ -23,6 +24,28 @@ export async function getPedidos(): Promise<PedidoRequest[]> {
             return [];
         }
         console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function getHistorialPedidos(idCliente?: number, idSucursal?: number): Promise<HistorialPedidos[]> {
+    try {
+        const params = new URLSearchParams({full: "false"});
+
+        if (idCliente) params.append("idCliente", idCliente.toString());
+        if (idSucursal) params.append("idSucursal", idSucursal.toString());
+
+        const url = `${API_URL_PEDIDOS}?${params.toString()}`;
+
+        const response = await axiosInstance.get<HistorialPedidos[]>(url);
+
+        if (handleInvalidResponse(response, "Error al obtener el historial de pedidos.")) {
+            return [];
+        }
+
         return response.data;
     } catch (error) {
         console.error("Error:", error);
