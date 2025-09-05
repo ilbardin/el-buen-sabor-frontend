@@ -16,6 +16,7 @@
     text-decoration: none;
     font-weight: 700;
     position: relative;
+    margin-bottom: 0.2rem;
 }
 
 .navLinks a::after {
