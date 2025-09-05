@@ -96,6 +96,24 @@ export const HistorialPedidosPage: React.FC = () => {
         return buttons;
     };
 
+    function getEstadoColor(estado: string): string {
+        switch (estado.toLowerCase()) {
+            case 'pendiente':
+                return 'var(--color-secundario)';
+            case 'cancelado':
+            case 'rechazado':
+                return 'var(--color-primario)';
+            case 'entregado':
+                return '#27ae60';
+            case 'en proceso de entrega':
+                return '#2D9CDB';
+            case 'preparacion':
+                return '#FFA500';
+            default:
+                return '#007bff';
+        }
+    }
+
     return (
         <div className={styles.containerHistorial}>
             <BotonRegresar url={ROUTES.HOME}/>
@@ -110,8 +128,14 @@ export const HistorialPedidosPage: React.FC = () => {
                         <div key={pedido.idPedido} className={styles.cardPedido}>
                             <div className={styles.cardHeader}>
                                 <span>Pedido #{pedido.idPedido}</span>
-                                <span className={styles.estado}>{pedido.estadoPedido}</span>
+                                <span
+                                    className={styles.estado}
+                                    style={{background: getEstadoColor(pedido.estadoPedido)}}
+                                >
+                                {pedido.estadoPedido}
+                                </span>
                             </div>
+
                             <div className={styles.cardBody}>
                                 <span><b>Fecha:</b> {new Date(pedido.fechaCreacion).toLocaleDateString()}</span>
                                 <span><b>Total:</b> ${pedido.total.toFixed(2)}</span>
