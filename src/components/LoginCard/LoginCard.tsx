@@ -3,7 +3,7 @@ import {AuthContext} from "../../context/auth/authContext.ts";
 import styles from './LoginCard.module.css';
 import {Link} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
-import {FaLock, FaUser} from "react-icons/fa";
+import {FaHistory, FaLock, FaUser} from "react-icons/fa";
 import {RiLoginBoxFill, RiLogoutBoxFill} from "react-icons/ri";
 
 type LoginCardProps = {
@@ -57,8 +57,16 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
                 {usuario ? (
                     <div>
                         <h3 className={styles.loginTitle}>
-                            ¿Qué te antoja hoy {usuario.nombre}?
+                            ¡Hola {usuario.nombre}!
                         </h3>
+                        <button
+                            onClick={undefined}
+                            className={`${styles.buttonBase} ${styles.historialButton}`}
+                        >
+                            <FaHistory className={styles.icon} />
+                            Historial de pedidos
+                        </button>
+
                         <button
                             onClick={handleLogout}
                             className={`${styles.buttonBase} ${styles.logoutButton}`}

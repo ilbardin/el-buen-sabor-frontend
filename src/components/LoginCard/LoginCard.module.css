@@ -90,7 +90,7 @@
     cursor: pointer;
     width: 100%;
     transition: background-color 0.3s ease;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 0.5rem;
     justify-content: center;
     align-items: center;
     display: inline-flex;
@@ -107,6 +107,14 @@
 
 .loginButton:hover {
     background-color: var(--color-primario);
+}
+
+.historialButton {
+    background-color: #2D9CDB;
+}
+
+.historialButton:hover {
+    background-color: #006fb1;
 }
 
 .logoutButton {
