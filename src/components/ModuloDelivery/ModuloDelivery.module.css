@@ -85,14 +85,6 @@
   border-color: var(--normal);
 }
 
-.demorado {
-  border-color: var(--demorado);
-}
-
-.muyDemorado {
-  border-color: var(--muyDemorado);
-}
-
 .finalizado {
   border-color: var(--finalizado);
 }
@@ -100,12 +92,6 @@
 
 .moduloCocinaHeader.normal {
   background-color: var(--normal);
-}
-.moduloCocinaHeader.demorado {
-  background-color: var(--demorado);
-}
-.moduloCocinaHeader.muyDemorado {
-  background-color: var(--muyDemorado);
 }
 .moduloCocinaHeader.finalizado {
   background-color: var(--finalizado);

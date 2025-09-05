@@ -15,5 +15,5 @@ export const ROUTES = {
     PRUEBA: '/prueba',
     ESTADO_PEDIDO: '/estado-pedido',
     COCINA: '/cocina',
-    DELIVERY: '/delivery'
+    DELIVERY: '/delivery' 
 };
