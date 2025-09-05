@@ -1,6 +1,6 @@
 import React, {forwardRef, useContext} from 'react';
 import {AuthContext} from "../../context/auth/authContext.ts";
-import styles from './LoginCard.module.css';
+import styles from './UserCard.module.css';
 import {Link} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import {FaHistory, FaLock, FaUser} from "react-icons/fa";
@@ -19,7 +19,7 @@ type LoginCardProps = {
     onHide: () => void;
 };
 
-const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
+const UserCard = forwardRef<HTMLDivElement, LoginCardProps>(
     (
         {
             showLogin,
@@ -46,7 +46,7 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
 
         return (
             <div
-                className={`${styles.loginCard} ${isClosing ? styles.fadeOut : styles.fadeIn}`}
+                className={`${styles.userCard} ${isClosing ? styles.fadeOut : styles.fadeIn}`}
                 style={{
                     top: `${loginCardPosition.top}px`,
                     left: `${loginCardPosition.left}px`,
@@ -56,14 +56,14 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
             >
                 {usuario ? (
                     <div>
-                        <h3 className={styles.loginTitle}>
+                        <h3 className={styles.cardTitle}>
                             ¡Hola {usuario.nombre}!
                         </h3>
                         <button
                             onClick={undefined}
                             className={`${styles.buttonBase} ${styles.historialButton}`}
                         >
-                            <FaHistory className={styles.icon} />
+                            <FaHistory className={styles.icon}/>
                             Historial de pedidos
                         </button>
 
@@ -71,13 +71,13 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
                             onClick={handleLogout}
                             className={`${styles.buttonBase} ${styles.logoutButton}`}
                         >
-                            <RiLogoutBoxFill className={styles.icon} />
+                            <RiLogoutBoxFill className={styles.icon}/>
                             Cerrar sesión
                         </button>
                     </div>
                 ) : (
                     <>
-                        <h3 className={styles.loginTitle}>Iniciar sesión</h3>
+                        <h3 className={styles.cardTitle}>Iniciar sesión</h3>
                         <form
                             onSubmit={(e) => {
                                 handleLogin(e);
@@ -132,6 +132,6 @@ const LoginCard = forwardRef<HTMLDivElement, LoginCardProps>(
     }
 );
 
-LoginCard.displayName = 'LoginCard';
+UserCard.displayName = 'UserCard';
 
-export default LoginCard;
+export default UserCard;
