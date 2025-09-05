@@ -73,9 +73,7 @@ const Productos: React.FC = () => {
             <NavbarCliente
                 usuario={usuario}
                 navLinks={[
-                    {label: "Home", to: ROUTES.HOME, requiresAuth: true},
-                    {label: "Nuestros especiales", to: "/especiales"},
-                    {label: "Sucursales", to: "/sucursales"},
+                    {label: "HOME", to: ROUTES.HOME, requiresAuth: true}
                 ]}
                 loginRef={loginRef}
                 userIconRef={userIconRef}
