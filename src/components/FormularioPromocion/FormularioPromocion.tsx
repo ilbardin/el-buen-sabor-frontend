@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaPercent } from "react-icons/fa";
 import styles from "./FormularioPromocion.module.css";
 import type { Promocion, PromocionDetalle } from "../../models/promocion";
 import {
@@ -114,98 +115,103 @@ export function FormularioPromocion({
 
   return (
     <div className={baseFormulario.divContenedor}>
-        <div className={baseFormulario.formulario}
-        style={{ flexDirection: "column", width: "70%", maxHeight: "90%" }}>
-          <h2 className={baseFormulario.title}>Nueva Promoción</h2>
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formBody}>
-              <div className={styles.leftColumn}>
-                <label>Denominación:</label>
-                <input
-                  type="text"
-                  value={denominacion}
-                  maxLength={100}
-                  onChange={(e) => setDenominacion(e.target.value)}
-                />
-                {formularioValidado && !denominacion.trim() && (
-                  <p className={baseFormulario.error}>
-                    Este campo es obligatorio
-                  </p>
-                )}
+      <div
+        className={baseFormulario.formulario}
+        style={{ flexDirection: "column", width: "70%", maxHeight: "90%" }}
+      >
+        <h2 className={baseFormulario.title}>Nueva Promoción</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formBody}>
+            <div className={styles.leftColumn}>
+              <label>Denominación:</label>
+              <input
+                type="text"
+                value={denominacion}
+                maxLength={100}
+                onChange={(e) => setDenominacion(e.target.value)}
+              />
+              {formularioValidado && !denominacion.trim() && (
+                <p className={baseFormulario.error}>
+                  Este campo es obligatorio
+                </p>
+              )}
 
-                {/* Fecha Desde */}
-                <label>Fecha desde:</label>
-                <input
-                  type="date"
-                  value={fechaDesde}
-                  onChange={(e) => setFechaDesde(e.target.value)}
-                />
-                {formularioValidado && !fechaDesde && (
-                  <p className={baseFormulario.error}>
-                    Este campo es obligatorio
-                  </p>
-                )}
+              {/* Fecha Desde */}
+              <label>Fecha desde:</label>
+              <input
+                type="date"
+                value={fechaDesde}
+                onChange={(e) => setFechaDesde(e.target.value)}
+              />
+              {formularioValidado && !fechaDesde && (
+                <p className={baseFormulario.error}>
+                  Este campo es obligatorio
+                </p>
+              )}
 
-                {/* Fecha Hasta */}
-                <label>Fecha hasta:</label>
-                <input
-                  type="date"
-                  value={fechaHasta}
-                  onChange={(e) => setFechaHasta(e.target.value)}
-                />
-                {formularioValidado && !fechaHasta && (
-                  <p className={baseFormulario.error}>
-                    Este campo es obligatorio
-                  </p>
-                )}
+              {/* Fecha Hasta */}
+              <label>Fecha hasta:</label>
+              <input
+                type="date"
+                value={fechaHasta}
+                onChange={(e) => setFechaHasta(e.target.value)}
+              />
+              {formularioValidado && !fechaHasta && (
+                <p className={baseFormulario.error}>
+                  Este campo es obligatorio
+                </p>
+              )}
 
-                <label>Descuento:</label>
+              <label>Descuento:</label>
+              <div className={styles.inputWithIcon}>
                 <input
                   type="number"
                   step="1"
                   min="1"
-                  max="100"
+                  max="99"
                   value={descuento}
                   onChange={(e) => setDescuento(Number(e.target.value))}
                 />
-                {formularioValidado && descuento === "" && (
-                  <p className={baseFormulario.error}>
-                    Este campo es obligatorio
-                  </p>
-                )}
+                <FaPercent className={styles.icono} />
               </div>
-              <div className={styles.rightColumn}>
-                {/* Detalles de promoción */}
-
-                <DetallesFormularioPromocion
-                  detalle={detalle}
-                  setDetalle={setDetalle}
-                />
-                {formularioValidado && detalle.length === 0 && (
-                  <p className={baseFormulario.error}>
-                    Debes agregar al menos un articulo
-                  </p>
-                )}
-              </div>
+              {formularioValidado && descuento === "" && (
+                <p className={baseFormulario.error}>
+                  Este campo es obligatorio
+                </p>
+              )}
             </div>
+            <div className={styles.rightColumn}>
+              {/* Detalles de promoción */}
 
-            <div className={baseFormulario.botones}>
-              <button
-                type="button"
-                className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
-                onClick={onClose}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
-              >
-                Guardar
-              </button>
+              <DetallesFormularioPromocion
+                detalle={detalle}
+                setDetalle={setDetalle}
+              />
+              {formularioValidado && detalle.length === 0 && (
+                <p className={baseFormulario.error}>
+                  Debes agregar al menos un articulo
+                </p>
+              )}
             </div>
-          </form>
-        </div>
+          </div>
+
+          <div className={baseFormulario.botones}>
+            <button
+              type="button"
+              className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
+              onClick={onClose}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
+            >
+              Guardar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

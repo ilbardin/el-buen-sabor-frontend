@@ -1,8 +1,9 @@
 import type { Promocion } from "../../models/promocion";
 import { eliminarPromocion } from "../../services/promocionService";
-import style from "./PromocionItem.module.css";
+import styles from "./PromocionItem.module.css";
 import { showConfirm, showLoading } from "../../utils/alerts.ts";
 import baseModulo from "../../css/baseModulo.module.css";
+import { FaPercent } from "react-icons/fa";
 
 export function PromocionItem(props: {
   promocion: Promocion;
@@ -27,7 +28,7 @@ export function PromocionItem(props: {
       <tr className={baseModulo.filaTabla}>
         <td>{props.promocion.id!}</td>
         <td>{props.promocion.denominacion}</td>
-        <td>{props.promocion.descuento}</td>
+        <td>{(props.promocion.descuento * 100)}%</td>
         <td>{props.promocion.fechaDesde}</td>
         <td>{props.promocion.fechaHasta}</td>
         <td className={baseModulo.tdBotonera}>
