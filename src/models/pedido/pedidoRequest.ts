@@ -7,6 +7,7 @@ export interface PedidoRequest {
   tipoEnvio: "delivery" | "takeaway";
   idCliente: number;
   idSucursal: number;
+  nombreSucursal: string;
   fechaCreacion: string;
   detalles: DetallePedido[];
   estadoPedido: string;

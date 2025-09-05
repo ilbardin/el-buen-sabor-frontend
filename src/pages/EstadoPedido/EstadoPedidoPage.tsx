@@ -5,14 +5,13 @@ import {FaArrowLeft} from "react-icons/fa6";
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import {getEstadoPedido} from "../../services/pedidosService.ts";
-import type {DatosEstadoPedido} from "../../models/pedido/datosEstadoPedido.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
-import {formatHora} from "../../utils/funcionesReutilizables.ts";
 import {EstadoPedido} from "../../models/pedido/estadoPedido.ts";
+import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
-    const [datosPedido, setDatosPedido] = useState<DatosEstadoPedido | undefined>(undefined);
+    const [datosPedido, setDatosPedido] = useState<PedidoRequest | undefined>(undefined);
     const [externalRefNumber, setExternalRefNumber] = useState<number | null>(() => {
         const stored = sessionStorage.getItem("external_reference");
         return stored ? Number(stored) : null;
@@ -56,13 +55,13 @@ export const EstadoPedidoPage: React.FC = () => {
 
     let cancelledOrRejectedSteps: { key: string; label: string }[] = [];
 
-    if (datosPedido?.estado) {
-        const estadoKey = datosPedido.estado.toLowerCase();
+    if (datosPedido?.estadoPedido) {
+        const estadoKey = datosPedido.estadoPedido.toLowerCase();
         if (estadoKey === "cancelado" || estadoKey === "rechazado") {
             cancelledOrRejectedSteps = [
                 {
                     key: estadoKey,
-                    label: EstadoPedido[datosPedido.estado as keyof typeof EstadoPedido],
+                    label: EstadoPedido[datosPedido.estadoPedido as keyof typeof EstadoPedido],
                 },
             ];
         }
@@ -70,7 +69,7 @@ export const EstadoPedidoPage: React.FC = () => {
 
     const steps = [...normalSteps, ...cancelledOrRejectedSteps];
 
-    const isEntregado = datosPedido?.estado?.toLowerCase() === "entregado";
+    const isEntregado = datosPedido?.estadoPedido?.toLowerCase() === "entregado";
 
     return (
         <div className={styles.container}>
@@ -84,24 +83,21 @@ export const EstadoPedidoPage: React.FC = () => {
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
-                    <h1>{datosPedido?.sucursalEmpresa.nombre}</h1>
+                    <h1>{datosPedido?.nombreSucursal}</h1>
                 </header>
 
                 <section className={styles.orderInfo}>
                     <h2>Datos de tu pedido</h2>
                     <div className={styles.infoGrid}>
-                        <p><strong>Orden:</strong> {datosPedido?.id}</p>
+                        <p><strong>Orden:</strong> {datosPedido?.idPedido}</p>
                         {/*<p><strong>Retiro por restaurante:</strong> {datosPedido.pickupAddress}</p>*/}
                         <p><strong>Total:</strong> ${datosPedido?.total}</p>
-                        <p>
-                            <strong>Tiempo estimado:</strong> {formatHora(datosPedido?.horaEstimadaFinalizacion)}
-                        </p>
                     </div>
                 </section>
 
                 <div className={styles.progressBar}>
                     {steps.map((step, index) => {
-                        const isActive = datosPedido?.estado?.toLowerCase() === step.key;
+                        const isActive = datosPedido?.estadoPedido?.toLowerCase() === step.key;
                         const isCancelledOrRejected = step.key === "cancelado" || step.key === "rechazado";
 
                         return (
@@ -117,12 +113,6 @@ export const EstadoPedidoPage: React.FC = () => {
                         );
                     })}
                 </div>
-
-                {!isEntregado && datosPedido?.fechaHoraPedido && (
-                    <p className={styles.update}>
-                        Últ. vez actualizado: {formatHora(datosPedido.fechaHoraPedido)}
-                    </p>
-                )}
 
                 {isEntregado && (
                     <section className={styles.finalMessage}>

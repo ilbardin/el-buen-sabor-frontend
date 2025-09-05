@@ -3,7 +3,6 @@ import type {ArticuloManufacturado} from "../models/articuloManufacturado.ts";
 import {showAlert} from "../utils/alerts.ts";
 import type {AxiosResponse} from "axios";
 import type {PedidoRequest} from "../models/pedido/pedidoRequest.ts";
-import type {DatosEstadoPedido} from "../models/pedido/datosEstadoPedido.ts";
 
 const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
@@ -31,9 +30,9 @@ export async function getPedidos(): Promise<PedidoRequest[]> {
     }
 }
 
-export async function getEstadoPedido(id: number): Promise<DatosEstadoPedido | undefined> {
+export async function getEstadoPedido(id: number): Promise<PedidoRequest | undefined> {
     try {
-        const response = await axiosInstance.get<DatosEstadoPedido>(`${API_URL_PEDIDOS}/${id}/resumen`);
+        const response = await axiosInstance.get<PedidoRequest>(`${API_URL_PEDIDOS}/${id}`);
 
         if (handleInvalidResponse(response, "Error al obtener los pedidos")) {
             return;
