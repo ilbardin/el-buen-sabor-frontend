@@ -12,10 +12,9 @@
 }
 
 .navLinks a {
-    /*margin: 0 1rem;*/
     color: var(--color-terciario);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     position: relative;
 }
 
@@ -32,10 +31,6 @@
 
 .navLinks a:hover::after {
     width: 100%;
-}
-
-.navLinks a:first-child {
-    color: var(--color-primario);
 }
 
 .actions {
@@ -83,5 +78,18 @@
     border-radius: 50%;
     background-color: var(--color-primario);
     border: 1px solid white;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.navIcon {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: var(--color-primario);
 }
 

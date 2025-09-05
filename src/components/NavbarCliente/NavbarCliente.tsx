@@ -13,6 +13,7 @@ export interface NavLink {
     label: string;
     to: string;
     requiresAuth?: boolean;
+    icon?: React.ReactNode;
 }
 
 export interface CartOptions {
@@ -103,10 +104,11 @@ const NavbarCliente: React.FC<NavbarProps> = ({
             <Logo/>
             <div className={styles.navbarRight}>
                 <nav className={styles.navLinks}>
-                    {navLinks.map(({label, to, requiresAuth}, idx) => {
+                    {navLinks.map(({label, to, requiresAuth, icon}, idx) => {
                         if (requiresAuth && !usuario) return null;
                         return (
-                            <Link key={idx} to={to}>
+                            <Link key={idx} to={to} className={styles.navItem}>
+                                {icon && <span className={styles.navIcon}>{icon}</span>}
                                 {label}
                             </Link>
                         );
