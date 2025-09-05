@@ -22,6 +22,7 @@ import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
 import { VistaCocina } from './pages/VistaCocina/VistaCocina.tsx';
+import VistaDelivery from './pages/VistaDelivery/vistaDelivery.tsx';
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -114,6 +115,14 @@ const Router = () => {
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                             <VistaCocina/>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path={ROUTES.DELIVERY}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <VistaDelivery/>
                         </ProtectedRoute>
                     }
                 />

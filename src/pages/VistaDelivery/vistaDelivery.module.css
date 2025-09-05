@@ -1,0 +1,47 @@
+.vistaCocina {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 90%;
+  width: 95%;
+  padding: 20px;
+  margin: 0 auto; 
+  align-items: stretch;
+}
+
+.contenedor{
+  gap: 20px; 
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 90%;
+  width: 95%;
+  padding: 20px;
+  margin: 0 auto; 
+}
+
+.filtroEntregados {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--color-primario);
+  cursor: pointer;
+  user-select: none;
+}
+
+.filtroEntregados input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primario);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.filtroEntregados input[type="checkbox"]:hover {
+  transform: scale(1.2);
+}

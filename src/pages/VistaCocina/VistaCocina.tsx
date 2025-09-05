@@ -6,7 +6,7 @@ import { getPedidos } from '../../services/pedidosService';
 
 export const VistaCocina = () => {
   const [pedidos, setPedidos] = useState<PedidoRequest[]>([]);
-  const [mostrarEntregados, setMostrarEntregados] = useState<boolean>(true);
+  const [mostrarEntregados, setMostrarEntregados] = useState<boolean>(false);
 
   useEffect(() => {
     const obtenerPedidos = async () => {
@@ -14,7 +14,6 @@ export const VistaCocina = () => {
       setPedidos(pedidosData);
     };
     obtenerPedidos();
-    console.log(pedidos.map((p) => p.id));
   }, []);
 
   const pedidosFiltrados = pedidos.filter(

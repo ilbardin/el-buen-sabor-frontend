@@ -102,18 +102,30 @@ export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
       <div>
         <button
           className={`${styles.boton} ${
-            estadoPedido === "entregado" ? styles.botonDeshabilitado : ""
+            estadoPedido === "entregado" || estadoPedido === "delivery"
+              ? styles.botonDeshabilitado
+              : ""
           }`}
-          onClick={() =>
-            cambioEstado(
-              estadoPedido === "pendiente" ? "preparacion" : "entregado"
-            )
-          }
+          onClick={() => {
+            if (estadoPedido === "pendiente") {
+              cambioEstado("preparacion");
+            } else if (estadoPedido === "preparacion") {
+              if (props.pedido.tipoEnvio === "delivery") {
+                cambioEstado("delivery");
+              } else {
+                cambioEstado("entregado");
+              }
+            }
+          }}
         >
           {estadoPedido === "pendiente"
             ? "Iniciar"
             : estadoPedido === "preparacion"
-            ? "Terminar"
+            ? props.pedido.tipoEnvio === "delivery"
+              ? "Enviar"
+              : "Terminar"
+            : estadoPedido === "delivery"
+            ? "En Delivery"
             : "Entregado"}
         </button>
       </div>
