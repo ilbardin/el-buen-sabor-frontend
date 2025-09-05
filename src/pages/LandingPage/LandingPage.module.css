@@ -1,15 +1,9 @@
-.container {
+.containerLanding {
     background: #fff;
     border-radius: 20px;
     padding: 2rem;
     margin: 2rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.headerRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .main {
@@ -79,22 +73,6 @@
     height: auto;
 }
 
-.footer {
-    margin-top: 2rem;
-}
-
-.dishOfTheWeek h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.2rem;
-}
-
-.dishPrices {
-    display: flex;
-    gap: 2rem;
-    margin-top: 1rem;
-    font-weight: bold;
-}
-
 .buenSabor {
     font-weight: bold;
     color: black;
@@ -162,14 +140,5 @@
 
     .orderButton {
         width: 100%;
-    }
-
-    .footer {
-        text-align: center;
-    }
-
-    .dishPrices {
-        flex-direction: column;
-        gap: 1rem;
     }
 }

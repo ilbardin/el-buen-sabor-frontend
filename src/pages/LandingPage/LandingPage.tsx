@@ -5,6 +5,7 @@ import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
 import {useAuth} from "../../context/auth/useAuth.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
+import {IoRestaurant} from "react-icons/io5";
 
 export const LandingPage = () => {
     const {setIsLoggingOut, usuario} = useAuth();
@@ -74,13 +75,16 @@ export const LandingPage = () => {
     }, [setIsLoggingOut]);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.containerLanding}>
             <NavbarCliente
                 usuario={usuario}
                 navLinks={[
-                    {label: "Menú", to: ROUTES.PRODUCTOS, requiresAuth: true},
-                    {label: "Nuestros especiales", to: "/especiales"},
-                    {label: "Sucursales", to: "/sucursales"},
+                    {
+                        label: "MENÚ",
+                        to: ROUTES.PRODUCTOS,
+                        requiresAuth: true,
+                        icon: <IoRestaurant/>
+                    }
                 ]}
                 cartOptions={{
                     showCart,
@@ -124,18 +128,6 @@ export const LandingPage = () => {
                     <img src={imagenPizza} alt="Pizza" className={styles.image}/>
                 </div>
             </main>
-
-            <footer className={styles.footer}>
-                <div className={styles.dishOfTheWeek}>
-                    <h3>LO MEJOR DE LA SEMANA</h3>
-                    <p>Lo más vendido</p>
-                    <div className={styles.dishPrices}>
-                        <div>$9.44 <br/>Empanadas de carne</div>
-                        <div>$12.48 <br/>Lomito Simple</div>
-                        <div>$20 <br/>Pizza muzzarella</div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 };
