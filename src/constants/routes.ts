@@ -15,4 +15,5 @@ export const ROUTES = {
     PRUEBA: '/prueba',
     ESTADO_PEDIDO: '/estado-pedido',
     COCINA: '/cocina',
+    HISTORIAL_PEDIDOS: '/historial-pedidos',
 };
