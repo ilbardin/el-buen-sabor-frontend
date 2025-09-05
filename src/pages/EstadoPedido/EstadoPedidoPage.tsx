@@ -8,6 +8,8 @@ import {getEstadoPedido} from "../../services/pedidosService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {EstadoPedido} from "../../models/pedido/estadoPedido.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
+import {showAlert, showLoading} from "../../utils/alerts.ts";
+import Swal from "sweetalert2";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
@@ -41,9 +43,17 @@ export const EstadoPedidoPage: React.FC = () => {
     }, [externalRefNumber]);
 
     const obtenerDatosPedido = async (idPedido: number) => {
-        const response = await getEstadoPedido(idPedido);
-        console.log(response);
-        setDatosPedido(response);
+        showLoading("Actualizando estado...");
+        try {
+            const response = await getEstadoPedido(idPedido);
+            console.log(response);
+            setDatosPedido(response);
+            setTimeout(Swal.close, 500);
+        } catch (error) {
+            Swal.close();
+            console.error("Error al obtener datos del pedido:", error);
+            await showAlert("Error", "error", "Error al obtener datos del pedido.");
+        }
     }
 
     const normalSteps = [
@@ -120,8 +130,14 @@ export const EstadoPedidoPage: React.FC = () => {
                         <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
                     </section>
                 )}
+                {externalRefNumber && (
+                    <button
+                        className={styles.btnActualizar}
+                        onClick={async () => await obtenerDatosPedido(externalRefNumber)}>
+                        Actualizar estado
+                    </button>
+                )}
             </div>
-
             <img src={imagenPizza} alt="Pizza" className={styles.bgPizza}/>
         </div>
     );
