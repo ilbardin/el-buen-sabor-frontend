@@ -22,7 +22,7 @@ import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
 import {VistaCocina} from './pages/VistaCocina/VistaCocina.tsx';
-import {HistorialPedidos} from "./pages/HistorialPedidos/HistorialPedidos.tsx";
+import {HistorialPedidosPage} from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -149,7 +149,7 @@ const Router = () => {
                 path={ROUTES.HISTORIAL_PEDIDOS}
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
-                        <HistorialPedidos/>
+                        <HistorialPedidosPage/>
                     </ProtectedRoute>
                 }
             />

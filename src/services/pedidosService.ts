@@ -4,6 +4,7 @@ import {showAlert} from "../utils/alerts.ts";
 import type {AxiosResponse} from "axios";
 import type {PedidoRequest} from "../models/pedido/pedidoRequest.ts";
 import type {HistorialPedidos} from "../models/pedido/historialPedidos.ts";
+import type {PageResponse} from "../pages/HistorialPedidos/HistorialPedidosPage.tsx";
 
 const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
@@ -31,19 +32,27 @@ export async function getPedidos(): Promise<PedidoRequest[]> {
     }
 }
 
-export async function getHistorialPedidos(idCliente?: number, idSucursal?: number): Promise<HistorialPedidos[]> {
+export async function getHistorialPedidos(
+    idCliente?: number,
+    idSucursal?: number,
+    page: number = 0,
+    size: number = 15
+): Promise<PageResponse<HistorialPedidos>> {
     try {
-        const params = new URLSearchParams({full: "false"});
+        const params = new URLSearchParams({
+            full: "false",
+            page: page.toString(),
+            size: size.toString(),
+        });
 
         if (idCliente) params.append("idCliente", idCliente.toString());
         if (idSucursal) params.append("idSucursal", idSucursal.toString());
 
         const url = `${API_URL_PEDIDOS}?${params.toString()}`;
-
-        const response = await axiosInstance.get<HistorialPedidos[]>(url);
+        const response = await axiosInstance.get<PageResponse<HistorialPedidos>>(url);
 
         if (handleInvalidResponse(response, "Error al obtener el historial de pedidos.")) {
-            return [];
+            return {content: [], totalPages: 0, totalElements: 0, number: 0, size, first: true, last: true};
         }
 
         return response.data;
