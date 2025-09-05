@@ -5,6 +5,7 @@ import imagenPizza from '/pizza.png';
 import styles from './LandingPage.module.css';
 import {useAuth} from "../../context/auth/useAuth.ts";
 import NavbarCliente from "../../components/NavbarCliente/NavbarCliente.tsx";
+import {IoRestaurant} from "react-icons/io5";
 
 export const LandingPage = () => {
     const {setIsLoggingOut, usuario} = useAuth();
@@ -78,7 +79,12 @@ export const LandingPage = () => {
             <NavbarCliente
                 usuario={usuario}
                 navLinks={[
-                    {label: "MENÚ", to: ROUTES.PRODUCTOS, requiresAuth: true}
+                    {
+                        label: "MENÚ",
+                        to: ROUTES.PRODUCTOS,
+                        requiresAuth: true,
+                        icon: <IoRestaurant/>
+                    }
                 ]}
                 cartOptions={{
                     showCart,

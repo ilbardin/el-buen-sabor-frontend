@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {getArticulosManufacturados} from "../../services/articuloManufacturadoService";
 import styles from "./Productos.module.css";
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
@@ -12,6 +12,7 @@ import {getPromociones} from "../../services/promocionService.ts";
 import {ProductosHome} from "../ProductosHome/ProductosHome.tsx";
 import type {ArticuloInsumo} from "../../models/articuloInsumo.ts";
 import {getArticulosInsumo} from "../../services/ingredientesService.ts";
+import {AiFillHome} from "react-icons/ai";
 
 const Productos: React.FC = () => {
     const {setIsLoggingOut, usuario} = useAuth();
@@ -73,7 +74,12 @@ const Productos: React.FC = () => {
             <NavbarCliente
                 usuario={usuario}
                 navLinks={[
-                    {label: "HOME", to: ROUTES.HOME, requiresAuth: true}
+                    {
+                        label: "HOME",
+                        to: ROUTES.HOME,
+                        requiresAuth: true,
+                        icon: <AiFillHome/>
+                    }
                 ]}
                 loginRef={loginRef}
                 userIconRef={userIconRef}
