@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import {FaMoneyBillAlt} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
 import {MdRefresh} from "react-icons/md";
+import {FcPaid} from "react-icons/fc";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
@@ -138,12 +139,15 @@ export const EstadoPedidoPage: React.FC = () => {
 
                 {isEntregado && (
                     <section className={styles.finalMessage}>
-                        <h3>Tu pedido fue entregado 🎁</h3>
+                        <h3>
+                            Tu pedido fue entregado
+                            <FcPaid className={styles.icon}/>
+                        </h3>
                         <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
                     </section>
                 )}
 
-                {externalRefNumber && (
+                {(externalRefNumber && !isEntregado) && (
                     <button
                         className={styles.btnActualizar}
                         onClick={async () => await obtenerDatosPedido(externalRefNumber)}>
