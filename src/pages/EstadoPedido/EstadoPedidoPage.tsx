@@ -10,6 +10,9 @@ import {EstadoPedido} from "../../models/pedido/estadoPedido.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
+import {FaMoneyBillAlt} from "react-icons/fa";
+import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
+import {MdRefresh} from "react-icons/md";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
@@ -93,15 +96,24 @@ export const EstadoPedidoPage: React.FC = () => {
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
-                    <h1>{datosPedido?.nombreSucursal}</h1>
+                    <h1>
+                        <IoStorefrontSharp className={styles.icon}/>
+                        {datosPedido?.nombreSucursal}
+                    </h1>
                 </header>
 
                 <section className={styles.orderInfo}>
                     <h2>Datos de tu pedido</h2>
                     <div className={styles.infoGrid}>
-                        <p><strong>Orden:</strong> {datosPedido?.idPedido}</p>
+                        <p>
+                            <IoReceipt className={styles.icon}/>
+                            <strong>Orden:&nbsp;</strong>{datosPedido?.idPedido}
+                        </p>
                         {/*<p><strong>Retiro por restaurante:</strong> {datosPedido.pickupAddress}</p>*/}
-                        <p><strong>Total:</strong> ${datosPedido?.total}</p>
+                        <p>
+                            <FaMoneyBillAlt className={styles.icon}/>
+                            <strong>Total:&nbsp;</strong> ${datosPedido?.total}
+                        </p>
                     </div>
                 </section>
 
@@ -130,10 +142,12 @@ export const EstadoPedidoPage: React.FC = () => {
                         <p>Recibiste tu pedido, ¡que lo disfrutes!</p>
                     </section>
                 )}
+
                 {externalRefNumber && (
                     <button
                         className={styles.btnActualizar}
                         onClick={async () => await obtenerDatosPedido(externalRefNumber)}>
+                        <MdRefresh className={styles.icon}/>
                         Actualizar estado
                     </button>
                 )}
