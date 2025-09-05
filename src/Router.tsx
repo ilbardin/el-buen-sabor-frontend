@@ -21,7 +21,8 @@ import SucursalABM from './pages/SucursalABM/SucursalABM.tsx';
 import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from './pages/Prueba/Prueba.tsx';
-import { VistaCocina } from './pages/VistaCocina/VistaCocina.tsx';
+import {VistaCocina} from './pages/VistaCocina/VistaCocina.tsx';
+import {HistorialPedidos} from "./pages/HistorialPedidos/HistorialPedidos.tsx";
 
 const Router = () => {
     const LoginWrapper: React.FC = () => {
@@ -30,8 +31,7 @@ const Router = () => {
     };
 
     const LandingLoginWrapper: React.FC = () => {
-        const {login} = useAuth();
-        return <LandingPage onLoginSuccess={login}/>;
+        return <LandingPage/>;
     }
 
     return (
@@ -142,6 +142,14 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
                         <ProductoDetalle/>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={ROUTES.HISTORIAL_PEDIDOS}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+                        <HistorialPedidos/>
                     </ProtectedRoute>
                 }
             />

@@ -1,7 +1,7 @@
 import React, {forwardRef, useContext} from 'react';
 import {AuthContext} from "../../context/auth/authContext.ts";
 import styles from './UserCard.module.css';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../../constants/routes.ts";
 import {FaHistory, FaLock, FaUser} from "react-icons/fa";
 import {RiLoginBoxFill, RiLogoutBoxFill} from "react-icons/ri";
@@ -36,6 +36,7 @@ const UserCard = forwardRef<HTMLDivElement, LoginCardProps>(
         ref
     ) => {
         const {usuario} = useContext(AuthContext);
+        const navigate = useNavigate();
 
         if (!showLogin && !isClosing) return null;
 
@@ -60,7 +61,7 @@ const UserCard = forwardRef<HTMLDivElement, LoginCardProps>(
                             ¡Hola {usuario.nombre}!
                         </h3>
                         <button
-                            onClick={undefined}
+                            onClick={() => navigate(ROUTES.HISTORIAL_PEDIDOS)}
                             className={`${styles.buttonBase} ${styles.historialButton}`}
                         >
                             <FaHistory className={styles.icon}/>
