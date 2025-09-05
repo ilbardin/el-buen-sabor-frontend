@@ -1,26 +1,23 @@
 export interface PedidoRequest {
-  id: number;
-  idPedido: number;
-  subTotal: number;
-  gastosEnvio: number | null;
-  total: number;
-  tipoEnvio: "delivery" | "takeaway";
-  idCliente: number;
   idSucursal: number;
-  nombreSucursal: string;
-  fechaCreacion: string;
+  idCliente: number;
+  tipoEnvio: "delivery" | "takeaway";
+  total: number;
+  subtotal: number;
+  gastosEnvio: number | null;
   detalles: DetallePedido[];
-  estadoPedido: string;
+  idPedido?: number;
+  nombreSucursal?: string;
+  fechaCreacion?: string;
+  estadoPedido?: string;
 }
 
 export interface DetallePedido {
-  id: number;
   cantidad: number;
-  subTotal: number;
   tipoItem: string;
-  denominacion: string
-  articuloManufacturado?: { id: number; denominacion?: string };
-  articuloInsumo?: { id: number; denominacion?: string };
+  itemId: number;
+  subtotal: number;
+  denominacion?: string;
 }
 
 export interface ItemCarritoMp {
