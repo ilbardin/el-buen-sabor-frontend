@@ -13,7 +13,7 @@
 }
 
 .navLinks a {
-    margin: 0 1rem;
+    /*margin: 0 1rem;*/
     color: var(--color-terciario);
     text-decoration: none;
     font-weight: 600;
