@@ -25,16 +25,19 @@
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
     margin: 1rem 0 2rem;
+    border: 2px solid transparent;
 }
 
 .cardPedido:hover {
     transform: translateY(-3px);
+    box-shadow: none;
+    border-color: var(--color-terciario);
 }
 
 .cardHeader {
@@ -56,6 +59,29 @@
     flex-direction: column;
     gap: 0.3rem;
     font-size: 0.95rem;
+}
+
+.descargarFacturaButton {
+    background-color: var(--color-terciario);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 1rem;
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.descargarFacturaButton:hover {
+    background-color: var(--color-primario);
+}
+
+.descargarFacturaButton .icon {
+    margin-right: 0.5rem;
 }
 
 .paginacion {
