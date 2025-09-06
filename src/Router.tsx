@@ -122,7 +122,7 @@ const Router = () => {
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
             <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
             <Route
-                path={ROUTES.ESTADO_PEDIDO}
+                path={`${ROUTES.ESTADO_PEDIDO}/:idPedido`}
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
                         <EstadoPedidoPage/>
