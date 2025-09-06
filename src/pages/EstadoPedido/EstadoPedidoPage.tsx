@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from "react";
 import styles from "./EstadoPedido.module.css";
 import imagenPizza from '/pizza.png';
-import {FaArrowLeft} from "react-icons/fa6";
-import {useNavigate} from "react-router-dom";
-import {ROUTES} from "../../constants/routes.ts";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getEstadoPedido} from "../../services/pedidosService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
@@ -14,16 +12,25 @@ import {FaMoneyBillAlt} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
 import {MdRefresh} from "react-icons/md";
 import {FcPaid} from "react-icons/fc";
+import {BotonRegresar} from "../../components/BotonRegresar/BotonRegresar.tsx";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
     const [datosPedido, setDatosPedido] = useState<PedidoRequest | undefined>(undefined);
-    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(() => {
-        const stored = sessionStorage.getItem("external_reference");
-        return stored ? Number(stored) : null;
-    });
+    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const {idPedido} = useParams<{ idPedido: string }>();
+
+    useEffect(() => {
+        if (idPedido) {
+            const num = Number(idPedido);
+            if (!isNaN(num)) {
+                setExternalRefNumber(num);
+            }
+        }
+    }, [idPedido]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -33,12 +40,11 @@ export const EstadoPedidoPage: React.FC = () => {
             const num = Number(externalRef);
             if (!isNaN(num)) {
                 setExternalRefNumber(num);
-                sessionStorage.setItem("external_reference", num.toString());
                 clearCart();
-                navigate(ROUTES.ESTADO_PEDIDO, {replace: true});
+                navigate(`/estado-pedido/${num}`, {replace: true});
             }
         }
-    }, [clearCart, navigate]);
+    }, [clearCart, location.search, navigate]);
 
     useEffect(() => {
         if (externalRefNumber !== null) {
@@ -87,13 +93,7 @@ export const EstadoPedidoPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <button
-                className="volver-button"
-                aria-label="Volver"
-                title="Volver"
-                onClick={() => navigate(ROUTES.HOME, {replace: true})}>
-                <FaArrowLeft/>
-            </button>
+            <BotonRegresar/>
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
