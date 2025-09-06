@@ -8,7 +8,7 @@ import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
-import {FaMoneyBillAlt, FaStore} from "react-icons/fa";
+import {FaClipboardList, FaMoneyBillAlt, FaStore} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
 import {MdRefresh} from "react-icons/md";
 import {FcPaid} from "react-icons/fc";
@@ -133,7 +133,10 @@ export const EstadoPedidoPage: React.FC = () => {
                     </div>
 
                     <div className={styles.detalles}>
-                        <h3>Detalles</h3>
+                        <h3>
+                            <FaClipboardList className={styles.icon}/>
+                            Detalles
+                        </h3>
                         <table className={styles.tablaDetalles}>
                             <thead>
                             <tr>
