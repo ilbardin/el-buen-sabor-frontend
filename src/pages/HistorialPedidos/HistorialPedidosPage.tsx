@@ -124,7 +124,9 @@ export const HistorialPedidosPage: React.FC = () => {
     }
 
     const irADetallesPedido = (idPedido: number): void => {
-        navigate(`${ROUTES.ESTADO_PEDIDO}/${idPedido}`);
+        navigate(`${ROUTES.ESTADO_PEDIDO}/${idPedido}`, {
+            state: {from: "historial"}
+        });
     }
 
     return (
