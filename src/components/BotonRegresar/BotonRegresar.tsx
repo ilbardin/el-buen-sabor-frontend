@@ -4,14 +4,18 @@ import {useNavigate} from "react-router-dom";
 import styles from "./BotonRegresar.module.css";
 
 interface BotonRegresarProps {
-    url: string;
+    url?: string;
 }
 
 export const BotonRegresar: React.FC<BotonRegresarProps> = ({url}) => {
     const navigate = useNavigate();
 
     const regresar = () => {
-        navigate(url);
+        if (url) {
+            navigate(url);
+        } else {
+            navigate(-1);
+        }
     };
 
     return (
