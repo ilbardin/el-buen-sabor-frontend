@@ -160,7 +160,7 @@ export const HistorialPedidosPage: React.FC = () => {
                                 <span><b>Total:</b> ${pedido.total.toFixed(2)}</span>
                             </div>
 
-                            {!pedido.idFactura && (
+                            {pedido.idFactura && (
                                 <button
                                     className={styles.descargarFacturaButton}
                                     onClick={(e) => {
