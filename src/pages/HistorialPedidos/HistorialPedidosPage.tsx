@@ -131,7 +131,7 @@ export const HistorialPedidosPage: React.FC = () => {
         <div className={styles.containerHistorial}>
             <BotonRegresar/>
 
-            <h2>Historial de Pedidos</h2>
+            <h1>Historial de Pedidos</h1>
 
             {pedidos.length === 0 ? (
                 <p>No hay pedidos registrados.</p>
