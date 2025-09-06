@@ -116,12 +116,18 @@ export const EstadoPedidoPage: React.FC = () => {
                             {datosPedido?.tipoEnvio === "delivery" ? (
                                 <>
                                     <RiEBike2Fill className={styles.icon}/>
-                                    <strong>Entrega en domicilio:&nbsp;</strong> {datosPedido?.idDireccionEntrega}
+                                    <strong className={styles.label}>Entregado en:</strong>
+                                    <span className={styles.address} title={datosPedido?.direccionEntrega}>
+                                    {datosPedido?.direccionEntrega}
+                                    </span>
                                 </>
                             ) : (
                                 <>
                                     <FaStore className={styles.icon}/>
-                                    <strong>Retiro por restaurante:&nbsp;</strong> {datosPedido?.idDireccionEntrega}
+                                    <strong className={styles.label}>Retiro en:</strong>
+                                    <span className={styles.address} title={datosPedido?.direccionEntrega}>
+                                    {datosPedido?.direccionEntrega}
+                                    </span>
                                 </>
                             )}
                         </p>
