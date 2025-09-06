@@ -7,6 +7,7 @@ import {useAuth} from "../../context/auth/useAuth.ts";
 import type {HistorialPedidos} from "../../models/pedido/historialPedidos.ts";
 import {useNavigate} from "react-router-dom";
 import {IoReceipt} from "react-icons/io5";
+import imageBurger from '/burger.png';
 
 export interface PageResponse<T> {
     content: T[];
@@ -100,7 +101,7 @@ export const HistorialPedidosPage: React.FC = () => {
         return buttons;
     };
 
-    function getEstadoColor(estado: string): string {
+    const getEstadoColor = (estado: string): string => {
         switch (estado.toLowerCase()) {
             case 'pendiente':
                 return 'var(--color-secundario)';
@@ -118,11 +119,11 @@ export const HistorialPedidosPage: React.FC = () => {
         }
     }
 
-    function descargarFacturaPdf(idPedido: number): void {
+    const descargarFacturaPdf = (idPedido: number): void => {
         console.log(`Descargando factura para el pedido: ${idPedido}`);
     }
 
-    function irADetallesPedido(idPedido: number): void {
+    const irADetallesPedido = (idPedido: number): void => {
         navigate(`${ROUTES.ESTADO_PEDIDO}/${idPedido}`);
     }
 
@@ -195,6 +196,7 @@ export const HistorialPedidosPage: React.FC = () => {
                     </button>
                 </div>
             )}
+            <img src={imageBurger} alt="Burger" className={styles.bgBurger}/>
         </div>
     );
 };
