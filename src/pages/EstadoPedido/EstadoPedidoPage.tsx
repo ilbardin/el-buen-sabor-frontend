@@ -8,11 +8,12 @@ import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
-import {FaMoneyBillAlt} from "react-icons/fa";
+import {FaMoneyBillAlt, FaStore} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
 import {MdRefresh} from "react-icons/md";
 import {FcPaid} from "react-icons/fc";
 import {BotonRegresar} from "../../components/BotonRegresar/BotonRegresar.tsx";
+import {RiEBike2Fill} from "react-icons/ri";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
@@ -108,14 +109,57 @@ export const EstadoPedidoPage: React.FC = () => {
                     <div className={styles.infoGrid}>
                         <p>
                             <IoReceipt className={styles.icon}/>
-                            <strong>Orden:&nbsp;</strong>{datosPedido?.idPedido}
+                            <strong>Orden:&nbsp;</strong>#{datosPedido?.idPedido}
                         </p>
-                        {/*<p><strong>Retiro por restaurante:</strong> {datosPedido.pickupAddress}</p>*/}
+
+                        <p className={styles.entrega}>
+                            {datosPedido?.tipoEnvio === "delivery" ? (
+                                <>
+                                    <RiEBike2Fill className={styles.icon}/>
+                                    <strong>Entrega en domicilio:&nbsp;</strong> {datosPedido?.idDireccionEntrega}
+                                </>
+                            ) : (
+                                <>
+                                    <FaStore className={styles.icon}/>
+                                    <strong>Retiro por restaurante:&nbsp;</strong> {datosPedido?.idDireccionEntrega}
+                                </>
+                            )}
+                        </p>
+
                         <p>
                             <FaMoneyBillAlt className={styles.icon}/>
                             <strong>Total:&nbsp;</strong> ${datosPedido?.total}
                         </p>
                     </div>
+
+                    <div className={styles.detalles}>
+                        <h3>Detalles</h3>
+                        <table className={styles.tablaDetalles}>
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {datosPedido?.detalles?.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.denominacion}</td>
+                                    <td>{item.cantidad}</td>
+                                    <td>${item.subtotal}</td>
+                                </tr>
+                            ))}
+                            {datosPedido?.tipoEnvio === "delivery" && datosPedido?.gastosEnvio != null && (
+                                <tr className={styles.gastosEnvio}>
+                                    <td colSpan={2}><strong>Gastos de envío</strong></td>
+                                    <td>${datosPedido.gastosEnvio}</td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </section>
 
                 <div className={styles.progressBar}>

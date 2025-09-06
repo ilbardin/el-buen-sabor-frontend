@@ -1,6 +1,7 @@
 export interface PedidoRequest {
   idSucursal: number;
   idCliente: number;
+  idDireccionEntrega?: number;
   tipoEnvio: "delivery" | "takeaway";
   total: number;
   subtotal: number;
