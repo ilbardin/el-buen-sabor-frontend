@@ -5,6 +5,12 @@ import {ROUTES} from "../../constants/routes.ts";
 import {getHistorialPedidos} from "../../services/pedidosService.ts";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import type {HistorialPedidos} from "../../models/pedido/historialPedidos.ts";
+import {useNavigate} from "react-router-dom";
+import {IoReceipt} from "react-icons/io5";
+import imageBurger from '/burger.png';
+import {getFacturaPdf} from "../../services/facturaService.ts";
+import {showAlert, showLoading} from "../../utils/alerts.ts";
+import Swal from "sweetalert2";
 
 export interface PageResponse<T> {
     content: T[];
@@ -21,6 +27,8 @@ export const HistorialPedidosPage: React.FC = () => {
     const [pedidos, setPedidos] = useState<HistorialPedidos[]>([]);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+
+    const navigate = useNavigate();
 
     const getHistorial = async (page: number, idCliente?: number, idSucursal?: number) => {
         try {
@@ -42,6 +50,18 @@ export const HistorialPedidosPage: React.FC = () => {
             getHistorial(page, usuario.cliente.id);
         }
     }, [usuario?.cliente.id, page]);
+
+    const descargarFacturaPdf = async (idPedido: number) => {
+        try {
+            showLoading();
+            await getFacturaPdf(idPedido);
+            Swal.close();
+        } catch (error) {
+            Swal.close();
+            console.error(error);
+            await showAlert("Error", "error", "Error al obtener PDF.");
+        }
+    };
 
     const renderPageNumbers = () => {
         const buttons = [];
@@ -96,7 +116,7 @@ export const HistorialPedidosPage: React.FC = () => {
         return buttons;
     };
 
-    function getEstadoColor(estado: string): string {
+    const getEstadoColor = (estado: string): string => {
         switch (estado.toLowerCase()) {
             case 'pendiente':
                 return 'var(--color-secundario)';
@@ -114,18 +134,28 @@ export const HistorialPedidosPage: React.FC = () => {
         }
     }
 
+    const irADetallesPedido = (idPedido: number): void => {
+        navigate(`${ROUTES.ESTADO_PEDIDO}/${idPedido}`, {
+            state: {from: "historial"}
+        });
+    }
+
     return (
         <div className={styles.containerHistorial}>
-            <BotonRegresar url={ROUTES.HOME}/>
+            <BotonRegresar/>
 
-            <h2>Historial de Pedidos</h2>
+            <h1>Historial de Pedidos</h1>
 
             {pedidos.length === 0 ? (
                 <p>No hay pedidos registrados.</p>
             ) : (
                 <div className={styles.cardsContainer}>
                     {pedidos.map((pedido) => (
-                        <div key={pedido.idPedido} className={styles.cardPedido}>
+                        <div
+                            key={pedido.idPedido}
+                            className={styles.cardPedido}
+                            onClick={() => irADetallesPedido(pedido.idPedido)}
+                        >
                             <div className={styles.cardHeader}>
                                 <span>Pedido #{pedido.idPedido}</span>
                                 <span
@@ -140,6 +170,19 @@ export const HistorialPedidosPage: React.FC = () => {
                                 <span><b>Fecha:</b> {new Date(pedido.fechaCreacion).toLocaleDateString()}</span>
                                 <span><b>Total:</b> ${pedido.total.toFixed(2)}</span>
                             </div>
+
+                            {pedido.idFactura && (
+                                <button
+                                    className={styles.descargarFacturaButton}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        descargarFacturaPdf(pedido.idPedido);
+                                    }}
+                                >
+                                    <IoReceipt className={styles.icon}/>
+                                    Ver Factura
+                                </button>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -166,6 +209,7 @@ export const HistorialPedidosPage: React.FC = () => {
                     </button>
                 </div>
             )}
+            <img src={imageBurger} alt="Burger" className={styles.bgBurger}/>
         </div>
     );
 };

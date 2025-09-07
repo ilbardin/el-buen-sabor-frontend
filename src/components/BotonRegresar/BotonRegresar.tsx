@@ -1,17 +1,29 @@
-import React from "react";
-import {FaArrowLeft} from "react-icons/fa6";
-import {useNavigate} from "react-router-dom";
+import {FaArrowLeft} from "react-icons/fa";
+import {useLocation, useNavigate} from "react-router-dom";
 import styles from "./BotonRegresar.module.css";
+import React from "react";
 
 interface BotonRegresarProps {
-    url: string;
+    url?: string;
 }
 
 export const BotonRegresar: React.FC<BotonRegresarProps> = ({url}) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const regresar = () => {
-        navigate(url);
+        if (url) {
+            navigate(url);
+            return;
+        }
+
+        if (location.state?.from === "historial") {
+            navigate("/historial-pedidos");
+        } else if (!location.state) {
+            navigate("/");
+        } else {
+            navigate(-1);
+        }
     };
 
     return (
@@ -19,8 +31,9 @@ export const BotonRegresar: React.FC<BotonRegresarProps> = ({url}) => {
             className={styles.regresarButton}
             aria-label="Volver"
             title="Volver"
-            onClick={regresar}>
+            onClick={regresar}
+        >
             <FaArrowLeft/>
         </button>
     );
-}
+};

@@ -28,8 +28,10 @@ export const BarraSuperior = () => {
     const handleUserLogout = async () => {
         const performLogout = () => {
             setIsLoggingOut(true);
-            logout();
-            navigate(ROUTES.PRODUCTOS, {replace: true});
+            navigate(ROUTES.HOME, {replace: true});
+            setTimeout(() => {
+                logout();
+            }, 100)
         };
 
         if (existeCarrito) {
@@ -40,7 +42,7 @@ export const BarraSuperior = () => {
             }
         }
 
-        performLogout(); 
+        performLogout();
     };
 
     const cambioIdSucursal = (id: number, denominacion: string) => {

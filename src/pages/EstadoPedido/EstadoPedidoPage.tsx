@@ -1,29 +1,37 @@
 import React, {useEffect, useState} from "react";
 import styles from "./EstadoPedido.module.css";
 import imagenPizza from '/pizza.png';
-import {FaArrowLeft} from "react-icons/fa6";
-import {useNavigate} from "react-router-dom";
-import {ROUTES} from "../../constants/routes.ts";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getEstadoPedido} from "../../services/pedidosService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import {showAlert, showLoading} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
-import {FaMoneyBillAlt} from "react-icons/fa";
+import {FaClipboardList, FaMoneyBillAlt, FaStore} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
 import {MdRefresh} from "react-icons/md";
 import {FcPaid} from "react-icons/fc";
+import {BotonRegresar} from "../../components/BotonRegresar/BotonRegresar.tsx";
+import {RiEBike2Fill} from "react-icons/ri";
 
 export const EstadoPedidoPage: React.FC = () => {
     const {clearCart} = useCart();
     const [datosPedido, setDatosPedido] = useState<PedidoRequest | undefined>(undefined);
-    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(() => {
-        const stored = sessionStorage.getItem("external_reference");
-        return stored ? Number(stored) : null;
-    });
+    const [externalRefNumber, setExternalRefNumber] = useState<number | null>(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const {idPedido} = useParams<{ idPedido: string }>();
+
+    useEffect(() => {
+        if (idPedido) {
+            const num = Number(idPedido);
+            if (!isNaN(num)) {
+                setExternalRefNumber(num);
+            }
+        }
+    }, [idPedido]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -33,12 +41,11 @@ export const EstadoPedidoPage: React.FC = () => {
             const num = Number(externalRef);
             if (!isNaN(num)) {
                 setExternalRefNumber(num);
-                sessionStorage.setItem("external_reference", num.toString());
                 clearCart();
-                navigate(ROUTES.ESTADO_PEDIDO, {replace: true});
+                navigate(`/estado-pedido/${num}`, {replace: true});
             }
         }
-    }, [clearCart, navigate]);
+    }, [clearCart, location.search, navigate]);
 
     useEffect(() => {
         if (externalRefNumber !== null) {
@@ -87,13 +94,7 @@ export const EstadoPedidoPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <button
-                className="volver-button"
-                aria-label="Volver"
-                title="Volver"
-                onClick={() => navigate(ROUTES.HOME, {replace: true})}>
-                <FaArrowLeft/>
-            </button>
+            <BotonRegresar/>
             <div className={styles.content}>
                 <header className={styles.header}>
                     <div className={styles.logoCircle}>SABOR</div>
@@ -108,14 +109,66 @@ export const EstadoPedidoPage: React.FC = () => {
                     <div className={styles.infoGrid}>
                         <p>
                             <IoReceipt className={styles.icon}/>
-                            <strong>Orden:&nbsp;</strong>{datosPedido?.idPedido}
+                            <strong>Orden:&nbsp;</strong>#{datosPedido?.idPedido}
                         </p>
-                        {/*<p><strong>Retiro por restaurante:</strong> {datosPedido.pickupAddress}</p>*/}
+
+                        <p className={styles.entrega}>
+                            {datosPedido?.tipoEnvio === "delivery" ? (
+                                <>
+                                    <RiEBike2Fill className={styles.icon}/>
+                                    <strong className={styles.label}>Entregado en:</strong>
+                                    <span className={styles.address} title={datosPedido?.direccionEntrega}>
+                                    {datosPedido?.direccionEntrega}
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <FaStore className={styles.icon}/>
+                                    <strong className={styles.label}>Retiro en:</strong>
+                                    <span className={styles.address} title={datosPedido?.direccionEntrega}>
+                                    {datosPedido?.direccionEntrega}
+                                    </span>
+                                </>
+                            )}
+                        </p>
+
                         <p>
                             <FaMoneyBillAlt className={styles.icon}/>
                             <strong>Total:&nbsp;</strong> ${datosPedido?.total}
                         </p>
                     </div>
+
+                    <div className={styles.detalles}>
+                        <h3>
+                            <FaClipboardList className={styles.icon}/>
+                            Detalles
+                        </h3>
+                        <table className={styles.tablaDetalles}>
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {datosPedido?.detalles?.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{item.denominacion}</td>
+                                    <td>{item.cantidad}</td>
+                                    <td>${item.subtotal}</td>
+                                </tr>
+                            ))}
+                            {datosPedido?.tipoEnvio === "delivery" && datosPedido?.gastosEnvio != null && (
+                                <tr className={styles.gastosEnvio}>
+                                    <td colSpan={2}><strong>Gastos de envío</strong></td>
+                                    <td>${datosPedido.gastosEnvio}</td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </section>
 
                 <div className={styles.progressBar}>

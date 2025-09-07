@@ -9,6 +9,7 @@
     margin: 1rem 2rem 2rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     background: #fff;
+    overflow: hidden;
 }
 
 .cardsContainer {
@@ -18,6 +19,7 @@
     width: 100%;
     max-width: 900px;
     margin-top: 1rem;
+    z-index: 1;
 }
 
 .cardPedido {
@@ -25,16 +27,19 @@
     border-radius: 12px;
     padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
     margin: 1rem 0 2rem;
+    border: 2px solid transparent;
 }
 
 .cardPedido:hover {
     transform: translateY(-3px);
+    box-shadow: none;
+    border-color: var(--color-terciario);
 }
 
 .cardHeader {
@@ -56,6 +61,29 @@
     flex-direction: column;
     gap: 0.3rem;
     font-size: 0.95rem;
+}
+
+.descargarFacturaButton {
+    background-color: var(--color-terciario);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 1rem;
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.descargarFacturaButton:hover {
+    background-color: var(--color-primario);
+}
+
+.descargarFacturaButton .icon {
+    margin-right: 0.5rem;
 }
 
 .paginacion {
@@ -92,4 +120,17 @@
     background: #007bff;
     color: white;
     font-weight: bold;
+}
+
+.bgBurger {
+    position: absolute;
+    top: 5%;
+    bottom: 0;
+    left: 20%;
+    right: 0;
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.56;
 }
