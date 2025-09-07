@@ -10,6 +10,17 @@ export interface ArticuloManufacturado {
     imagenes?: ImagenManofacturado[];
 }
 
+export interface ArticuloManufacturadoDisponible {
+    id: number;
+    fechaBaja: Date | null;
+    denominacion: string;
+    precioVenta: number;
+    nombreCategoria: string;
+    listaImagenes: string[];
+    ingredientes: string[];
+    cantidadDisponible: number;
+}
+
 export interface ArticuloManufacturadoCreacion {
     denominacion: string;
     descripcion: string;
