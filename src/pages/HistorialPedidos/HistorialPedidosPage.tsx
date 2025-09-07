@@ -8,6 +8,9 @@ import type {HistorialPedidos} from "../../models/pedido/historialPedidos.ts";
 import {useNavigate} from "react-router-dom";
 import {IoReceipt} from "react-icons/io5";
 import imageBurger from '/burger.png';
+import {getFacturaPdf} from "../../services/facturaService.ts";
+import {showAlert, showLoading} from "../../utils/alerts.ts";
+import Swal from "sweetalert2";
 
 export interface PageResponse<T> {
     content: T[];
@@ -47,6 +50,18 @@ export const HistorialPedidosPage: React.FC = () => {
             getHistorial(page, usuario.cliente.id);
         }
     }, [usuario?.cliente.id, page]);
+
+    const descargarFacturaPdf = async (idPedido: number) => {
+        try {
+            showLoading();
+            await getFacturaPdf(idPedido);
+            Swal.close();
+        } catch (error) {
+            Swal.close();
+            console.error(error);
+            await showAlert("Error", "error", "Error al obtener PDF.");
+        }
+    };
 
     const renderPageNumbers = () => {
         const buttons = [];
@@ -117,10 +132,6 @@ export const HistorialPedidosPage: React.FC = () => {
             default:
                 return '#007bff';
         }
-    }
-
-    const descargarFacturaPdf = (idPedido: number): void => {
-        console.log(`Descargando factura para el pedido: ${idPedido}`);
     }
 
     const irADetallesPedido = (idPedido: number): void => {
