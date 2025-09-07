@@ -14,7 +14,8 @@ export const VistaCocina = () => {
   useEffect(() => {
     const obtenerPedidos = async () => {
       const pedidosData = await getPedidos();
-      setPedidos(pedidosData);
+      console.log(pedidosData)
+      setPedidos(pedidosData.content);
     };
     obtenerPedidos();
   }, []);
