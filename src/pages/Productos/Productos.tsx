@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
-import {getArticulosManufacturados} from "../../services/articuloManufacturadoService";
+import {getManufacturadosPorSucursal} from "../../services/articuloManufacturadoService";
 import styles from "./Productos.module.css";
-import type {ArticuloManufacturado} from "../../models/articuloManufacturado.ts";
+import type {ArticuloManufacturadoDisponible} from "../../models/articuloManufacturado.ts";
 import {Carrito} from "../../components/Carrito/Carrito.tsx";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {ROUTES} from "../../constants/routes.ts";
@@ -20,7 +20,7 @@ const Productos: React.FC = () => {
     const loginRef = useRef<HTMLDivElement>(null);
     const userIconRef = useRef<HTMLSpanElement>(null);
 
-    const [productos, setProductos] = useState<ArticuloManufacturado[]>([]);
+    const [productos, setProductos] = useState<ArticuloManufacturadoDisponible[]>([]);
     const {cart, increaseQuantity, decreaseQuantity, checkoutCart, clearCart} = useCart();
     const [ofertas, setOfertas] = useState<Promocion[]>([]);
     const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
@@ -30,10 +30,12 @@ const Productos: React.FC = () => {
     useEffect(() => {
         async function cargarProductos() {
             const ofertas = await getPromociones();
-            const productos = await getArticulosManufacturados();
+            const productosStock = await getManufacturadosPorSucursal(1);
+            console.log('productosStock: ', productosStock)
             const insumos = await getArticulosInsumo();
+            console.log('insumos: ', insumos)
             setOfertas(ofertas);
-            setProductos(productos);
+            setProductos(productosStock);
             setInsumos(insumos);
         }
 
@@ -46,12 +48,11 @@ const Productos: React.FC = () => {
 
     const filtrarPorCategoria = (nombreCategoria: string) => {
         return productos.filter(
-            (producto) => producto.categoria === nombreCategoria
+            (producto) => producto.nombreCategoria === nombreCategoria
         );
     };
 
     // BUSCADOR FILTRO
-
     const handleChangeBusqueda = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBusqueda(e.target.value);
     };
@@ -67,7 +68,6 @@ const Productos: React.FC = () => {
     const ofertasFiltradas = ofertas.filter((o) =>
         o.denominacion.toLowerCase().includes(busqueda.toLowerCase())
     );
-
 
     return (
         <div className={styles.contenedorProductos}>
