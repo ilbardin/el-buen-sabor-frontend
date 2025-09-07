@@ -214,13 +214,13 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
                     "No se pudo obtener el link de pago."
                 );
             }
-        } catch (error) {
+        } catch (error: any) {
             Swal.close();
             console.error("Error en el checkout:", error);
             await showAlert(
                 "Error",
                 "error",
-                "Ocurrió un error al procesar el checkout."
+                error.response.data.message
             );
         }
     };
