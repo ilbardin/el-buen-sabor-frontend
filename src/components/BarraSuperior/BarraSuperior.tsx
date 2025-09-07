@@ -29,7 +29,7 @@ export const BarraSuperior = () => {
         const performLogout = () => {
             setIsLoggingOut(true);
             logout();
-            navigate(ROUTES.PRODUCTOS, {replace: true});
+            navigate(ROUTES.HOME, {replace: true});
         };
 
         if (existeCarrito) {
