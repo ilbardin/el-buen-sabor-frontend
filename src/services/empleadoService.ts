@@ -1,22 +1,11 @@
 import axiosInstance from "../api/axiosInstance.ts";
 import type {Empleado} from "../models/usuario/empleado.ts";
 
-export type EmpleadoRequestDTO = {
-    id?: number;
-    nombre: string;
-    apellido: string;
-    telefono: string;
-    email: string;
-    rol: string;
-    username?: string;
-    estaActivo?: boolean;
-};
-
 const URL_EMPLEADOS = "/empleados";
 
-export async function getEmpleados(): Promise<Empleado[]> {
+export async function getEmpleados(empleadoId: number): Promise<Empleado[]> {
     try {
-        const response = await axiosInstance.get<Empleado[]>(`${URL_EMPLEADOS}`);
+        const response = await axiosInstance.get<Empleado[]>(`${URL_EMPLEADOS}/${empleadoId}`);
         return response.data;
     } catch (error) {
         console.error("Error al obtener los empleados:", error);

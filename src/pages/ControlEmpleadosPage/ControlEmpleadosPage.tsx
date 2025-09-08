@@ -11,22 +11,34 @@ import {FaEdit, FaToggleOff, FaToggleOn, FaTrash} from "react-icons/fa";
 import styles from "./ControlEmpleadosPage.module.css";
 import Swal from "sweetalert2";
 import {showEditarEmpleadoPopup} from "../../services/empleadoPopup.ts";
+import {mostrarAlerta, mostrarConfirmacion} from "../../utils/alerts.ts";
+import {useAuth} from "../../context/auth/useAuth.ts";
 
 const ControlEmpleadosPage: React.FC = () => {
     const [empleados, setEmpleados] = useState<Empleado[]>([]);
+    const [empleadoId, setEmpleadoId] = useState<number | null>(null);
+    const {usuario} = useAuth();
+
+    useEffect(() => {
+        if (usuario?.empleado?.id) {
+            setEmpleadoId(usuario.empleado.id);
+        }
+    }, [usuario]);
 
     const fetchEmpleados = async () => {
-        try {
-            const listaEmpleados = await getEmpleados();
-            setEmpleados(listaEmpleados);
-        } catch (error) {
-            console.error(error);
+        if (empleadoId !== null) {
+            try {
+                const listaEmpleados = await getEmpleados(empleadoId);
+                setEmpleados(listaEmpleados);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
     useEffect(() => {
         fetchEmpleados();
-    }, []);
+    }, [empleadoId]);
 
     const handleEditar = async (empleado: Empleado) => {
         const formValues = await showEditarEmpleadoPopup(empleado);
@@ -52,29 +64,26 @@ const ControlEmpleadosPage: React.FC = () => {
                 await activarEmpleado(empleado.id);
                 await Swal.fire("Éxito", "Empleado activado", "success");
             }
-            fetchEmpleados();
+            await fetchEmpleados();
         } catch (error: any) {
             Swal.fire("Error", "No se pudo actualizar el estado del empleado", "error");
         }
     };
 
     const handleEliminar = async (empleado: Empleado) => {
-        const result = await Swal.fire({
-            title: "¿Estás seguro?",
-            text: `Eliminarás al empleado ${empleado.nombre} ${empleado.apellido}`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Sí, eliminar",
-            cancelButtonText: "Cancelar",
-        });
+        const confirmacion: boolean = await mostrarConfirmacion(
+            "Eliminar empleado",
+            "¿Estás seguro de que deseas eliminar este empleado?"
+        );
 
-        if (result.isConfirmed) {
+        if (confirmacion) {
             try {
                 await eliminarEmpleado(empleado.id);
-                Swal.fire("Éxito", "Empleado eliminado correctamente", "success");
-                fetchEmpleados();
+                await mostrarAlerta("Empleado eliminado", "success", "Empleado eliminado correctamente");
+                await fetchEmpleados();
             } catch (error: any) {
-                Swal.fire("Error", "No se pudo eliminar el empleado", "error");
+                console.error(error);
+                await mostrarAlerta("Error", "error", "No se pudo eliminar el empleado");
             }
         }
     };
