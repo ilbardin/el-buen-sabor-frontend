@@ -1,92 +1,76 @@
-import { useAuth } from "../context/auth/useAuth";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { CartContext } from "../context/carrito/cartContext";
+import {useAuth} from "../context/auth/useAuth";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
-import type { AxiosError } from "axios";
-import type { UserData } from "../models/usuario/usuario";
-import { ROUTES } from "../constants/routes";
-import { showAlert, showLoading } from "../utils/alerts.ts";
-import { UserRole } from "../models/usuario/userRoles.ts";
+import type {AxiosError} from "axios";
+import type {UserData} from "../models/usuario/usuario";
+import {ROUTES} from "../constants/routes";
+import {showAlert, showLoading} from "../utils/alerts.ts";
+import {UserRole} from "../models/usuario/userRoles.ts";
 import axiosInstance from "../api/axiosInstance.ts";
-import { alertaCarrito } from "../utils/funcionesReutilizables.ts";
 
 export const useAuthHandlers = (username: string, password: string) => {
-  const { login, logout } = useAuth();
-  const { cart } = useContext(CartContext);
-  const navigate = useNavigate();
+    const {login} = useAuth();
+    const navigate = useNavigate();
 
-  const existeCarrito = cart.length > 0;
+    const handleError = async (err: AxiosError | never) => {
+        Swal.close();
 
-  const handleError = async (err: AxiosError | never) => {
-    Swal.close();
-
-    if ((err as any).response?.data) {
-      console.error((err as any).response.data);
-      await showAlert("Error", "error", (err as any).response.data);
-    } else {
-      console.error(err);
-      if ((err as AxiosError).isAxiosError) {
-        await showAlert("Error", "error", "Error de red.");
-      }
-    }
-  };
-
-  const handleSuccess = (data: UserData) => {
-    Swal.close();
-
-    const navigateByRole = (role: UserRole) => {
-      switch (role) {
-        case UserRole.Admin:
-          navigate(ROUTES.PRODUCTOS_ABM);
-          break;
-        case UserRole.Cliente:
-          navigate(ROUTES.HOME);
-          break;
-        case UserRole.Delivery:
-          navigate(ROUTES.DELIVERY);
-          break;
-
-        case UserRole.Cocina:
-          navigate(ROUTES.COCINA);
-          break;
-        default:
-          console.warn(`Rol sin programar: ${role}`);
-          navigate(ROUTES.HOME);
-      }
+        if ((err as any).response?.data) {
+            console.error((err as any).response.data);
+            await showAlert("Error", "error", (err as any).response.data);
+        } else {
+            console.error(err);
+            if ((err as AxiosError).isAxiosError) {
+                await showAlert("Error", "error", "Error de red.");
+            }
+        }
     };
 
-    login(data);
-    navigateByRole(data.user.rol);
-  };
+    const handleSuccess = (data: UserData) => {
+        Swal.close();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      showLoading("Iniciando sesión...");
-      const response = await axiosInstance.post<UserData>("/auth/login", {
-        username,
-        password,
-      });
-      handleSuccess(response.data);
-    } catch (err: any) {
-      await handleError(err);
-    }
-  };
+        const navigateByRole = (role: UserRole) => {
+            switch (role) {
+                case UserRole.Admin:
+                    navigate(ROUTES.PRODUCTOS_ABM);
+                    break;
+                case UserRole.Cliente:
+                    navigate(ROUTES.HOME);
+                    break;
+                case UserRole.Delivery:
+                    navigate(ROUTES.DELIVERY);
+                    break;
 
-  const handleUserLogout = async () => {
-    const performLogout = () => {
-      logout();
-      navigate(ROUTES.HOME);
+                case UserRole.Cocina:
+                    navigate(ROUTES.COCINA);
+                    break;
+                default:
+                    console.warn(`Rol sin programar: ${role}`);
+                    navigate(ROUTES.HOME);
+            }
+        };
+
+        login(data);
+        navigateByRole(data.user.rol);
     };
 
-    if (existeCarrito) {
-      const confirmacion = await alertaCarrito();
-      if (!confirmacion) return;
-    }
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            showLoading("Iniciando sesión...");
 
-    performLogout();
-  };
+            setTimeout(async () => {
+                const response = await axiosInstance.post<UserData>("/auth/login", {
+                    username,
+                    password,
+                });
+                handleSuccess(response.data);
+            }, 300);
+        } catch (err: any) {
+            await handleError(err);
+        }
+    };
 
-  return { handleLogin, handleUserLogout };
+    return {handleLogin};
 };

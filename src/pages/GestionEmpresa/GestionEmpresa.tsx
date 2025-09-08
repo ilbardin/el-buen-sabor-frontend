@@ -11,14 +11,8 @@ import {BiSolidLogOut} from "react-icons/bi";
 
 export default function GestionEmpresa() {
     const [componenteActivo, setComponenteActivo] = useState("manofacturados");
-    const {logout, setIsLoggingOut, usuario} = useAuth();
+    const {logout, usuario} = useAuth();
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        setIsLoggingOut(true);
-        logout();
-        navigate(ROUTES.LOGIN);
-    };
 
     return (
         <div>
@@ -58,7 +52,7 @@ export default function GestionEmpresa() {
 
                 {usuario && (
                     <>
-                        <button className={styles.logoutButton} onClick={handleLogout}>
+                        <button className={styles.logoutButton} onClick={logout}>
                             <BiSolidLogOut size={18} style={{marginRight: 2}}/>
                             Cerrar sesión
                         </button>

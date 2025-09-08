@@ -8,6 +8,7 @@ import {CartContext} from "../../context/carrito/cartContext.ts";
 import {useAuthHandlers} from "../../hooks/useAuthHandlers.ts";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
 import Logo from "../Logo/Logo.tsx";
+import {useAuth} from "../../context/auth/useAuth.ts";
 
 export interface NavLink {
     label: string;
@@ -42,6 +43,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                                                   loginRef,
                                                   userIconRef,
                                               }) => {
+    const {logout} = useAuth();
     const {cart} = useContext(CartContext);
     const existeCarrito = cart.length > 0;
 
@@ -51,7 +53,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const {handleLogin, handleUserLogout} = useAuthHandlers(username, password);
+    const {handleLogin} = useAuthHandlers(username, password);
 
     const toggleLogin = () => {
         if (showLogin) {
@@ -170,7 +172,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                         password={password}
                         setUsername={setUsername}
                         setPassword={setPassword}
-                        onLogout={handleUserLogout}
+                        onLogout={logout}
                         onHide={handleHideLogin}
                         ref={loginRef}
                     />
