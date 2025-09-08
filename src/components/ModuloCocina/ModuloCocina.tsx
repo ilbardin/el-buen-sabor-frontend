@@ -92,7 +92,7 @@ export const ModuloCocina = (props: { pedido: PedidoRequest }) => {
       <div>
         <div className={styles.detallesContainer}>
           {props.pedido.detalles.map((detalle) => (
-            <div key={detalle.id} className={styles.detalle}>
+            <div key={detalle.itemId} className={styles.detalle}>
               <p>{detalle.cantidad}</p>
               <p>{detalle.denominacion}</p>
             </div>

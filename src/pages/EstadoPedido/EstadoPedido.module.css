@@ -71,6 +71,104 @@
     margin-top: 1rem;
 }
 
+.entrega {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 0.5rem;
+}
+
+.label {
+    white-space: nowrap;
+}
+
+.address {
+    display: block;
+    max-width: 25ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+
+.address:hover {
+    text-decoration: underline;
+}
+
+.entrega .icon {
+    margin-right: 0.3rem;
+    font-size: 1.5rem;
+}
+
+.detalles {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.detalles h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detalles .icon {
+    font-size: 1.4rem;
+}
+
+.tablaDetalles {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.tablaDetalles th {
+    text-align: left;
+    padding: 0.75rem;
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+}
+
+.tablaDetalles th:nth-child(2),
+.tablaDetalles th:nth-child(3) {
+    text-align: right;
+}
+
+.tablaDetalles td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.tablaDetalles tbody tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
+
+.tablaDetalles tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.tablaDetalles td:nth-child(1) {
+    text-align: left;
+}
+
+.tablaDetalles td:nth-child(2),
+.tablaDetalles td:nth-child(3) {
+    text-align: right;
+}
+
+.tablaDetalles tbody tr.gastosEnvio {
+    font-weight: 600;
+    background-color: #f8f8f8;
+}
+
 .progressBar {
     display: flex;
     justify-content: space-between;

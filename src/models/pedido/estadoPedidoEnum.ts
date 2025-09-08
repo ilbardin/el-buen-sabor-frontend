@@ -1,4 +1,4 @@
-export enum EstadoPedido {
+export enum EstadoPedidoEnum {
     pendiente = "Pendiente",
     preparacion = "En Preparación",
     cancelado = "Cancelado",

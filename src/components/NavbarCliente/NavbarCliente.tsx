@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {FaShoppingCart, FaUser} from "react-icons/fa";
 import styles from "./NavbarCliente.module.css";
 import CarritoCard from "../CarritoCard/CarritoCard.tsx";
-import LoginCard from "../LoginCard/LoginCard.tsx";
+import UserCard from "../UserCard/UserCard.tsx";
 import {CartContext} from "../../context/carrito/cartContext.ts";
 import {useAuthHandlers} from "../../hooks/useAuthHandlers.ts";
 import {useOutsideClick} from "../../hooks/useOutsideClick.ts";
@@ -161,7 +161,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
           )}
         </span>
 
-                    <LoginCard
+                    <UserCard
                         showLogin={showLogin}
                         isClosing={isClosing}
                         loginCardPosition={loginCardPosition}

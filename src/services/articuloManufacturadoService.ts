@@ -32,6 +32,17 @@ export async function getArticulosManufacturados(): Promise<ArticuloManufacturad
     }
 }
 
+export async function getManufacturadosPorSucursal(idSucursal: number): Promise<any[]> {
+    try {
+        const response = await axiosInstance.get<any>(`/sucursal/${idSucursal}/productos`);
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
 export async function getDetallesArticuloManufacturado(id: string): Promise<ArticuloManufacturado | undefined> {
     try {
         const response = await axiosInstance.get<ArticuloManufacturado>(`${API_URL}/${id}`);

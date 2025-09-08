@@ -23,6 +23,7 @@ import { EstadoPedidoPage } from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from "./pages/Prueba/Prueba.tsx";
 import { VistaCocina } from "./pages/VistaCocina/VistaCocina.tsx";
 import VistaDelivery from "./pages/VistaDelivery/vistaDelivery.tsx";
+import { HistorialPedidosPage } from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
 
 const Router = () => {
   const LoginWrapper: React.FC = () => {
@@ -31,8 +32,7 @@ const Router = () => {
   };
 
   const LandingLoginWrapper: React.FC = () => {
-    const { login } = useAuth();
-    return <LandingPage onLoginSuccess={login} />;
+    return <LandingPage />;
   };
 
   return (
@@ -111,6 +111,7 @@ const Router = () => {
           }
         />
       </Route>
+
       <Route
         path={ROUTES.COCINA}
         element={
@@ -131,8 +132,9 @@ const Router = () => {
       <Route path={ROUTES.LOGIN} element={<LoginWrapper />} />
       <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario />} />
       <Route path={ROUTES.HOME} element={<LandingLoginWrapper />} />
+
       <Route
-        path={ROUTES.ESTADO_PEDIDO}
+        path={`${ROUTES.ESTADO_PEDIDO}/:idPedido`}
         element={
           <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
             <EstadoPedidoPage />
@@ -152,6 +154,14 @@ const Router = () => {
         element={
           <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
             <ProductoDetalle />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.HISTORIAL_PEDIDOS}
+        element={
+          <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
+            <HistorialPedidosPage />
           </ProtectedRoute>
         }
       />
