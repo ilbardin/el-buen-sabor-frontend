@@ -24,6 +24,7 @@ import Prueba from "./pages/Prueba/Prueba.tsx";
 import { VistaCocina } from "./pages/VistaCocina/VistaCocina.tsx";
 import VistaDelivery from "./pages/VistaDelivery/vistaDelivery.tsx";
 import { HistorialPedidosPage } from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
+import ControlEmpleadosPage from "./pages/ControlEmpleadosPage/ControlEmpleadosPage.tsx";
 
 const Router = () => {
   const LoginWrapper: React.FC = () => {
@@ -102,6 +103,16 @@ const Router = () => {
             </ProtectedRoute>
           }
         />
+
+          <Route
+              path={ROUTES.CONTROL_EMPLEADOS}
+              element={
+                  <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                      <ControlEmpleadosPage/>
+                  </ProtectedRoute>
+              }
+          />
+
         <Route
           path={ROUTES.PRUEBA}
           element={
