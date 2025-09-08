@@ -71,6 +71,9 @@ export const BarraSuperior = () => {
                             <li>
                                 <Link to={ROUTES.PROMOCIONES_ABM}>Promociones</Link>
                             </li>
+                            <li>
+                                <Link to={ROUTES.REPORTES}>Reportes</Link>
+                            </li>
                         </ul>
                     </li>
 
