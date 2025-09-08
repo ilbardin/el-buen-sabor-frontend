@@ -113,6 +113,9 @@ export const BarraSuperior = () => {
                                 <Link to={ROUTES.SUCURSAL_ABM}>Sucursal</Link>
                             </li>
                             <li>
+                                <Link to={ROUTES.CONTROL_EMPLEADOS}>Empleados</Link>
+                            </li>
+                            <li>
                                 <Link to={ROUTES.STOCK_ABM}>Stock</Link>
                             </li>
                         </ul>
