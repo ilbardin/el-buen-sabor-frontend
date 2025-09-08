@@ -7,7 +7,7 @@ import {
   editarPromocion,
 } from "../../services/promocionService";
 import DetallesFormularioPromocion from "./DetallesFormularioPromocion/DetallesFormularioPromocion";
-import { showAlert, showLoading } from "../../utils/alerts.ts";
+import { mostrarAlerta, mostrarCargando } from "../../utils/alerts.ts";
 import baseFormulario from "../../css/baseFormulario.module.css";
 
 export function FormularioPromocion({
@@ -78,7 +78,7 @@ export function FormularioPromocion({
     }
 
     if (promocionAEditar && noSeRealizaronCambios()) {
-      await showAlert(
+      await mostrarAlerta(
         "Sin cambios",
         "info",
         "No se detectaron cambios en la promoción."
@@ -98,7 +98,7 @@ export function FormularioPromocion({
     try {
       if (promocionAEditar) {
         console.log("Editando promoción:", promocion);
-        showLoading();
+        mostrarCargando();
         await editarPromocion(promocion);
         onClose();
         return;

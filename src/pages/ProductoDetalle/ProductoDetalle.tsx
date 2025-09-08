@@ -7,7 +7,7 @@ import {ROUTES} from "../../constants/routes.ts";
 import {getDetallesArticuloManufacturado} from "../../services/articuloManufacturadoService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {MdAddShoppingCart} from "react-icons/md";
-import {showAlert} from '../../utils/alerts';
+import {mostrarAlerta} from '../../utils/alerts';
 import {FaShoppingCart} from "react-icons/fa";
 
 export const ProductoDetalle = () => {
@@ -40,7 +40,7 @@ export const ProductoDetalle = () => {
 
     const handleAddToCart = () => {
         addToCart(producto);
-        showAlert('Producto agregado', 'success', 'El producto fue agregado al carrito exitosamente.').then(() => handleGoBack());
+        mostrarAlerta('Producto agregado', 'success', 'El producto fue agregado al carrito exitosamente.').then(() => handleGoBack());
     };
 
     return (

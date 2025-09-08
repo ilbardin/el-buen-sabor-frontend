@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import styles from "./FormularioEmpresa.module.css";
-import { crearEmpresa, editarEmpresa } from "../../services/empresaService";
-import type { Empresa } from "../../models/empresa.ts";
+import React, {useEffect, useState} from "react";
+import {crearEmpresa, editarEmpresa} from "../../services/empresaService";
+import type {Empresa} from "../../models/empresa.ts";
 import baseFormulario from "../../css/baseFormulario.module.css";
 
 export const FormularioEmpresa = ({

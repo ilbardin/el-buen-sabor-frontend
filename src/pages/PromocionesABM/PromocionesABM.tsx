@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import styles from "./PromocionesABM.module.css";
-import type { Promocion } from "../../models/promocion.ts";
-import { PromocionItem } from "../../components/PromocionItem/PromocionItem.tsx";
-import { getPromociones } from "../../services/promocionService.ts";
-import { FormularioPromocion } from "../../components/FormularioPromocion/FormularioPromocion.tsx";
-import { showAlert, showLoading } from "../../utils/alerts.ts";
-import { handleNetworkError } from "../../utils/errorHandler.ts";
+import React, {useEffect, useState} from "react";
+import type {Promocion} from "../../models/promocion.ts";
+import {PromocionItem} from "../../components/PromocionItem/PromocionItem.tsx";
+import {getPromociones} from "../../services/promocionService.ts";
+import {FormularioPromocion} from "../../components/FormularioPromocion/FormularioPromocion.tsx";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
+import {handleNetworkError} from "../../utils/errorHandler.ts";
 import Swal from "sweetalert2";
 import baseABM from "../../css/baseABM.module.css";
 
@@ -20,7 +19,7 @@ export const PromocionesABM = () => {
 
   //! CARGA DE PROMOCIONES
   const cargarPromociones = async () => {
-    showLoading("Cargando promociones...");
+    mostrarCargando("Cargando promociones...");
 
     try {
       const data = await getPromociones();
@@ -35,7 +34,7 @@ export const PromocionesABM = () => {
         return;
       }
 
-      await showAlert(
+      await mostrarAlerta(
         "Error",
         "error",
         "Error al cargar lista de promociones."

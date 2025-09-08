@@ -3,7 +3,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
 
-export const showAlert = (
+export const mostrarAlerta = (
     title: string,
     icon: 'success' | 'error' | 'warning' | 'info' | 'question',
     text?: string,
@@ -18,7 +18,7 @@ export const showAlert = (
     });
 };
 
-export const showConfirm = async (
+export const mostrarConfirmacion = async (
     title: string,
     text?: string,
     confirmButtonText: string = 'Si',
@@ -37,7 +37,7 @@ export const showConfirm = async (
     return result.isConfirmed;
 };
 
-export const showLoading = (message: string = 'Cargando...'): void => {
+export const mostrarCargando = (message: string = 'Cargando...'): void => {
     void MySwal.fire({
         title: message,
         icon: 'info',
