@@ -46,8 +46,8 @@ const ControlEmpleadosPage: React.FC = () => {
         if (formValues) {
             try {
                 if (empleado.id !== undefined) {
-                    await editarEmpleado(empleado.id, formValues);
-                    await Swal.fire("Éxito", "Empleado modificado correctamente", "success");
+                    const response = await editarEmpleado(empleado.id, formValues);
+                    await mostrarAlerta("Éxito", "success", response.message);
                     await fetchEmpleados();
                 }
             } catch (error) {
@@ -99,8 +99,8 @@ const ControlEmpleadosPage: React.FC = () => {
         if (confirmacion) {
             try {
                 if (empleado.id) {
-                    await eliminarEmpleado(empleado.id);
-                    await mostrarAlerta("Empleado eliminado", "success", "Empleado eliminado correctamente");
+                    const response = await eliminarEmpleado(empleado.id);
+                    await mostrarAlerta("Empleado eliminado", "success", response.message);
                     await fetchEmpleados();
                 }
             } catch (error: any) {
