@@ -57,3 +57,16 @@ export interface ArticuloInsumo {
     nombreImagen: string | null;   
     imagenes: string[];
 }
+
+export interface ArticuloInsumo {
+    id?: number;
+    denominacion: string;
+    fechaBaja: string | null;
+    precioVenta: number;
+    precioCompra: number;
+    categorias: string[];          
+    nombreUnidadMedida: string;    
+    esParaElaborar: boolean;
+    nombreImagen: string | null;   
+    imagenes: string[];
+}
