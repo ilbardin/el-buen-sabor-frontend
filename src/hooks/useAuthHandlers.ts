@@ -5,9 +5,9 @@ import Swal from "sweetalert2";
 import type {AxiosError} from "axios";
 import type {UserData} from "../models/usuario/usuario";
 import {ROUTES} from "../constants/routes";
-import {showAlert, showLoading} from "../utils/alerts.ts";
 import {UserRole} from "../models/usuario/userRoles.ts";
 import axiosInstance from "../api/axiosInstance.ts";
+import {mostrarAlerta, mostrarCargando} from "../utils/alerts.ts";
 
 export const useAuthHandlers = (username: string, password: string) => {
     const {login} = useAuth();
@@ -18,11 +18,11 @@ export const useAuthHandlers = (username: string, password: string) => {
 
         if ((err as any).response?.data) {
             console.error((err as any).response.data);
-            await showAlert("Error", "error", (err as any).response.data);
+            await mostrarAlerta("Error", "error", (err as any).response.data);
         } else {
             console.error(err);
             if ((err as AxiosError).isAxiosError) {
-                await showAlert("Error", "error", "Error de red.");
+                await mostrarAlerta("Error", "error", "Error de red.");
             }
         }
     };
@@ -58,7 +58,7 @@ export const useAuthHandlers = (username: string, password: string) => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            showLoading("Iniciando sesión...");
+            mostrarCargando("Iniciando sesión...");
 
             setTimeout(async () => {
                 const response = await axiosInstance.post<UserData>("/auth/login", {

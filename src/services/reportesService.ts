@@ -1,12 +1,12 @@
 import type {AxiosResponse} from "axios";
-import {showAlert} from "../utils/alerts.ts";
 import type {ReportesResponse} from "../models/reportesResponse.ts";
 import {useSucursalStore} from "../components/Sucursal/SucursalStore.tsx";
 import axiosInstance from "../api/axiosInstance.ts";
+import {mostrarAlerta} from "../utils/alerts.ts";
 
 function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
     if (!response || !response.data) {
-        void showAlert("Error", "error", errorMessage);
+        void mostrarAlerta("Error", "error", errorMessage);
         return true;
     }
     return false;
@@ -38,7 +38,7 @@ export async function getReportes( fechaDesde: string, fechaHasta: string, tipoR
         return response.data;
     } catch (error) {
         console.error("Error:", error);
-        void showAlert("Error", "error", "No se pudo obtener el reporte.");
+        void mostrarAlerta("Error", "error", "No se pudo obtener el reporte.");
         return {
             sucursal: "",
             tipoReporte: "",

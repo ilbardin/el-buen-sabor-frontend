@@ -34,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({rolesPermitidos, childre
     }
 
     if (!usuario && !isLoggingOut) {
-        void showAlert(
+        void mostrarAlerta(
             "Acceso denegado",
             "error",
             "Debes iniciar sesión para acceder a esta página.",

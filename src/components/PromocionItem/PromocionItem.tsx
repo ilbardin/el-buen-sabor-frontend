@@ -1,9 +1,7 @@
-import type { Promocion } from "../../models/promocion";
-import { eliminarPromocion } from "../../services/promocionService";
-import styles from "./PromocionItem.module.css";
-import { mostrarConfirmacion, mostrarCargando } from "../../utils/alerts.ts";
+import type {Promocion} from "../../models/promocion";
+import {eliminarPromocion} from "../../services/promocionService";
+import {mostrarCargando, mostrarConfirmacion} from "../../utils/alerts.ts";
 import baseModulo from "../../css/baseModulo.module.css";
-import { FaPercent } from "react-icons/fa";
 
 export function PromocionItem(props: {
   promocion: Promocion;

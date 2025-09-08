@@ -1,6 +1,5 @@
-import type { Empresa } from "../../models/empresa.ts";
-import { deleteEmpresa } from "../../services/empresaService.ts";
-import styles from "./ModuloEmpresa.module.css";
+import type {Empresa} from "../../models/empresa.ts";
+import {deleteEmpresa} from "../../services/empresaService.ts";
 import baseModulo from "../../css/baseModulo.module.css";
 
 export function ModuloEmpresa(props: {
