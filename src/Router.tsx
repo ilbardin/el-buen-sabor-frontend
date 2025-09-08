@@ -118,6 +118,15 @@ const Router = () => {
                 />
 
                 <Route
+                    path={ROUTES.CONTROL_EMPLEADOS}
+                    element={
+                        <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                            <ControlEmpleadosPage/>
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
                     path={ROUTES.REPORTES}
                     element={
                         <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
@@ -177,15 +186,6 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
                         <HistorialPedidosPage/>
-                    </ProtectedRoute>
-                }
-            />
-        
-        <Route
-                path={ROUTES.CONTROL_EMPLEADOS}
-                element={
-                    <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
-                        <ControlEmpleadosPage/>
                     </ProtectedRoute>
                 }
             />
