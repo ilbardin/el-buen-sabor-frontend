@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { MdAttachMoney } from "react-icons/md";
 import {
   crearArticuloManufacturado,
   obtenerCategorias,
@@ -15,7 +16,6 @@ import baseFormulario from "../../css/baseFormulario.module.css";
 import type { CategoriaArticuloManufacturado } from "../../models/categoriaArticuloManufacturado.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 
-
 export default function FormularioArticulosManufacturados({
   onClose,
   onCreateSuccess,
@@ -25,7 +25,6 @@ export default function FormularioArticulosManufacturados({
   onCreateSuccess: () => void;
   articuloParaEditar?: ArticuloManufacturado | null;
 }) {
-
   const [denominacion, setDenominacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precioVenta, setPrecioVenta] = useState(0);
@@ -46,8 +45,10 @@ export default function FormularioArticulosManufacturados({
   );
   const [unidadMedida, setUnidadMedida] = useState("");
   const [formularioValidado, setFormularioValidado] = useState(false);
+  const [precioSugerido, setPreciSugerido] = useState<number>(0);
+  const [usarPrecioSugerido, setUsarPrecioSugerido] = useState(false);
 
-  // !Carga inicial de categorías e insumos 
+  // !Carga inicial de categorías e insumos
   useEffect(() => {
     async function cargarDatos() {
       const categorias = await obtenerCategorias();
@@ -58,7 +59,6 @@ export default function FormularioArticulosManufacturados({
 
     void cargarDatos();
   }, []);
-
 
   // !Carga de datos del artículo a editar
   useEffect(() => {
@@ -143,16 +143,27 @@ export default function FormularioArticulosManufacturados({
 
   //! MANEJO DE INSUMOS
   /* #region*/
-  const eliminarInsumo = (index: number) => {
+  const eliminarInsumo = (index: number, id: number, cantidad: number) => {
     const nuevosDetalles = [...detalles];
     nuevosDetalles.splice(index, 1);
     setDetalles(nuevosDetalles);
+    const insumo = insumos.find((ins) => ins.id === id);
+    if (insumo?.precioCompra) {
+      const precio = precioSugerido - insumo?.precioCompra * cantidad * 4;
+      setPreciSugerido(precio);
+    }
   };
 
   const agregarInsumo = () => {
     const insumo = insumos.find(
       (ins) => ins.denominacion === insumoSeleccionado
     );
+
+    if (insumo?.precioCompra) {
+      const precio = precioSugerido + insumo?.precioCompra * cantidadInsumo * 4;
+      setPreciSugerido(precio);
+      console.log(precio);
+    }
 
     if (!insumo) {
       alert("Insumo no encontrado");
@@ -161,7 +172,7 @@ export default function FormularioArticulosManufacturados({
 
     setDetalles([...detalles, { insumo: insumo, cantidad: cantidadInsumo }]);
 
-    setInsumoSeleccionado(""); //Regresa el campo Insumo a Buscar insumo
+    setInsumoSeleccionado("");
     setCantidadInsumo(0);
   };
   /* #endregion */
@@ -182,7 +193,7 @@ export default function FormularioArticulosManufacturados({
       }
     }
     setImagenesArticuloManofacturado((prev) => [...prev, ...urls]);
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const eliminarImagen = (index: number) => {
@@ -230,8 +241,8 @@ export default function FormularioArticulosManufacturados({
 
   return (
     <div className={baseFormulario.divContenedor}>
-      <div className={baseFormulario.formulario} style={{ width: '900px' }}>
-        <h2 className={baseFormulario.tituloFormulario}> 
+      <div className={baseFormulario.formulario} style={{ width: "900px" }}>
+        <h2 className={baseFormulario.tituloFormulario}>
           {articuloParaEditar ? "Modificar" : "Nuevo"} Artículo Manufacturado
         </h2>
         <form onSubmit={handleSubmit} className={styles.formArticulo}>
@@ -240,7 +251,9 @@ export default function FormularioArticulosManufacturados({
               <label className={baseFormulario.formLabel}>
                 Nombre:
                 {formularioValidado && !denominacion.trim() && (
-                  <p className={baseFormulario.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
                 <div className={baseFormulario.inputConIcono}>
                   <input
@@ -259,7 +272,9 @@ export default function FormularioArticulosManufacturados({
               <label className={baseFormulario.formLabel}>
                 Descripción:
                 {formularioValidado && !descripcion.trim() && (
-                  <p className={baseFormulario.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
                 <div className={baseFormulario.inputConIcono}>
                   <input
@@ -274,15 +289,49 @@ export default function FormularioArticulosManufacturados({
                 </div>
               </label>
 
-              <label className={baseFormulario.formLabel}>
-                Precio Venta:
-                <input
-                  className={baseFormulario.formInput}
-                  type="number"
-                  value={precioVenta}
-                  onChange={(e) => setPrecioVenta(parseFloat(e.target.value))}
-                />
-              </label>
+              <div>
+                <label className={baseFormulario.formLabel}>
+                  Precio Venta:
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <MdAttachMoney style={{ height: "40px", width: "40px" }} />
+                    <input
+                    
+                      className={baseFormulario.formInput}
+                      type="number"
+                      value={usarPrecioSugerido ? precioSugerido : precioVenta}
+                      onChange={(e) =>
+                        setPrecioVenta(parseFloat(e.target.value))
+                      }
+                      disabled={usarPrecioSugerido} 
+                    />
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={usarPrecioSugerido}
+                        onChange={(e) => {
+                          setUsarPrecioSugerido(e.target.checked);
+                          if (e.target.checked) {
+                            setPrecioVenta(precioSugerido); 
+                          }
+                        }}
+                      />
+                      Usar precio sugerido
+                    </label>
+                  </div>
+                </label>
+              </div>
 
               <label className={baseFormulario.formLabel}>
                 Tiempo estimado (min):
@@ -297,7 +346,9 @@ export default function FormularioArticulosManufacturados({
               <div className={baseFormulario.formLabel}>
                 Categoría:
                 {formularioValidado && !categoriaSeleccionada.trim() && (
-                  <p className={baseFormulario.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
                 <div className={baseFormulario.inputConIcono}>
                   <div
@@ -350,7 +401,9 @@ export default function FormularioArticulosManufacturados({
               <label className={baseFormulario.formLabel}>
                 {formularioValidado &&
                   imagenesArticuloManofacturado.length === 0 && (
-                    <p className={baseFormulario.error}>Este campo es obligatorio</p>
+                    <p className={baseFormulario.error}>
+                      Este campo es obligatorio
+                    </p>
                   )}
                 <div className={baseFormulario.inputConIcono}>
                   <label
@@ -400,7 +453,10 @@ export default function FormularioArticulosManufacturados({
             <div className={styles.formArticuloColumnaDerecha}>
               <div className={baseFormulario.formLabel}>
                 Insumo:
-                <div className={baseFormulario.autocompleteWrapper} ref={refInsumo}>
+                <div
+                  className={baseFormulario.autocompleteWrapper}
+                  ref={refInsumo}
+                >
                   <input
                     className={baseFormulario.formInput}
                     type="text"
@@ -465,7 +521,7 @@ export default function FormularioArticulosManufacturados({
               <button
                 type="button"
                 onClick={agregarInsumo}
-                 className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
+                className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
               >
                 Añadir Insumo
               </button>
@@ -483,7 +539,9 @@ export default function FormularioArticulosManufacturados({
                       </span>
                       <button
                         type="button"
-                        onClick={() => eliminarInsumo(index)}
+                        onClick={() =>
+                          eliminarInsumo(index, d.insumo.id, d.cantidad)
+                        }
                         className={`${styles.formArticuloButton} ${styles.formArticuloCancelarInsumo}`}
                       >
                         X
@@ -499,12 +557,15 @@ export default function FormularioArticulosManufacturados({
             <button
               type="button"
               onClick={onClose}
-             className={`${baseFormulario.botonCancelar} ${baseFormulario.boton}`}
+              className={`${baseFormulario.botonCancelar} ${baseFormulario.boton}`}
             >
               Cancelar
             </button>
 
-            <button type="submit" className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}>
+            <button
+              type="submit"
+              className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
+            >
               Guardar
             </button>
           </div>
