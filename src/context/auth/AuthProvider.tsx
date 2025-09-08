@@ -1,7 +1,7 @@
 import {type ReactNode, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {AuthContext} from './authContext.ts';
 import type {UserData, Usuario} from '../../models/usuario/usuario.ts';
-import {mostrarAlerta} from "../../utils/alerts.ts";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
 import {ROUTES} from "../../constants/routes.ts";
 import {CartContext} from "../carrito/cartContext.ts";
 import {alertaCarrito} from "../../utils/funcionesReutilizables.ts";
@@ -37,7 +37,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
             }
         }
 
-        showLoading("Cerrando sesión...");
+        mostrarCargando("Cerrando sesión...");
 
         setIsLoggingOut(true);
         clearLogoutTimer();
