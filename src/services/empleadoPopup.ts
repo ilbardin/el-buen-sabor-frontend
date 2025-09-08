@@ -1,7 +1,15 @@
 import Swal from "sweetalert2";
 import type {Empleado} from "../models/usuario/empleado.ts";
+import {UserRole} from "../models/usuario/userRoles.ts";
 
 export async function showEditarEmpleadoPopup(empleado: Empleado) {
+    const opcionesRol = Object.values(UserRole)
+        .map(
+            (rol) =>
+                `<option value="${rol}" ${empleado.rol === rol ? "selected" : ""}>${rol}</option>`
+        )
+        .join("");
+
     const {value: formValues} = await Swal.fire({
         title: "Editar Empleado",
         html: `
@@ -24,7 +32,9 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Rol:</span>
-                    <input id="rol" class="swal2-input" style="flex:1;" value="${empleado.rol}" />
+                    <select id="rol" class="swal2-select" style="flex:1;">
+                        ${opcionesRol}
+                    </select>
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Username:</span>
@@ -39,11 +49,10 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
                 apellido: (document.getElementById("apellido") as HTMLInputElement).value,
                 telefono: (document.getElementById("telefono") as HTMLInputElement).value,
                 email: (document.getElementById("email") as HTMLInputElement).value,
-                rol: (document.getElementById("rol") as HTMLInputElement).value,
+                rol: (document.getElementById("rol") as HTMLSelectElement).value,
                 username: (document.getElementById("username") as HTMLInputElement).value,
             };
 
-            // validar cambios
             const iguales =
                 updated.nombre === empleado.nombre &&
                 updated.apellido === empleado.apellido &&
