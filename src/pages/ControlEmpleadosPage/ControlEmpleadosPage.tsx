@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
-    activarEmpleado, crearEmpleado,
+    activarEmpleado,
+    crearEmpleado,
     darDeBajaEmpleado,
     editarEmpleado,
     eliminarEmpleado,
@@ -10,10 +11,9 @@ import type {Empleado} from "../../models/usuario/empleado.ts";
 import {FaEdit, FaToggleOff, FaToggleOn, FaTrash} from "react-icons/fa";
 import styles from "./ControlEmpleadosPage.module.css";
 import Swal from "sweetalert2";
-import {showEditarEmpleadoPopup} from "../../services/empleadoPopup.ts";
+import {showCrearEmpleadoPopup, showEditarEmpleadoPopup} from "../../services/empleadoPopup.ts";
 import {mostrarAlerta, mostrarConfirmacion} from "../../utils/alerts.ts";
 import {useAuth} from "../../context/auth/useAuth.ts";
-import {UserRole} from "../../models/usuario/userRoles.ts";
 
 const ControlEmpleadosPage: React.FC = () => {
     const [empleados, setEmpleados] = useState<Empleado[]>([]);
@@ -56,77 +56,6 @@ const ControlEmpleadosPage: React.FC = () => {
                 await Swal.fire("Error", "No se pudo modificar el empleado", "error");
             }
         }
-    };
-
-    const showCrearEmpleadoPopup = async () => {
-        const opcionesRol = Object.values(UserRole)
-            .map((rol) => `<option value="${rol}">${rol}</option>`)
-            .join("");
-
-        const {value: formValues} = await Swal.fire({
-            title: "Crear Empleado",
-            html: `
-                <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Nombre:</span>
-                        <input id="nombre" class="swal2-input" style="flex:1;" />
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Apellido:</span>
-                        <input id="apellido" class="swal2-input" style="flex:1;" />
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Teléfono:</span>
-                        <input id="telefono" class="swal2-input" style="flex:1;" />
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Email:</span>
-                        <input id="email" class="swal2-input" style="flex:1;" />
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Rol:</span>
-                        <select id="rol" class="swal2-select" style="flex:1;">
-                            ${opcionesRol}
-                        </select>
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Username:</span>
-                        <input id="username" class="swal2-input" style="flex:1;" />
-                    </label>
-                    <label style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="width:100px;">Password:</span>
-                        <input type="password" id="password" class="swal2-input" style="flex:1;" />
-                    </label>
-                </div>
-            `,
-            focusConfirm: false,
-            preConfirm: () => {
-                const empleado: Empleado & { password?: string } = {
-                    nombre: (document.getElementById("nombre") as HTMLInputElement).value,
-                    apellido: (document.getElementById("apellido") as HTMLInputElement).value,
-                    telefono: (document.getElementById("telefono") as HTMLInputElement).value,
-                    email: (document.getElementById("email") as HTMLInputElement).value,
-                    rol: (document.getElementById("rol") as HTMLSelectElement).value as UserRole,
-                    username: (document.getElementById("username") as HTMLInputElement).value,
-                    password: (document.getElementById("password") as HTMLInputElement).value,
-                };
-
-                // Validaciones obligatorias
-                for (const key of ["nombre","apellido","telefono","email","rol","username"]) {
-                    if (!empleado[key as keyof Empleado]) {
-                        Swal.showValidationMessage(`El campo ${key} es obligatorio.`);
-                        return;
-                    }
-                }
-
-                return empleado;
-            },
-            showCancelButton: true,
-            confirmButtonText: "Crear",
-            cancelButtonText: "Cancelar",
-        });
-
-        return formValues;
     };
 
     const handleCrearEmpleado = async () => {
