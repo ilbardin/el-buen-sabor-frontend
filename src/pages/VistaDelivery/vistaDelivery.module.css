@@ -45,3 +45,13 @@
 .filtroEntregados input[type="checkbox"]:hover {
   transform: scale(1.2);
 }
+
+.entregado{
+  background-color: var(--finalizado);
+  border: 1px solid var(--color-terciario);
+  color: white;
+}
+
+.botonesDemora {
+  border-radius: 10px;
+}

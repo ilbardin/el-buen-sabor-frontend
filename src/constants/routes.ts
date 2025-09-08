@@ -19,4 +19,5 @@ export const ROUTES = {
     HISTORIAL_PEDIDOS: '/historial-pedidos',
     DELIVERY: '/delivery',
     CONTROL_EMPLEADOS: '/control-empleados',
+    REPORTES: '/reportes',
 };

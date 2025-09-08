@@ -1,7 +1,10 @@
-import {type ReactNode, useCallback, useEffect, useRef, useState} from 'react';
+import {type ReactNode, useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {AuthContext} from './authContext.ts';
 import type {UserData, Usuario} from '../../models/usuario/usuario.ts';
-import {mostrarAlerta} from "../../utils/alerts.ts";
+import {showAlert, showLoading} from "../../utils/alerts.ts";
+import {ROUTES} from "../../constants/routes.ts";
+import {CartContext} from "../carrito/cartContext.ts";
+import {alertaCarrito} from "../../utils/funcionesReutilizables.ts";
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -15,6 +18,9 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const logoutTimerRef = useRef<number | null>(null);
 
+    const {cart} = useContext(CartContext);
+    const existeCarrito = cart.length > 0;
+
     const clearLogoutTimer = useCallback(() => {
         if (logoutTimerRef.current !== null) {
             window.clearTimeout(logoutTimerRef.current);
@@ -22,13 +28,28 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
         }
     }, []);
 
-    const logout = useCallback(() => {
+    const logout = useCallback(async () => {
+        if (existeCarrito) {
+            const confirmacion = await alertaCarrito();
+
+            if (!confirmacion) {
+                return;
+            }
+        }
+
+        showLoading("Cerrando sesión...");
+
+        setIsLoggingOut(true);
         clearLogoutTimer();
         localStorage.clear();
         setJwt(null);
         setExpirationEpochMs(null);
         setUsuario(null);
-    }, [clearLogoutTimer]);
+        setTimeout(() => {
+            window.location.replace(ROUTES.HOME);
+            setIsLoggingOut(false);
+        }, 500);
+    }, [clearLogoutTimer, existeCarrito]);
 
     const scheduleLogoutAt = useCallback((expirationEpochMs: number) => {
         clearLogoutTimer();
@@ -43,7 +64,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
                 "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
                 false
             );
-            logout();
+            await logout();
         }, remainingMs);
     }, [clearLogoutTimer, logout]);
 

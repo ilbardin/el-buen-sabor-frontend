@@ -51,10 +51,11 @@ export const HistorialPedidosPage: React.FC = () => {
         }
     }, [usuario?.cliente.id, page]);
 
-    const descargarFacturaPdf = async (idPedido: number) => {
+    const descargarFacturaPdf = async (idFactura: number) => {
         try {
             mostrarCargando();
             await getFacturaPdf(idPedido);
+
             Swal.close();
         } catch (error) {
             Swal.close();
@@ -176,7 +177,7 @@ export const HistorialPedidosPage: React.FC = () => {
                                     className={styles.descargarFacturaButton}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        descargarFacturaPdf(pedido.idPedido);
+                                        descargarFacturaPdf(pedido.idFactura!);
                                     }}
                                 >
                                     <IoReceipt className={styles.icon}/>
