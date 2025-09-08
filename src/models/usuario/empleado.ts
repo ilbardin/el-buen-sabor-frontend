@@ -1,7 +1,7 @@
 import type {UserRole} from "./userRoles.ts";
 
 export type Empleado = {
-    id: number;
+    id?: number;
     nombre: string;
     apellido: string;
     telefono: string;

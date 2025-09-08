@@ -45,10 +45,11 @@ const ControlEmpleadosPage: React.FC = () => {
 
         if (formValues) {
             try {
-                await editarEmpleado(empleado.id, formValues);
-
-                Swal.fire("Éxito", "Empleado modificado correctamente", "success");
-                fetchEmpleados();
+                if (empleado.id !== undefined) {
+                    await editarEmpleado(empleado.id, formValues);
+                    Swal.fire("Éxito", "Empleado modificado correctamente", "success");
+                    fetchEmpleados();
+                }
             } catch (error) {
                 Swal.fire("Error", "No se pudo modificar el empleado", "error");
             }
@@ -57,12 +58,14 @@ const ControlEmpleadosPage: React.FC = () => {
 
     const handleToggleActivo = async (empleado: Empleado) => {
         try {
-            if (empleado.estaActivo) {
+            if (empleado.estaActivo && empleado.id) {
                 await darDeBajaEmpleado(empleado.id);
                 await Swal.fire("Éxito", "Empleado dado de baja", "success");
             } else {
-                await activarEmpleado(empleado.id);
-                await Swal.fire("Éxito", "Empleado activado", "success");
+                if (empleado.id) {
+                    await activarEmpleado(empleado.id);
+                    await Swal.fire("Éxito", "Empleado activado", "success");
+                }
             }
             await fetchEmpleados();
         } catch (error: any) {
@@ -78,9 +81,11 @@ const ControlEmpleadosPage: React.FC = () => {
 
         if (confirmacion) {
             try {
-                await eliminarEmpleado(empleado.id);
-                await mostrarAlerta("Empleado eliminado", "success", "Empleado eliminado correctamente");
-                await fetchEmpleados();
+                if (empleado.id) {
+                    await eliminarEmpleado(empleado.id);
+                    await mostrarAlerta("Empleado eliminado", "success", "Empleado eliminado correctamente");
+                    await fetchEmpleados();
+                }
             } catch (error: any) {
                 console.error(error);
                 await mostrarAlerta("Error", "error", "No se pudo eliminar el empleado");
