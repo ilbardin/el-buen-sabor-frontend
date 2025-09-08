@@ -23,20 +23,12 @@
     background-color: #f4f4f4;
 }
 
-.rowEven {
-    background-color: #fff;
-}
-
-.rowOdd {
-    background-color: #f9f9f9;
-}
-
 .actions {
     display: flex;
     gap: 0.5rem;
 }
 
-.btn {
+.actions button {
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -46,29 +38,32 @@
     color: #fff;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.btnWarning {
-    background-color: #f0ad4e;
+.editBtn {
+    background-color: #2d9cdb;
 }
 
-.btnWarning:hover {
-    background-color: #ec971f;
+.editBtn:hover {
+    background-color: #1b7fbf;
+    transform: translateY(-1px);
 }
 
-.btnSuccess {
-    background-color: #5cb85c;
+.toggleBtn {
+    background-color: var(--color-secundario);
 }
 
-.btnSuccess:hover {
-    background-color: #449d44;
+.toggleBtn:hover {
+    background-color: #5a5a5a;
+    transform: translateY(-1px);
 }
 
-.btnDanger {
-    background-color: #d9534f;
+.deleteBtn {
+    background-color: var(--color-primario);
 }
 
-.btnDanger:hover {
-    background-color: #c9302c;
+.deleteBtn:hover {
+    background-color: #c1272d;
+    transform: translateY(-1px);
 }
