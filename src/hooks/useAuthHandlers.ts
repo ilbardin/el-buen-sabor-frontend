@@ -26,7 +26,7 @@ export const useAuthHandlers = (username: string, password: string) => {
             }
         }
     };
-
+  
     const handleSuccess = (data: UserData) => {
         Swal.close();
 

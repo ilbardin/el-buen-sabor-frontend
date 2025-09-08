@@ -6,7 +6,7 @@ import {getEstadoPedido} from "../../services/pedidosService.ts";
 import {useCart} from "../../context/carrito/useCart.ts";
 import {EstadoPedidoEnum} from "../../models/pedido/estadoPedidoEnum.ts";
 import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
-import {showAlert, showLoading} from "../../utils/alerts.ts";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
 import {FaClipboardList, FaMoneyBillAlt, FaStore} from "react-icons/fa";
 import {IoReceipt, IoStorefrontSharp} from "react-icons/io5";
@@ -54,7 +54,7 @@ export const EstadoPedidoPage: React.FC = () => {
     }, [externalRefNumber]);
 
     const obtenerDatosPedido = async (idPedido: number) => {
-        showLoading("Actualizando estado...");
+        mostrarCargando("Actualizando estado...");
         try {
             const response = await getEstadoPedido(idPedido);
             console.log(response);
@@ -63,7 +63,7 @@ export const EstadoPedidoPage: React.FC = () => {
         } catch (error) {
             Swal.close();
             console.error("Error al obtener datos del pedido:", error);
-            await showAlert("Error", "error", "Error al obtener datos del pedido.");
+            await mostrarAlerta("Error", "error", "Error al obtener datos del pedido.");
         }
     }
 

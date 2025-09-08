@@ -58,7 +58,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
         const remainingMs = Math.max(0, expirationEpochMs - nowMs);
 
         logoutTimerRef.current = window.setTimeout(async () => {
-            await showAlert(
+            await mostrarAlerta(
                 "Sesión expirada",
                 "error",
                 "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
@@ -113,7 +113,7 @@ export const AuthProvider = ({children}: AuthProviderProps) => {
             try {
                 setUsuario(JSON.parse(savedUser));
             } catch {
-                void showAlert('Error', 'error', 'Error al deserializar el usuario.');
+                void mostrarAlerta('Error', 'error', 'Error al deserializar el usuario.');
             }
         }
 

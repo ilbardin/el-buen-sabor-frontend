@@ -23,6 +23,7 @@ import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from "./pages/Prueba/Prueba.tsx";
 import {VistaCocina} from "./pages/VistaCocina/VistaCocina.tsx";
 import VistaDelivery from "./pages/VistaDelivery/vistaDelivery.tsx";
+import ControlEmpleadosPage from "./pages/ControlEmpleadosPage/ControlEmpleadosPage.tsx";
 import {HistorialPedidosPage} from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
 import Reportes from "./pages/Reportes/Reportes.tsx";
 
@@ -36,7 +37,7 @@ const Router = () => {
             </>
         );
     };
-
+  
     const LoginWrapper: React.FC = () => <Login onLoginSuccess={login}/>;
     const LandingLoginWrapper: React.FC = () => <LandingPage/>;
 
@@ -176,6 +177,15 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
                         <Reportes/>
+                    </ProtectedRoute>
+                }
+            />
+        
+        <Route
+                path={ROUTES.CONTROL_EMPLEADOS}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                        <ControlEmpleadosPage/>
                     </ProtectedRoute>
                 }
             />

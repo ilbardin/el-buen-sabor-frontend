@@ -5,7 +5,7 @@ import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import {Link, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {ROUTES} from '../../constants/routes';
-import {showAlert, showLoading} from '../../utils/alerts';
+import {mostrarAlerta, mostrarCargando} from '../../utils/alerts';
 import {MdEmail, MdLocationCity} from "react-icons/md";
 import {BsTelephoneFill} from "react-icons/bs";
 import {registrarUsuario} from "../../services/registroUsuarioService.ts";
@@ -54,7 +54,7 @@ export const RegistroUsuario: React.FC = () => {
                 localStorage.setItem('paises', JSON.stringify(data));
             } catch (err) {
                 console.error("Error al obtener países", err);
-                await showAlert("Error", "error", "Error al cargar países.");
+                await mostrarAlerta("Error", "error", "Error al cargar países.");
             }
         }
     };
@@ -70,7 +70,7 @@ export const RegistroUsuario: React.FC = () => {
                 localStorage.setItem(`provincias_${idPais}`, JSON.stringify(data));
             } catch (err) {
                 console.error("Error al obtener provincias", err);
-                await showAlert("Error", "error", "No se pudieron cargar las provincias.");
+                await mostrarAlerta("Error", "error", "No se pudieron cargar las provincias.");
             }
         }
     };
@@ -86,7 +86,7 @@ export const RegistroUsuario: React.FC = () => {
                 localStorage.setItem(`localidades_${idProvincia}`, JSON.stringify(data));
             } catch (err) {
                 console.error("Error al obtener localidades", err);
-                await showAlert("Error", "error", "No se pudieron cargar las localidades.");
+                await mostrarAlerta("Error", "error", "No se pudieron cargar las localidades.");
             }
         }
     };
@@ -158,7 +158,7 @@ export const RegistroUsuario: React.FC = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            await showAlert('Error', 'error', 'Las contraseñas no coinciden');
+            await mostrarAlerta('Error', 'error', 'Las contraseñas no coinciden');
             return;
         }
 
@@ -175,7 +175,7 @@ export const RegistroUsuario: React.FC = () => {
         }
 
         if (!isEmailValid(email)) {
-            await showAlert('Error', 'error', 'Por favor, ingresa un correo electrónico válido.');
+            await mostrarAlerta('Error', 'error', 'Por favor, ingresa un correo electrónico válido.');
             return;
         }
 
@@ -190,20 +190,20 @@ export const RegistroUsuario: React.FC = () => {
                 password,
             };
 
-            showLoading('Creando cuenta...');
+            mostrarCargando('Creando cuenta...');
 
             const response = await registrarUsuario(datosNuevoUsuario);
 
             Swal.close();
 
-            await showAlert('Éxito', 'success', response.data.mensaje);
+            await mostrarAlerta('Éxito', 'success', response.data.mensaje);
 
             navigate(ROUTES.HOME);
         } catch (error: unknown) {
             Swal.close();
 
             if (error instanceof AxiosError) {
-                await showAlert('Error', 'error', error?.response?.data);
+                await mostrarAlerta('Error', 'error', error?.response?.data);
             }
         }
     };

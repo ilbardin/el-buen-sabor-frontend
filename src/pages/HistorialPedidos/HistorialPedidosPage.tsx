@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {IoReceipt} from "react-icons/io5";
 import imageBurger from '/burger.png';
 import {getFacturaPdf} from "../../services/facturaService.ts";
-import {showAlert, showLoading} from "../../utils/alerts.ts";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
 
 export interface PageResponse<T> {
@@ -53,13 +53,14 @@ export const HistorialPedidosPage: React.FC = () => {
 
     const descargarFacturaPdf = async (idFactura: number) => {
         try {
-            showLoading();
-            await getFacturaPdf(idFactura);
+            mostrarCargando();
+            await getFacturaPdf(idPedido);
+
             Swal.close();
         } catch (error) {
             Swal.close();
             console.error(error);
-            await showAlert("Error", "error", "Error al obtener PDF.");
+            await mostrarAlerta("Error", "error", "Error al obtener PDF.");
         }
     };
 

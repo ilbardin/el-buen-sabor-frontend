@@ -1,7 +1,7 @@
 import React, {type ReactNode, useCallback, useEffect, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
-import {showAlert, showLoading} from '../../utils/alerts.ts';
+import {mostrarAlerta, mostrarCargando} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
@@ -152,7 +152,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
     const checkoutCart = async () => {
         if (!clienteId) {
-            await showAlert("Error", "error", "No ha iniciado sesión.");
+            await mostrarAlerta("Error", "error", "No ha iniciado sesión.");
             return;
         }
 
@@ -196,7 +196,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
 
             const mpItems = mapCartItemsToMpItems(cart);
 
-            showLoading("Cargando Mercado Pago...");
+            mostrarCargando("Cargando Mercado Pago...");
 
             const mpResponse = await crearPeticionMP({
                 items: mpItems,
@@ -208,7 +208,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
                 window.location.href = mpResponse.initPoint;
                 clearCart(); // TODO: despues limpiar carrito si el pago fue exitoso
             } else {
-                await showAlert(
+                await mostrarAlerta(
                     "Error",
                     "error",
                     "No se pudo obtener el link de pago."
@@ -217,7 +217,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
         } catch (error: any) {
             Swal.close();
             console.error("Error en el checkout:", error);
-            await showAlert(
+            await mostrarAlerta(
                 "Error",
                 "error",
                 error.response.data.message
