@@ -7,55 +7,74 @@ import {
     getEmpleados
 } from "../../services/empleadoService.ts";
 import type {Empleado} from "../../models/usuario/empleado.ts";
-import {FaEdit, FaTrash, FaUserCheck, FaUserSlash} from "react-icons/fa";
+import {FaEdit, FaToggleOff, FaToggleOn, FaTrash} from "react-icons/fa";
 import styles from "./ControlEmpleadosPage.module.css";
+import Swal from "sweetalert2";
+import {showEditarEmpleadoPopup} from "../../services/empleadoPopup.ts";
 
 const ControlEmpleadosPage: React.FC = () => {
     const [empleados, setEmpleados] = useState<Empleado[]>([]);
 
-    const cargarEmpleados = async () => {
+    const fetchEmpleados = async () => {
         try {
-            const lista = await getEmpleados();
-            setEmpleados(lista);
+            const listaEmpleados = await getEmpleados();
+            setEmpleados(listaEmpleados);
         } catch (error) {
-            console.error("Error al cargar empleados", error);
+            console.error(error);
         }
     };
 
     useEffect(() => {
-        cargarEmpleados();
+        fetchEmpleados();
     }, []);
 
-    const toggleEstadoEmpleado = async (empleado: Empleado) => {
+    const handleEditar = async (empleado: Empleado) => {
+        const formValues = await showEditarEmpleadoPopup(empleado);
+
+        if (formValues) {
+            try {
+                await editarEmpleado(empleado.id, formValues);
+                Swal.fire("Éxito", "Empleado modificado correctamente", "success");
+                fetchEmpleados();
+            } catch (error) {
+                Swal.fire("Error", "No se pudo modificar el empleado", "error");
+            }
+        }
+    };
+
+    const handleToggleActivo = async (empleado: Empleado) => {
         try {
             if (empleado.estaActivo) {
                 await darDeBajaEmpleado(empleado.id);
+                await Swal.fire("Éxito", "Empleado dado de baja", "success");
             } else {
                 await activarEmpleado(empleado.id);
+                await Swal.fire("Éxito", "Empleado activado", "success");
             }
-            await cargarEmpleados();
-        } catch (error) {
-            console.error("Error al actualizar estado del empleado", error);
+            fetchEmpleados();
+        } catch (error: any) {
+            Swal.fire("Error", "No se pudo actualizar el estado del empleado", "error");
         }
     };
 
-    const modificarEmpleado = async (empleado: Empleado) => {
-        try {
-            await editarEmpleado(empleado.id, empleado);
-            console.log("Empleado modificado:", empleado);
-            await cargarEmpleados();
-        } catch (error) {
-            console.error("Error al modificar empleado", error);
-        }
-    };
+    const handleEliminar = async (empleado: Empleado) => {
+        const result = await Swal.fire({
+            title: "¿Estás seguro?",
+            text: `Eliminarás al empleado ${empleado.nombre} ${empleado.apellido}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        });
 
-    const borrarEmpleado = async (empleado: Empleado) => {
-        try {
-            await eliminarEmpleado(empleado.id);
-            console.log("Empleado eliminado:", empleado);
-            await cargarEmpleados();
-        } catch (error) {
-            console.error("Error al eliminar empleado", error);
+        if (result.isConfirmed) {
+            try {
+                await eliminarEmpleado(empleado.id);
+                Swal.fire("Éxito", "Empleado eliminado correctamente", "success");
+                fetchEmpleados();
+            } catch (error: any) {
+                Swal.fire("Error", "No se pudo eliminar el empleado", "error");
+            }
         }
     };
 
@@ -65,56 +84,35 @@ const ControlEmpleadosPage: React.FC = () => {
             <table className={styles.table}>
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Teléfono</th>
                     <th>Email</th>
                     <th>Rol</th>
-                    <th>Usuario</th>
+                    <th>Username</th>
                     <th>Activo</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                {empleados.map((empleado, index) => (
-                    <tr
-                        key={empleado.id}
-                        className={index % 2 === 0 ? styles.rowEven : styles.rowOdd}
-                    >
-                        <td>{empleado.id}</td>
+                {empleados.map((empleado) => (
+                    <tr key={empleado.id}>
                         <td>{empleado.nombre}</td>
                         <td>{empleado.apellido}</td>
                         <td>{empleado.telefono}</td>
                         <td>{empleado.email}</td>
                         <td>{empleado.rol}</td>
-                        <td>{empleado.username ?? "-"}</td>
+                        <td>{empleado.username}</td>
                         <td>{empleado.estaActivo ? "Sí" : "No"}</td>
                         <td className={styles.actions}>
-                            <button
-                                className={`${styles.btn} ${styles.btnWarning}`}
-                                onClick={() => toggleEstadoEmpleado(empleado)}
-                            >
-                                {empleado.estaActivo ? (
-                                    <>
-                                        <FaUserSlash/> Dar de baja
-                                    </>
-                                ) : (
-                                    <>
-                                        <FaUserCheck/> Dar de alta
-                                    </>
-                                )}
+                            <button onClick={() => handleEditar(empleado)} className={styles.editBtn}>
+                                <FaEdit/> Editar
                             </button>
-                            <button
-                                className={`${styles.btn} ${styles.btnSuccess}`}
-                                onClick={() => modificarEmpleado(empleado)}
-                            >
-                                <FaEdit/> Modificar
+                            <button onClick={() => handleToggleActivo(empleado)} className={styles.toggleBtn}>
+                                {empleado.estaActivo ? <FaToggleOff/> : <FaToggleOn/>}
+                                {empleado.estaActivo ? " Dar de baja" : " Dar de alta"}
                             </button>
-                            <button
-                                className={`${styles.btn} ${styles.btnDanger}`}
-                                onClick={() => borrarEmpleado(empleado)}
-                            >
+                            <button onClick={() => handleEliminar(empleado)} className={styles.deleteBtn}>
                                 <FaTrash/> Eliminar
                             </button>
                         </td>
