@@ -1,5 +1,5 @@
 import React from "react";
-import {Navigate, Outlet, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {RegistroUsuario} from "./pages/RegistroUsuario/RegistroUsuario";
 import Login from "./pages/Login/Login";
 import {useAuth} from "./context/auth/useAuth.ts";
@@ -33,7 +33,6 @@ const Router = () => {
         return (
             <>
                 {usuario && <BarraSuperior/>}
-                <Outlet/>
             </>
         );
     };
@@ -168,6 +167,15 @@ const Router = () => {
                 element={
                     <ProtectedRoute rolesPermitidos={[UserRole.Admin, UserRole.Cliente]}>
                         <HistorialPedidosPage/>
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path={ROUTES.REPORTES}
+                element={
+                    <ProtectedRoute rolesPermitidos={[UserRole.Admin]}>
+                        <Reportes/>
                     </ProtectedRoute>
                 }
             />
