@@ -47,11 +47,12 @@ const ControlEmpleadosPage: React.FC = () => {
             try {
                 if (empleado.id !== undefined) {
                     await editarEmpleado(empleado.id, formValues);
-                    Swal.fire("Éxito", "Empleado modificado correctamente", "success");
-                    fetchEmpleados();
+                    await Swal.fire("Éxito", "Empleado modificado correctamente", "success");
+                    await fetchEmpleados();
                 }
             } catch (error) {
-                Swal.fire("Error", "No se pudo modificar el empleado", "error");
+                console.error(error);
+                await Swal.fire("Error", "No se pudo modificar el empleado", "error");
             }
         }
     };
@@ -59,17 +60,33 @@ const ControlEmpleadosPage: React.FC = () => {
     const handleToggleActivo = async (empleado: Empleado) => {
         try {
             if (empleado.estaActivo && empleado.id) {
-                await darDeBajaEmpleado(empleado.id);
-                await Swal.fire("Éxito", "Empleado dado de baja", "success");
+                const confirmacionBaja = await mostrarConfirmacion(
+                    "Dar de baja empleado",
+                    "¿Estás seguro de que deseas dar de baja este empleado?"
+                );
+
+                if (confirmacionBaja) {
+                    const response = await darDeBajaEmpleado(empleado.id);
+                    await mostrarAlerta("Éxito", "success", response.message);
+                }
             } else {
                 if (empleado.id) {
-                    await activarEmpleado(empleado.id);
-                    await Swal.fire("Éxito", "Empleado activado", "success");
+                    const confirmacionAlta = await mostrarConfirmacion(
+                        "Dar de alta empleado",
+                        "¿Estás seguro de que deseas dar de alta este empleado?"
+                    );
+
+                    if (confirmacionAlta) {
+                        const response = await activarEmpleado(empleado.id);
+                        await mostrarAlerta("Éxito", "success", response.message);
+                    }
                 }
             }
+
             await fetchEmpleados();
         } catch (error: any) {
-            Swal.fire("Error", "No se pudo actualizar el estado del empleado", "error");
+            console.error(error);
+            await mostrarAlerta("Error", "error", error.message);
         }
     };
 
