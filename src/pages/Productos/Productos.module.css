@@ -2,7 +2,7 @@
     background: #fff;
     border-radius: 20px;
     min-height: 100vh;
-    padding: 2rem;
+    padding: 0rem;
     margin: 2rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
@@ -13,7 +13,7 @@
     position: relative;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 32px;
+    padding: 16px;
 }
 
 .mainContent {
@@ -99,7 +99,7 @@
 .filtrosContainer {
     width: 25%;
     align-items: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 
     @media (max-width: 768px) {
         width: 50%;
@@ -116,4 +116,30 @@
     color: var(--color-terciario);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     font-family: "Poppins", sans-serif;
+}
+
+
+.categoriaButton {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.categoriaButton:hover {
+  background-color: var(--color-secundario);
+  transform: scale(1.05);
+}
+
+.categoriaButton:active {
+  background-color: var(--color-terciario);
+  transform: scale(0.95);
 }

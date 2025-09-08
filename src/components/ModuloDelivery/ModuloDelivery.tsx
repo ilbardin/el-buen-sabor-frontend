@@ -19,7 +19,7 @@ export const ModuloDelivery = (props: {
   );
   const cambioEstado = async () => {
     try {
-      await cambioEstadoPedido(props.pedido.idPedido, "entregado");
+      await cambioEstadoPedido(props.pedido.idPedido ?? 0, "entregado");
       setEstadoPedido("entregado");
       if (props.onActualizar) {
         await props.onActualizar();
@@ -34,16 +34,16 @@ export const ModuloDelivery = (props: {
       <div className={`${styles.moduloCocinaHeader}`}>
         <div className={styles.left}>
           <p>{props.pedido.idPedido}</p>
+          <p>{props.pedido.direccionEntrega}</p>
         </div>
         <div className={styles.right}>
-          <p>{props.pedido.tipoEnvio}</p>
-          <p>{props.pedido.fechaCreacion.substring(11, 16) ?? "Sin hora"}</p>
+          <p>{props.pedido.fechaCreacion?.substring(11, 16) ?? "Sin hora"}</p>
         </div>
       </div>
       <div>
         <div className={styles.detallesContainer}>
           {props.pedido.detalles.map((detalle) => (
-            <div key={detalle.id} className={styles.detalle}>
+            <div key={detalle.itemId} className={styles.detalle}>
               <p>{detalle.cantidad}</p>
               <p>{detalle.denominacion}</p>
             </div>
@@ -57,7 +57,9 @@ export const ModuloDelivery = (props: {
           }`}
           onClick={() => cambioEstado()}
         >
-          {"Entregar"}
+          {estadoPedido.toLowerCase().trim() === "entregado"
+            ? "Entregado"
+            : "Marcar como entregado"}
         </button>
       </div>
     </div>
