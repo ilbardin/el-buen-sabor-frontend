@@ -34,6 +34,7 @@ const ControlEmpleadosPage: React.FC = () => {
         if (formValues) {
             try {
                 await editarEmpleado(empleado.id, formValues);
+
                 Swal.fire("Éxito", "Empleado modificado correctamente", "success");
                 fetchEmpleados();
             } catch (error) {

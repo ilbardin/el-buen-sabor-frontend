@@ -1,6 +1,6 @@
 import type {ArticuloInsumo, ArticuloInsumoCreacion} from "../models/articuloInsumo.ts";
 import axiosInstance from "../api/axiosInstance.ts";
-import {showAlert} from "../utils/alerts.ts";
+import {mostrarAlerta} from "../utils/alerts.ts";
 import type {CategoriaArticulo} from "../models/categoriaArticulo.ts";
 import type {UnidadMedida} from "../models/unidadMedida.ts";
 import type {AxiosResponse} from "axios";
@@ -12,7 +12,7 @@ const API_URL_UNIDADES_MEDIDA = import.meta.env.VITE_API_URL + "/unidades-medida
 
 function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
     if (!response || !response.data) {
-        void showAlert("Error", "error", errorMessage);
+        void mostrarAlerta("Error", "error", errorMessage);
         return true;
     }
     return false;
@@ -23,7 +23,7 @@ export async function getArticulosInsumo(): Promise<ArticuloInsumo[]> {
         const response = await axiosInstance.get(API_URL);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al obtener los artículos insumo.");
+            await mostrarAlerta("Error", "error", "Error al obtener los artículos insumo.");
         }
 
         return await response.data;
@@ -38,11 +38,11 @@ export async function crearArticuloInsumo(articulo: ArticuloInsumoCreacion): Pro
         const response = await axiosInstance.post(API_URL, articulo);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al crear el Artículo Insumo");
+            await mostrarAlerta("Error", "error", "Error al crear el Artículo Insumo");
             return;
         }
 
-        await showAlert("Éxito", "success", "Artículo Insumo creado correctamente.");
+        await mostrarAlerta("Éxito", "success", "Artículo Insumo creado correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -54,11 +54,11 @@ export async function editarArticuloInsumo(articulo: ArticuloInsumoCreacion): Pr
         const response = await axiosInstance.post(API_URL, articulo);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al crear el Artículo Insumo");
+            await mostrarAlerta("Error", "error", "Error al crear el Artículo Insumo");
             return;
         }
 
-        await showAlert("Éxito", "success", "Artículo Insumo creado correctamente.");
+        await mostrarAlerta("Éxito", "success", "Artículo Insumo creado correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -68,7 +68,7 @@ export async function editarArticuloInsumo(articulo: ArticuloInsumoCreacion): Pr
 export async function eliminarArticuloInsumo(id: number): Promise<void> {
     if (id === undefined) {
         console.error("El ID no puede ser undefined.");
-        await showAlert("Error", "error", "El ID del artículo es inválido.");
+        await mostrarAlerta("Error", "error", "El ID del artículo es inválido.");
         return;
     }
 
@@ -79,7 +79,7 @@ export async function eliminarArticuloInsumo(id: number): Promise<void> {
             return;
         }
 
-        await showAlert("Éxito", "success", response.data);
+        await mostrarAlerta("Éxito", "success", response.data);
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -91,7 +91,7 @@ export async function getCategoriasArticuloInsumo(): Promise<CategoriaArticulo[]
         const response = await axiosInstance.get(API_URL_CATEGORIA);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al obtener categorías.");
+            await mostrarAlerta("Error", "error", "Error al obtener categorías.");
             return [];
         }
 
@@ -113,10 +113,10 @@ export async function crearCategoriaArticuloInsumo(denominacion: string, categor
         const response = await axiosInstance.post(API_URL_CATEGORIA, categoria);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al crear la categoría de artículo manufacturado.");
+            await mostrarAlerta("Error", "error", "Error al crear la categoría de artículo manufacturado.");
         }
 
-        await showAlert("Categoría creada correctamente", "success");
+        await mostrarAlerta("Categoría creada correctamente", "success");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -128,7 +128,7 @@ export async function getUnidadesDeMedida(): Promise<UnidadMedida[]> {
         const response = await axiosInstance.get(API_URL_UNIDADES_MEDIDA);
 
         if (!response || !response.data) {
-            await showAlert("Error", "error", "Error al obtener las unidades de medida.");
+            await mostrarAlerta("Error", "error", "Error al obtener las unidades de medida.");
         }
 
         return await response.data;
