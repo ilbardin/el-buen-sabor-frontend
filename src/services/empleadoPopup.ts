@@ -1,17 +1,15 @@
 import Swal from "sweetalert2";
 import type {Empleado} from "../models/usuario/empleado.ts";
-import {UserRole} from "../models/usuario/userRoles.ts";
+import {EmpleadoRole, UserRole} from "../models/usuario/userRoles.ts";
 
 export async function showEditarEmpleadoPopup(empleado: Empleado) {
-    const opcionesRol = Object.values(UserRole)
-        .map(
-            (rol) =>
-                `<option value="${rol}" ${empleado.rol === rol ? "selected" : ""}>${rol}</option>`
-        )
+    const opcionesRol = Object.values(EmpleadoRole)
+        .map((rol) => `<option value="${rol}">${rol}</option>`)
         .join("");
 
     const {value: formValues} = await Swal.fire({
         title: "Editar Empleado",
+        width: 600,
         html: `
             <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -77,12 +75,13 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
 }
 
 export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
-    const opcionesRol = Object.values(UserRole)
+    const opcionesRol = Object.values(EmpleadoRole)
         .map((rol) => `<option value="${rol}">${rol}</option>`)
         .join("");
 
     const {value: formValues} = await Swal.fire({
         title: "Crear Empleado",
+        width: 600,
         html: `
             <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -108,7 +107,7 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                     </select>
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="width:100px;">Username:</span>
+                    <span style="width:100px;">Usuario:</span>
                     <input id="username" class="swal2-input" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -129,7 +128,6 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 password: (document.getElementById("password") as HTMLInputElement).value,
             };
 
-            // Validaciones obligatorias
             for (const key of ["nombre", "apellido", "telefono", "email", "rol", "username"]) {
                 if (!empleado[key as keyof Empleado]) {
                     Swal.showValidationMessage(`El campo ${key} es obligatorio.`);
