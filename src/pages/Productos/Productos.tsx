@@ -90,6 +90,7 @@ const Productos: React.FC = () => {
                         <div className={styles.filtrosContainer}>
                             <input
                                 type="text"
+                                maxLength={50}
                                 placeholder="Buscar"
                                 onChange={handleChangeBusqueda}
                                 className={styles.filtroInput}
@@ -110,27 +111,33 @@ const Productos: React.FC = () => {
                             </div>
                         ) : (
                             <>
+                                {ofertas.length > 0 && (
+                                    <div>
+                                        <h3 className={styles.title}>OFERTAS</h3>
+                                        <ProductosHome item={ofertas}/>
+                                    </div>
+                                )}
+
                                 <div>
-                                    <h3 className={styles.title}>Ofertas</h3>
-                                    <ProductosHome item={ofertas}/>
-                                </div>
-                                <div>
-                                    <h3 className={styles.title}>Pizza</h3>
+                                    <h3 className={styles.title}>PIZZAS</h3>
                                     <ProductosHome item={filtrarPorCategoria("Pizza")}/>
                                 </div>
+
                                 <div>
-                                    <h3 className={styles.title}>Hamburguesa</h3>
+                                    <h3 className={styles.title}>HAMBURGUESAS</h3>
                                     <ProductosHome item={filtrarPorCategoria("Hamburguesa")}/>
                                 </div>
+
                                 <div>
-                                    <h3 className={styles.title}>Lomo</h3>
+                                    <h3 className={styles.title}>LOMOS</h3>
                                     <ProductosHome
                                         key={"lomo"}
                                         item={filtrarPorCategoria("Lomo")}
                                     />
                                 </div>
+
                                 <div>
-                                    <h3 className={styles.title}>Gaseosas</h3>
+                                    <h3 className={styles.title}>GASEOSAS</h3>
                                     <ProductosHome
                                         key={"bebidas"}
                                         item={insumos.filter((insumo) =>

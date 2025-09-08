@@ -41,12 +41,19 @@ export const ModuloProductoHome = (props: {
         return 'listaImagenes' in item;
     }
 
+    const isOutOfStock = esManufacturadoDisponible(props.item) && props.item.cantidadDisponible === 0;
+
     return (
-        <div className={styles.moduloProductoHome}>
+        <div
+            className={`${styles.moduloProductoHome} ${isOutOfStock ? styles.sinStock : ''}`}
+        >
             <div className={styles.infoProducto}>
                 <h1>{props.item.denominacion}</h1>
                 {!esPromocion(props.item)}
                 <p className={styles.precio}>${props.item.precioVenta}</p>
+                {isOutOfStock && (
+                    <p className={styles.mensajeSinStock}>Sin stock actualmente</p>
+                )}
             </div>
             <div className={styles.productoImagenYBoton}>
                 <div className={styles.imagenProducto}>
@@ -65,7 +72,11 @@ export const ModuloProductoHome = (props: {
                     />
                 </div>
 
-                <button className={styles.botonAgregar} onClick={handleAddToCart}>
+                <button
+                    className={styles.botonAgregar}
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock}
+                >
                     <MdAddShoppingCart size={20}/>
                     <span>Comprar</span>
                 </button>
