@@ -5,23 +5,28 @@ import { Chart } from "react-google-charts";
 import type {ReportesResponse} from "../../models/reportesResponse.ts";
 
 export default function Reportes() {
-
     const [fechaDesde, setFechaDesde] = useState<string>("2025-09-01");
     const [fechaHasta, setFechaHasta] = useState<string>("2025-09-25");
     const [reporteVentas, setReporteVentas] = useState<ReportesResponse>();
     const [reporteProductos, setReporteProductos] = useState<ReportesResponse>();
     const [dataVentas, setDataVentas] = useState<any[]>([["Fecha", "Ventas"]]);
     const [dataProductos, setDataProductos] = useState<any[]>([["Producto", "Cantidad"]]);
+    const [dataCargada, setDataCargada] = useState<boolean>(false);
 
     const obtenerReportes = async () => {
-        const ventas = await getReportes(fechaDesde, fechaHasta, "ventas");
-        setReporteVentas(ventas);
-
-        const productos = await getReportes(fechaDesde, fechaHasta, "productos");
-        setReporteProductos(productos);
+        try {
+            const ventas = await getReportes(fechaDesde, fechaHasta, "ventas");
+            const productos = await getReportes(fechaDesde, fechaHasta, "productos");
+            
+            setReporteVentas(ventas);
+            setReporteProductos(productos);
+            setDataCargada(true);
+        } catch (error) {
+            console.error("Error al obtener reportes:", error);
+            setDataCargada(false);
+        }
     };
 
-    // cuando cambia reporteVentas → construyo el data para el gráfico
     useEffect(() => {
         if (reporteVentas?.detalles) {
             const chartData = [
@@ -42,8 +47,18 @@ export default function Reportes() {
         }
     }, [reporteProductos]);
 
+    const dataPorDefectoVentas = [
+        ["Fecha", "Ventas"],
+        ["Sin datos", 0],
+    ];
+
+    const dataPorDefectoProductos = [
+        ["Producto", "Cantidad"],
+        ["Sin datos", 0],
+    ];
+
     return (
-        <div >
+        <div>
             <h1>Reportes</h1>
 
             <label className={styles.filtroFechas}>
@@ -61,27 +76,35 @@ export default function Reportes() {
                 />
             </label>
             <button onClick={() => obtenerReportes()}>Generar reporte</button>
+            
             <div className={styles.contenedorGraficos}>
-                {/* Chart de ventas */}
                 <Chart
                     chartType="ColumnChart"
-                    data={dataVentas}
+                    data={dataCargada && dataVentas.length > 1 ? dataVentas : dataPorDefectoVentas}
                     options={{
                         title: reporteVentas?.tipoReporte || "Ventas",
+                        hAxis: {
+                            title: "Fecha",
+                            format: "dd/MM/yyyy",
+                        },
+                        vAxis: {
+                            title: "Ventas en $",
+                        },
+                        legend: { position: "bottom" },
                     }}
                     legendToggle
+
                 />
 
                 <Chart
-                    chartType="ColumnChart"
-                    data={dataProductos}
+                    chartType="PieChart"
+                    data={dataCargada && dataProductos.length > 1 ? dataProductos : dataPorDefectoProductos}
                     options={{
                         title: reporteProductos?.tipoReporte || "Productos",
                     }}
                     legendToggle
                 />
             </div>
-
         </div>
     );
 }
