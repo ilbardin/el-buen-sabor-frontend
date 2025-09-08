@@ -13,6 +13,16 @@ export async function getEmpleados(empleadoId: number): Promise<Empleado[]> {
     }
 }
 
+export async function crearEmpleado(empleado: Empleado): Promise<void> {
+    try {
+        const response = await axiosInstance.post(URL_EMPLEADOS, empleado);
+        console.log("Respuesta del servidor:", response);
+    } catch (error) {
+        console.error("Error al crear el empleado:", error);
+        throw error;
+    }
+}
+
 export async function editarEmpleado(id: number, empleado: Partial<Empleado>): Promise<Empleado> {
     try {
         const response = await axiosInstance.put<Empleado>(`${URL_EMPLEADOS}/${id}`, empleado);
