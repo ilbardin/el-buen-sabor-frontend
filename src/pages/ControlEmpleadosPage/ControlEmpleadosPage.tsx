@@ -1,31 +1,62 @@
 import React, {useEffect, useState} from "react";
-import {getEmpleados} from "../../services/empleadoService.ts";
+import {
+    activarEmpleado,
+    darDeBajaEmpleado,
+    editarEmpleado,
+    eliminarEmpleado,
+    getEmpleados
+} from "../../services/empleadoService.ts";
 import type {Empleado} from "../../models/usuario/empleado.ts";
-import {FaEdit, FaTrash, FaUserSlash} from "react-icons/fa";
+import {FaEdit, FaTrash, FaUserCheck, FaUserSlash} from "react-icons/fa";
 import styles from "./ControlEmpleadosPage.module.css";
 
 const ControlEmpleadosPage: React.FC = () => {
     const [empleados, setEmpleados] = useState<Empleado[]>([]);
 
-    const getListaEmpleados = async () => {
-        const listaEmpleados: Empleado[] = await getEmpleados();
-        setEmpleados(listaEmpleados);
+    const cargarEmpleados = async () => {
+        try {
+            const lista = await getEmpleados();
+            setEmpleados(lista);
+        } catch (error) {
+            console.error("Error al cargar empleados", error);
+        }
     };
 
     useEffect(() => {
-        getListaEmpleados();
+        cargarEmpleados();
     }, []);
 
-    const darDeBaja = (empleado: Empleado) => {
-        console.log(`Dar de baja empleado ID: ${empleado.id}`, empleado);
+    const toggleEstadoEmpleado = async (empleado: Empleado) => {
+        try {
+            if (empleado.estaActivo) {
+                await darDeBajaEmpleado(empleado.id);
+            } else {
+                await activarEmpleado(empleado.id);
+            }
+            await cargarEmpleados();
+        } catch (error) {
+            console.error("Error al actualizar estado del empleado", error);
+        }
     };
 
-    const modificarEmpleado = (empleado: Empleado) => {
-        console.log(`Modificar empleado ID: ${empleado.id}`, empleado);
+    const modificarEmpleado = async (empleado: Empleado) => {
+        try {
+            await editarEmpleado(empleado.id, empleado);
+            console.log("Empleado modificado:", empleado);
+            await cargarEmpleados();
+        } catch (error) {
+            console.error("Error al modificar empleado", error);
+        }
     };
 
-    const eliminarEmpleado = (empleado: Empleado) => {
-        console.log(`Eliminar empleado ID: ${empleado.id}`, empleado);
+    const borrarEmpleado = async (empleado: Empleado) => {
+        try {
+            await eliminarEmpleado(empleado.id);
+            console.log("Empleado eliminado:", empleado);
+            await cargarEmpleados();
+        } catch (error) {
+            console.error("Error al eliminar empleado", error);
+        }
     };
 
     return (
@@ -62,9 +93,17 @@ const ControlEmpleadosPage: React.FC = () => {
                         <td className={styles.actions}>
                             <button
                                 className={`${styles.btn} ${styles.btnWarning}`}
-                                onClick={() => darDeBaja(empleado)}
+                                onClick={() => toggleEstadoEmpleado(empleado)}
                             >
-                                <FaUserSlash/> Dar de baja
+                                {empleado.estaActivo ? (
+                                    <>
+                                        <FaUserSlash/> Dar de baja
+                                    </>
+                                ) : (
+                                    <>
+                                        <FaUserCheck/> Dar de alta
+                                    </>
+                                )}
                             </button>
                             <button
                                 className={`${styles.btn} ${styles.btnSuccess}`}
@@ -74,7 +113,7 @@ const ControlEmpleadosPage: React.FC = () => {
                             </button>
                             <button
                                 className={`${styles.btn} ${styles.btnDanger}`}
-                                onClick={() => eliminarEmpleado(empleado)}
+                                onClick={() => borrarEmpleado(empleado)}
                             >
                                 <FaTrash/> Eliminar
                             </button>
@@ -88,4 +127,3 @@ const ControlEmpleadosPage: React.FC = () => {
 };
 
 export default ControlEmpleadosPage;
-
