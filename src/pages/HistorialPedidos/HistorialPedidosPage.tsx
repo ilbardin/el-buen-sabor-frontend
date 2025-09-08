@@ -54,7 +54,7 @@ export const HistorialPedidosPage: React.FC = () => {
     const descargarFacturaPdf = async (idFactura: number) => {
         try {
             mostrarCargando();
-            await getFacturaPdf(idPedido);
+            await getFacturaPdf(idFactura);
 
             Swal.close();
         } catch (error) {
