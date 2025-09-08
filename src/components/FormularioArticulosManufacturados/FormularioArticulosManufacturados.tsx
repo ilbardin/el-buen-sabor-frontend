@@ -68,9 +68,11 @@ export default function FormularioArticulosManufacturados({
       setPrecioVenta(articuloParaEditar.precioVenta);
       setTiempoEstimado(articuloParaEditar.tiempoEstimado);
       setImagenesArticuloManofacturado(
-        articuloParaEditar.imagenesArticuloManofacturado || ""
+        articuloParaEditar.imagenes?.map(
+          (img) => `http://localhost:8080/uploads/images/${img.denominacion}`
+        ) || []
       );
-      setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
+      setCategoriaSeleccionada(articuloParaEditar.categoria);
       setDetalles(
         articuloParaEditar.detalles.map((d) => ({
           insumo: d.insumo,
@@ -301,14 +303,13 @@ export default function FormularioArticulosManufacturados({
                   >
                     <MdAttachMoney style={{ height: "40px", width: "40px" }} />
                     <input
-                    
                       className={baseFormulario.formInput}
                       type="number"
                       value={usarPrecioSugerido ? precioSugerido : precioVenta}
                       onChange={(e) =>
                         setPrecioVenta(parseFloat(e.target.value))
                       }
-                      disabled={usarPrecioSugerido} 
+                      disabled={usarPrecioSugerido}
                     />
                     <label
                       style={{
@@ -323,7 +324,7 @@ export default function FormularioArticulosManufacturados({
                         onChange={(e) => {
                           setUsarPrecioSugerido(e.target.checked);
                           if (e.target.checked) {
-                            setPrecioVenta(precioSugerido); 
+                            setPrecioVenta(precioSugerido);
                           }
                         }}
                       />

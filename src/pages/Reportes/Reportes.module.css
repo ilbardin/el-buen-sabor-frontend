@@ -1,0 +1,35 @@
+
+.contenedor {
+    gap: 20px;
+    border-radius: 20px;
+    background-color: rgb(255, 255, 255);
+    height: 90%;
+    width: 95%;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.filtroFechas {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-primario);
+    cursor: pointer;
+    user-select: none;
+}
+
+.contenedorGraficos {
+    display: flex;
+    justify-content: space-between; /* separa los charts */
+    gap: 20px; /* espacio entre ellos */
+    margin-top: 20px;
+}
+
+.contenedorGraficos > div {
+    flex: 1; /* que ambos ocupen el mismo ancho */
+    min-width: 400px; /* evita que se achiquen demasiado */
+    height: 400px; /* altura fija de los charts */
+}

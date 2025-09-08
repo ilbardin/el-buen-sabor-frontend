@@ -13,32 +13,44 @@ export default function VistaDelivery() {
 
   const obtenerPedidos = async () => {
     const pedidosData = await getPedidos();
-    setPedidos(pedidosData);
+    setPedidos(pedidosData.content);
   };
 
-  const filtrarTipo = pedidos.filter(
-    (p) =>p.estadoPedido.toLowerCase().trim() !== "pendiente" && p.tipoEnvio.toLowerCase().trim() === "delivery"
+  const pedidosOrdenados = [...pedidos].sort(
+    (a, b) => (b.idPedido ?? 0) - (a.idPedido ?? 0)
+  );
+
+  const filtrarTipo = pedidosOrdenados.filter(
+    (p) =>
+      p.estadoPedido?.toLowerCase().trim() !== "pendiente" &&
+      p.tipoEnvio.toLowerCase().trim() === "delivery"
   );
 
   const filtrarEntregados = filtrarTipo.filter(
     (p) =>
-      mostrarEntregados || p.estadoPedido.toLowerCase().trim() !== "entregado"
+      mostrarEntregados || p.estadoPedido?.toLowerCase().trim() !== "entregado"
   );
 
   return (
     <div className={styles.contenedor}>
-      <label className={styles.filtroEntregados}>
-        <input
-          type="checkbox"
-          checked={mostrarEntregados}
-          onChange={(e) => setMostrarEntregados(e.target.checked)}
-        />
-        Mostrar entregados
-      </label>
+      <div className={styles.filtroEntregados}>
+        <button
+          className={`${styles.botonesDemora} ${
+            mostrarEntregados ? styles.entregado : ""
+          }`}
+          onClick={() => setMostrarEntregados(!mostrarEntregados)}
+        >
+          Entregado
+        </button>
+      </div>
       {
         <div className={styles.vistaCocina}>
           {filtrarEntregados.map((pedido) => (
-            <ModuloDelivery key={pedido.idPedido} pedido={pedido} onActualizar={obtenerPedidos} />
+            <ModuloDelivery
+              key={pedido.idPedido}
+              pedido={pedido}
+              onActualizar={obtenerPedidos}
+            />
           ))}
         </div>
       }
