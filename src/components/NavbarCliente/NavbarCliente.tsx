@@ -21,6 +21,7 @@ import type { Sucursal } from "../../models/sucursal.ts";
 import { getSucursal } from "../../services/sucursalService.ts";
 import { useSucursal } from "../../context/SucursalContext";
 import { useCart } from "../../context/carrito/useCart.ts";
+import { showConfirm } from "../../utils/alerts.ts";
 
 export interface NavLink {
   label: string;
@@ -137,6 +138,23 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     onOutsideClick: () => setIsSucursalDropdownOpen(false),
   });
 
+  const handleSucursalChange = async (nuevaSucursal: Sucursal) => {
+    if (nuevaSucursal.id !== sucursalId && existeCarrito) {
+      const confirmed = await showConfirm(
+        "¿Estás seguro de cambiar de sucursal?",
+        "Se borrarán los productos de tu carrito de compras."
+      );
+
+      if (confirmed) {
+        clearCart();
+        setSucursalId(nuevaSucursal.id);
+      }
+    } else if (nuevaSucursal.id !== sucursalId) {
+      setSucursalId(nuevaSucursal.id);
+    }
+    setIsSucursalDropdownOpen(false);
+  };
+
   const selectedSucursal = sucursales.find((s) => s.id === sucursalId);
   return (
     <header className={styles.navbar}>
@@ -168,11 +186,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                       sucursal.id === sucursalId ? styles.selected : ""
                     }`}
                     onClick={() => {
-                      if (sucursal.id !== sucursalId) {
-                        clearCart();
-                      }
-                      setSucursalId(sucursal.id);
-                      setIsSucursalDropdownOpen(false);
+                      void handleSucursalChange(sucursal);
                     }}
                   >
                     {sucursal.nombre}
