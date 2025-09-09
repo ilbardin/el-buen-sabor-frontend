@@ -53,8 +53,9 @@ export default function FormularioArticulosManufacturados({
     async function cargarDatos() {
       const categorias = await obtenerCategorias();
       const insumos = await getArticulosInsumo();
+      const insumosParaElaborar = insumos.filter(insumo => insumo.esParaElaborar);
       setCategorias(categorias);
-      setInsumos(insumos);
+      setInsumos(insumosParaElaborar);
     }
 
     void cargarDatos();
