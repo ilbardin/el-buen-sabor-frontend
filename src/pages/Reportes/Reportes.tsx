@@ -3,6 +3,8 @@ import { getReportes } from "../../services/reportesService.ts";
 import styles from "./Reportes.module.css"
 import { Chart } from "react-google-charts";
 import type {ReportesResponse} from "../../models/reportesResponse.ts";
+import {mostrarAlerta} from "../../utils/alerts.ts";
+import { descargarExcel } from "../../services/reportesService.ts"
 
 export default function Reportes() {
     const [fechaDesde, setFechaDesde] = useState<string>("2025-09-01");
@@ -12,6 +14,7 @@ export default function Reportes() {
     const [dataVentas, setDataVentas] = useState<any[]>([["Fecha", "Ventas"]]);
     const [dataProductos, setDataProductos] = useState<any[]>([["Producto", "Cantidad"]]);
     const [dataCargada, setDataCargada] = useState<boolean>(false);
+
 
     const obtenerReportes = async () => {
         try {
@@ -27,9 +30,9 @@ export default function Reportes() {
         }
     };
 
-    const descargarExcel = () => {
+    const descargar = (tipo:string) => {
         try{
-
+            descargarExcel(fechaDesde, fechaHasta, tipo)
         } catch (error) {
             console.error("Error al descargar el excel:", error);
         }
@@ -84,7 +87,7 @@ export default function Reportes() {
                     />
                 </label>
                 <button onClick={() => obtenerReportes()}>Generar reporte</button>
-                <button onClick={() => descargarExcel()}>Descargar Excel</button>
+
             </div>
 
             <div className={styles.contenedorGraficos}>
@@ -108,6 +111,9 @@ export default function Reportes() {
                         width="100%"
                         height="100%"
                     />) : (<p>No hay datos para mostrar</p>)}
+                    <button onClick={() => reporteVentas?.detalles && reporteVentas.detalles.length > 0 ?
+                        descargar("ventas") :
+                        mostrarAlerta("Atención", "warning", "No hay datos para descargar")}>Descargar Excel Ventas</button>
                 </div>
                 <div className={styles.cardChart}>
                     <h2 className={styles.cardTitle}>{reporteProductos?.tipoReporte || "Productos"}</h2>
@@ -121,6 +127,9 @@ export default function Reportes() {
                         width="100%"
                         height="100%"
                     />) : (<p>No hay datos para mostrar</p>)}
+                    <button onClick={() => reporteVentas?.detalles && reporteVentas.detalles.length > 0 ?
+                        descargar("productos") :
+                        mostrarAlerta("Atención", "warning", "No hay datos para descargar")}>Descargar Excel productos</button>
                 </div>
             </div>
         </div>
