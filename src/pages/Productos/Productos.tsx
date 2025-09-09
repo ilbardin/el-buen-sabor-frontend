@@ -148,6 +148,15 @@ const Productos: React.FC = () => {
               <button
                 className={styles.categoriaButton}
                 onClick={() => {
+                  const section = document.getElementById("empanada");
+                  section?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                <img style={{ height: "20px", filter: "invert(1)" }} src="https://cdn-icons-png.freepik.com/512/6003/6003915.png" alt="" />
+              </button>
+              <button
+                className={styles.categoriaButton}
+                onClick={() => {
                   const section = document.getElementById("sandwich");
                   section?.scrollIntoView({ behavior: "smooth" });
                 }}
@@ -209,6 +218,14 @@ const Productos: React.FC = () => {
                   <ProductosHome
                     key={"lomo"}
                     item={filtrarPorCategoria("Sandwich")}
+                  />
+                </div>
+
+                <div>
+                  <h3 id="sandwich" className={styles.title}>EMPANADAS</h3>
+                  <ProductosHome
+                    key={"empanada"}
+                    item={filtrarPorCategoria("Empanada")}
                   />
                 </div>
 
