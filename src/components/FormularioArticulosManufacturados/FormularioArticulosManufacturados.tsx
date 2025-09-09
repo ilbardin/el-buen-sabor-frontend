@@ -53,7 +53,9 @@ export default function FormularioArticulosManufacturados({
     async function cargarDatos() {
       const categorias = await obtenerCategorias();
       const insumos = await getArticulosInsumo();
-      const insumosParaElaborar = insumos.filter(insumo => insumo.esParaElaborar);
+      const insumosParaElaborar = insumos.filter(
+        (insumo) => insumo.esParaElaborar
+      );
       setCategorias(categorias);
       setInsumos(insumosParaElaborar);
     }
@@ -82,6 +84,16 @@ export default function FormularioArticulosManufacturados({
       );
     }
   }, [articuloParaEditar]);
+
+  useEffect(() => {
+    const costoTotal = detalles.reduce((total, detalle) => {
+      
+      const precioCompra = detalle.insumo?.precioCompra ?? 0;
+      const costoInsumo = precioCompra * detalle.cantidad * 4;
+      return total + costoInsumo;
+    }, 0);
+    setPreciSugerido(costoTotal);
+  }, [detalles]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,15 +158,10 @@ export default function FormularioArticulosManufacturados({
 
   //! MANEJO DE INSUMOS
   /* #region*/
-  const eliminarInsumo = (index: number, id: number, cantidad: number) => {
+  const eliminarInsumo = (index: number) => {
     const nuevosDetalles = [...detalles];
     nuevosDetalles.splice(index, 1);
     setDetalles(nuevosDetalles);
-    const insumo = insumos.find((ins) => ins.id === id);
-    if (insumo?.precioCompra) {
-      const precio = precioSugerido - insumo?.precioCompra * cantidad * 4;
-      setPreciSugerido(precio);
-    }
   };
 
   const agregarInsumo = () => {
@@ -162,11 +169,6 @@ export default function FormularioArticulosManufacturados({
       (ins) => ins.denominacion === insumoSeleccionado
     );
 
-    if (insumo?.precioCompra) {
-      const precio = precioSugerido + insumo?.precioCompra * cantidadInsumo * 4;
-      setPreciSugerido(precio);
-      console.log(precio);
-    }
 
     if (!insumo) {
       alert("Insumo no encontrado");
@@ -378,7 +380,7 @@ export default function FormularioArticulosManufacturados({
                               .toLowerCase()
                               .includes(categoriaSeleccionada?.toLowerCase())
                           )
-                          .slice(0, 5)
+
                           .map((cat) => (
                             <li
                               key={cat.id}
