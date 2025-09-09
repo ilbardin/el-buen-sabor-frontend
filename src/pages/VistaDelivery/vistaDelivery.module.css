@@ -55,3 +55,31 @@
 .botonesDemora {
   border-radius: 10px;
 }
+
+
+.recargar {
+  background-color: var(--color-primario);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.recargar:hover {
+  background-color: var(--color-secundario);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.recargar:active {
+  transform: rotate(180deg) scale(0.95);
+  background-color: var(--color-terciario);
+}
