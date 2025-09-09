@@ -20,6 +20,7 @@ import { SlArrowDown } from "react-icons/sl";
 import type { Sucursal } from "../../models/sucursal.ts";
 import { getSucursal } from "../../services/sucursalService.ts";
 import { useSucursal } from "../../context/SucursalContext";
+import { useCart } from "../../context/carrito/useCart.ts";
 
 export interface NavLink {
   label: string;
@@ -67,6 +68,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
   const [password, setPassword] = useState("");
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
   const { sucursalId, setSucursalId } = useSucursal();
+  const { clearCart } = useCart();
 
   const { handleLogin, handleUserLogout } = useAuthHandlers(username, password);
   const toggleLogin = () => {
@@ -141,7 +143,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
       <Logo />
 
       <div className={styles.navbarRight}>
-        {(usuario?.rol) && (
+        {usuario?.rol && (
           <div className={styles.sucursalSelectWrapper} ref={sucursalRef}>
             <button
               className={styles.sucursalDisplay}
@@ -166,6 +168,9 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                       sucursal.id === sucursalId ? styles.selected : ""
                     }`}
                     onClick={() => {
+                      if (sucursal.id !== sucursalId) {
+                        clearCart();
+                      }
                       setSucursalId(sucursal.id);
                       setIsSucursalDropdownOpen(false);
                     }}
