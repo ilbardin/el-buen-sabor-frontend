@@ -1,13 +1,5 @@
-import {mostrarConfirmacion} from "./alerts.ts";
 import type {ItemCarritoMp} from "../models/pedido/pedidoRequest.ts";
 import type {ItemCarrito} from "../components/Carrito/Carrito.tsx";
-
-export const alertaCarrito = async (): Promise<boolean> => {
-    return await mostrarConfirmacion(
-        "Confirmación",
-        "Si cierra sesión, perderá los productos guardados en el carrito."
-    );
-};
 
 export const mapCartItemsToMpItems = (cartItems: ItemCarrito[]): ItemCarritoMp[] => {
     return cartItems.map((item) => ({

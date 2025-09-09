@@ -49,3 +49,10 @@ export const mostrarCargando = (message: string = 'Cargando...'): void => {
     });
 };
 
+export const alertaCarrito = async (): Promise<boolean> => {
+    return await mostrarConfirmacion(
+        "Confirmación",
+        "Si cierra sesión, perderá los productos guardados en el carrito."
+    );
+};
+
