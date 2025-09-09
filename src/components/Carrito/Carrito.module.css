@@ -9,6 +9,10 @@
     padding: 20px;
     font-family: Poppins, sans-serif;
     z-index: 1000;
+
+    max-height: 600px;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .carritoTitulo {
