@@ -22,6 +22,7 @@ import { getSucursal } from "../../services/sucursalService.ts";
 import { useSucursal } from "../../context/SucursalContext";
 import { useCart } from "../../context/carrito/useCart.ts";
 import { showConfirm } from "../../utils/alerts.ts";
+import {useAuth} from "../../context/auth/useAuth.ts";
 
 export interface NavLink {
   label: string;

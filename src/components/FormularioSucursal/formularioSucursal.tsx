@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { crearSucursal, getSucursal, editarSucursal } from "../../services/sucursalService";
-import type { Sucursal } from "../../models/sucursal";
-import styles from "./FormularioSucursal.module.css";
+import React, {useEffect, useState} from "react";
+import {crearSucursal, editarSucursal} from "../../services/sucursalService";
+import type {Sucursal} from "../../models/sucursal";
 import baseFormulario from "../../css/baseFormulario.module.css";
-import type { Empresa } from "../../models/empresa";
-import { getEmpresas } from "../../services/empresaService";
+import type {Empresa} from "../../models/empresa";
+import {getEmpresas} from "../../services/empresaService";
 
 export function FormularioSucursal({
   onClose,

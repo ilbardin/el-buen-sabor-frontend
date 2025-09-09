@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styles from "./FormularioStockInsumo.module.css"; 
-import { getArticulosInsumo } from "../../services/ingredientesService";
-import { editarStockInsumo } from "../../services/stockInsumoService";
-import type { ArticuloInsumo } from "../../models/articuloInsumo";
+import React, {useEffect, useState} from "react";
+import {getArticulosInsumo} from "../../services/ingredientesService";
+import {editarStockInsumo} from "../../services/stockInsumoService";
+import type {ArticuloInsumo} from "../../models/articuloInsumo";
 import baseFormulario from "../../css/baseFormulario.module.css";
 
 export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {

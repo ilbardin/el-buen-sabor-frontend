@@ -1,13 +1,5 @@
-import {showConfirm} from "./alerts.ts";
 import type {ItemCarritoMp} from "../models/pedido/pedidoRequest.ts";
 import type {ItemCarrito} from "../components/Carrito/Carrito.tsx";
-
-export const alertaCarrito = async (): Promise<boolean> => {
-    return await showConfirm(
-        "Confirmación",
-        "Si cierra sesión, perderá los productos guardados en el carrito."
-    );
-};
 
 export const mapCartItemsToMpItems = (cartItems: ItemCarrito[]): ItemCarritoMp[] => {
     return cartItems.map((item) => ({
@@ -21,6 +13,11 @@ export const mapCartItemsToMpItems = (cartItems: ItemCarrito[]): ItemCarritoMp[]
         unitPrice: item.precioVenta.toString()
     }));
 };
+
+export function soloNumeros(event: any): void {
+    const inputValue = event.target.value;
+    event.target.value = inputValue.replace(/\D/g, '');
+}
 
 export function formatHora(fecha?: string | Date): string {
     if (!fecha) return "-";

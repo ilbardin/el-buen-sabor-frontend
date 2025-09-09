@@ -1,92 +1,100 @@
 .container {
-  padding: 0rem 2rem;
-  max-width: 100%;
-  margin: 0;
+    padding: 0 2rem;
+    max-width: 100%;
+    margin: 0;
 }
 
 .titulo {
-  font-size: 2rem;
-  color: var(--color-terciario);
-  margin-bottom: 1.5rem;
-  margin-top: 0rem;
+    font-size: 2rem;
+    color: var(--color-terciario);
+    margin-bottom: 1.5rem;
+    margin-top: 0;
 }
 
 .boton {
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-  margin-bottom: 1.5rem;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.boton .icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
 }
 
 .boton:hover {
-  background-color: #c0392b;
+    background-color: #c0392b;
 }
 
 /*! TABLA */
 .tabla {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
 }
 
 .tabla th,
 .tabla td {
-  text-align: left;
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: var(--color-terciario);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: var(--color-terciario);
 }
 
 .tabla th {
-  background-color: #f8f9fa;
-  font-weight: 600;
+    background-color: #f8f9fa;
+    font-weight: 600;
 }
 
 .tabla tr:hover {
-  background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 /*! FIN TABLA */
 
 /*! FILTRO DE BUSQUEDA */
 .filtrosContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
 }
 
 .filtroInput,
 .filtroSelect {
-  padding: 10px 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  font-size: 14px;
-  color: var(--color-terciario);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  font-family: "Poppins", sans-serif;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: var(--color-terciario);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Poppins", sans-serif;
 }
 
 .filtroInput:focus,
 .filtroSelect:focus {
-  border-color: var(--color-primario);
-  outline: none;
-  box-shadow: 0 0 4px rgba(231, 76, 60, 0.3);
+    border-color: var(--color-primario);
+    outline: none;
+    box-shadow: 0 0 4px rgba(231, 76, 60, 0.3);
 }
 
 .filtroInput::placeholder {
-  color: #aaa;
+    color: #aaa;
 }
 
 /*! FIN FILTRO DE BUSQUEDA */
@@ -94,7 +102,7 @@
 /*! BOTONES */
 
 .botonesContainer {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;

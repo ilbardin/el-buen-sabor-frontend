@@ -1,6 +1,6 @@
 import type { AxiosResponse } from "axios";
 import axiosInstance from "../api/axiosInstance.ts";
-import { showAlert } from "../utils/alerts";
+import { mostrarAlerta } from "../utils/alerts";
 import type { Sucursal } from "../models/sucursal.ts";
 
 const API_URL = import.meta.env.VITE_API_URL + "/sucursal";
@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL + "/sucursal";
 
 function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
     if (!response || !response.data) {
-        void showAlert("Error", "error", errorMessage);
+        void mostrarAlerta("Error", "error", errorMessage);
         return true;
     }
     return false;
@@ -36,7 +36,7 @@ export async function getSucursal(): Promise<Sucursal[]> {
 export async function crearSucursal(sucursal: Sucursal): Promise<void> {
     try {
         await axiosInstance.post(API_URL, sucursal);
-        await showAlert("Éxito", "success", "Sucursal creada correctamente.");
+        await mostrarAlerta("Éxito", "success", "Sucursal creada correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -46,7 +46,7 @@ export async function crearSucursal(sucursal: Sucursal): Promise<void> {
 export async function deleteSucursal(id: number): Promise<void> {
     try {
         await axiosInstance.delete(API_URL +"/"+ id);
-        await showAlert("Éxito", "success", "Sucursal creada correctamente.");
+        await mostrarAlerta("Éxito", "success", "Sucursal creada correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -58,7 +58,7 @@ export async function deleteSucursal(id: number): Promise<void> {
 export async function editarSucursal(sucursal: Sucursal, id:number): Promise<void> {
     try {
         await axiosInstance.put(API_URL +"/"+ id, sucursal);
-        await showAlert("Éxito", "success", "Sucursal editada correctamente.");
+        await mostrarAlerta("Éxito", "success", "Sucursal editada correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;

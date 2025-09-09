@@ -1,7 +1,7 @@
-import type { ArticuloManufacturado } from "../../models/articuloManufacturado";
-import styles from "./ModuloArticuloManofacturado.module.css";
-import { eliminarArticuloManufacturado } from "../../services/articuloManufacturadoService";
+import type {ArticuloManufacturado} from "../../models/articuloManufacturado";
+import {eliminarArticuloManufacturado} from "../../services/articuloManufacturadoService";
 import baseModulo from "../../css/baseModulo.module.css";
+
 export default function ModuloArticuloManofacturado(props: {
   articulo: ArticuloManufacturado;
   onModificar: (articulo: ArticuloManufacturado) => void;

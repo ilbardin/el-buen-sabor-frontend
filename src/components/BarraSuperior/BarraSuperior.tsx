@@ -98,6 +98,9 @@ export const BarraSuperior = () => {
               <li>
                 <Link to={ROUTES.PROMOCIONES_ABM}>Promociones</Link>
               </li>
+               <li>
+                 <Link to={ROUTES.REPORTES}>Reportes</Link>
+              </li>
             </ul>
           </li>
 
@@ -113,6 +116,9 @@ export const BarraSuperior = () => {
               <li>
                 <Link to={ROUTES.SUCURSAL_ABM}>Sucursal</Link>
               </li>
+              <li>
+                <Link to={ROUTES.CONTROL_EMPLEADOS}>Empleados</Link>
+               </li>
               <li>
                 <Link to={ROUTES.STOCK_ABM}>Stock</Link>
               </li>
@@ -157,7 +163,6 @@ export const BarraSuperior = () => {
           </button>
         )}
       </nav>
-
       <main className={styles.pageContent}>
         <Outlet />
       </main>

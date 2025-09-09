@@ -1,9 +1,7 @@
-import type { Promocion } from "../../models/promocion";
-import { eliminarPromocion } from "../../services/promocionService";
-import styles from "./PromocionItem.module.css";
-import { showConfirm, showLoading } from "../../utils/alerts.ts";
+import type {Promocion} from "../../models/promocion";
+import {eliminarPromocion} from "../../services/promocionService";
+import {mostrarCargando, mostrarConfirmacion} from "../../utils/alerts.ts";
 import baseModulo from "../../css/baseModulo.module.css";
-import { FaPercent } from "react-icons/fa";
 
 export function PromocionItem(props: {
   promocion: Promocion;
@@ -11,13 +9,13 @@ export function PromocionItem(props: {
   onEliminar: () => void;
 }) {
   const deletePromocion = async (id: number) => {
-    const confirmacion: boolean = await showConfirm(
+    const confirmacion: boolean = await mostrarConfirmacion(
       "Eliminar promoción",
       "¿Estás seguro de que deseas eliminar esta promoción?"
     );
 
     if (confirmacion) {
-      showLoading();
+      mostrarCargando();
       await eliminarPromocion(id);
       props.onEliminar();
     }

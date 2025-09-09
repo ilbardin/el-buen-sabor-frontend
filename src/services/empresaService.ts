@@ -1,5 +1,5 @@
 import axiosInstance from "../api/axiosInstance.ts";
-import { showAlert } from "../utils/alerts.ts";
+import { mostrarAlerta } from "../utils/alerts.ts";
 import type { AxiosResponse } from "axios";
 import type { Empresa } from "../models/empresa.ts";
 
@@ -10,7 +10,7 @@ function handleInvalidResponse(
   errorMessage: string
 ): boolean {
   if (!response || !response.data) {
-    void showAlert("Error", "error", errorMessage);
+    void mostrarAlerta("Error", "error", errorMessage);
     return true;
   }
   return false;
@@ -34,7 +34,7 @@ export async function getEmpresas(): Promise<Empresa[]> {
 export async function crearEmpresa(empresa: Empresa): Promise<void> {
   try {
     await axiosInstance.post(API_URL, empresa);
-    await showAlert("Éxito", "success", "Empresa creada correctamente.");
+    await mostrarAlerta("Éxito", "success", "Empresa creada correctamente.");
   } catch (error) {
     console.error("Error:", error);
     throw error;
@@ -44,7 +44,7 @@ export async function crearEmpresa(empresa: Empresa): Promise<void> {
 export async function deleteEmpresa(id: number): Promise<void> {
   try {
     await axiosInstance.delete(`${API_URL}/${id}`);
-    await showAlert("Éxito", "success", "Empresa eliminada correctamente.");
+    await mostrarAlerta("Éxito", "success", "Empresa eliminada correctamente.");
   } catch (error) {
     console.error("Error:", error);
     throw error;
@@ -54,7 +54,7 @@ export async function deleteEmpresa(id: number): Promise<void> {
 export async function editarEmpresa(id: number, nuevaEmpresa: Empresa): Promise<void> {
   try {
     await axiosInstance.put(`${API_URL}/${id}`, nuevaEmpresa);
-    await showAlert("Éxito", "success", "Empresa editada correctamente.");
+    await mostrarAlerta("Éxito", "success", "Empresa editada correctamente.");
   } catch (error) {
     console.error("Error:", error);
     throw error;

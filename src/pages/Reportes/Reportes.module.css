@@ -1,0 +1,54 @@
+
+.page {
+    padding: 20px 40px; /* margen interior para que no se pegue a los bordes */
+    background-color: #f9fafb; /* gris muy suave */
+    min-height: 100vh; /* ocupa toda la pantalla */
+}
+
+.filtros {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.contenedorGraficos {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.cardChart {
+    flex: 1;
+    min-width: 400px;
+    height: 420px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: center;
+    color: #333;
+}
+
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .contenedorGraficos {
+        flex-direction: column;
+    }
+
+    .cardChart {
+        min-width: 100%;
+    }
+}

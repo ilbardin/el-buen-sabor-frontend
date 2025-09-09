@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {IoReceipt} from "react-icons/io5";
 import imageBurger from '/burger.png';
 import {getFacturaPdf} from "../../services/facturaService.ts";
-import {showAlert, showLoading} from "../../utils/alerts.ts";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
 import Swal from "sweetalert2";
 
 export interface PageResponse<T> {
@@ -46,20 +46,29 @@ export const HistorialPedidosPage: React.FC = () => {
     };
 
     useEffect(() => {
-        if (usuario?.cliente.id) {
-            getHistorial(page, usuario.cliente.id);
-        }
-    }, [usuario?.cliente.id, page]);
+        const getUsuarioId = (): number | undefined => {
+            if (usuario?.cliente?.id) return usuario.cliente.id;
+            if (usuario?.empleado?.id) return usuario.empleado.id;
+            return undefined;
+        };
 
-    const descargarFacturaPdf = async (idPedido: number) => {
+        const usuarioId = getUsuarioId();
+
+        if (usuarioId !== undefined) {
+            getHistorial(page, usuarioId);
+        }
+    }, [usuario, page]);
+
+    const descargarFacturaPdf = async (idFactura: number) => {
         try {
-            showLoading();
-            await getFacturaPdf(idPedido);
+            mostrarCargando();
+            await getFacturaPdf(idFactura);
+
             Swal.close();
         } catch (error) {
             Swal.close();
             console.error(error);
-            await showAlert("Error", "error", "Error al obtener PDF.");
+            await mostrarAlerta("Error", "error", "Error al obtener PDF.");
         }
     };
 
@@ -176,7 +185,7 @@ export const HistorialPedidosPage: React.FC = () => {
                                     className={styles.descargarFacturaButton}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        descargarFacturaPdf(pedido.idPedido);
+                                        descargarFacturaPdf(pedido.idFactura!);
                                     }}
                                 >
                                     <IoReceipt className={styles.icon}/>
