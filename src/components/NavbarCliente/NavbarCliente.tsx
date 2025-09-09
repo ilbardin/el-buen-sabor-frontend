@@ -146,10 +146,10 @@ const NavbarCliente: React.FC<NavbarProps> = ({
 
             if (confirmed) {
                 clearCart();
-                setSucursalId(nuevaSucursal.id);
+                setSucursalId(nuevaSucursal.id!);
             }
         } else if (nuevaSucursal.id !== sucursalId) {
-            setSucursalId(nuevaSucursal.id);
+            setSucursalId(nuevaSucursal.id!);
         }
         setIsSucursalDropdownOpen(false);
     };
