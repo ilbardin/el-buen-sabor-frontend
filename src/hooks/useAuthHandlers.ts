@@ -26,7 +26,7 @@ export const useAuthHandlers = (username: string, password: string) => {
             }
         }
     };
-  
+
     const handleSuccess = (data: UserData) => {
         Swal.close();
 
@@ -57,16 +57,18 @@ export const useAuthHandlers = (username: string, password: string) => {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            mostrarCargando("Iniciando sesión...");
+        mostrarCargando("Iniciando sesión...");
 
-            setTimeout(async () => {
-                const response = await axiosInstance.post<UserData>("/auth/login", {
-                    username,
-                    password,
-                });
-                handleSuccess(response.data);
-            }, 300);
+        try {
+            await new Promise(resolve => setTimeout(resolve, 300)); // delay para que se muestre el mensaje de cargando
+
+            const response = await axiosInstance.post<UserData>("/auth/login", {
+                username,
+                password,
+            });
+
+            handleSuccess(response.data);
+
         } catch (err: any) {
             await handleError(err);
         }
