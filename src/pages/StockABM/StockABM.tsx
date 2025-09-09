@@ -5,18 +5,20 @@ import { getStockInsumos } from "../../services/stockInsumoService.ts";
 import { FormularioStockInsumo } from "../../components/FormularioStockInsumo/FormularioStockInsumo.tsx";
 import { useSucursalStore } from "../../components/Sucursal/SucursalStore.tsx";
 import baseABM from "../../css/baseABM.module.css";
+import { useSucursal } from "../../context/SucursalContext.tsx";
 export const StockABM = () => {
   const [stockInsumos, setStockInsumos] = useState<StockInsumo[]>([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [unidadMedida, setUnidadMedida] = useState("");
   const [categorias, setCategorias] = useState("");
-  const idSucursal = useSucursalStore(state => state.idSucursal);
+  const idSucursal2 = useSucursalStore(state => state.idSucursal);
+  const { sucursalId } = useSucursal();
 
   //! CARGA DE STOCK DE INSUMOS
   const cargarStockInsumo = async () => {
     try {
-      const stockInsumos = await getStockInsumos();
+      const stockInsumos = await getStockInsumos(sucursalId);
       console.log("Stock Insumo:", stockInsumos);
       setStockInsumos(stockInsumos);
     } catch (error) {
@@ -25,10 +27,10 @@ export const StockABM = () => {
   };
 
   useEffect(() => {
-    if (idSucursal) {
+    if (sucursalId) {
     void cargarStockInsumo();
     }
-  }, [idSucursal]);
+  }, [sucursalId]);
 
   //! BUCADOR DE INSUMOS
   const handleChange = (e) => {

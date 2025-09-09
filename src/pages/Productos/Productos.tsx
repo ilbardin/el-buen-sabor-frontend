@@ -19,6 +19,7 @@ import { FaHamburger } from "react-icons/fa";
 import { GiSandwich } from "react-icons/gi";
 import { LuSandwich } from "react-icons/lu";
 import { GiBeerBottle } from "react-icons/gi";
+import { useSucursal } from "../../context/SucursalContext.tsx";
 
 const Productos: React.FC = () => {
   const { setIsLoggingOut, usuario } = useAuth();
@@ -34,11 +35,11 @@ const Productos: React.FC = () => {
   const [ofertas, setOfertas] = useState<Promocion[]>([]);
   const [insumos, setInsumos] = useState<ArticuloInsumo[]>([]);
   const [busqueda, setBusqueda] = useState("");
-
+  const { sucursalId } = useSucursal();
   useEffect(() => {
     async function cargarProductos() {
       const ofertas = await getPromociones();
-      const productosStock = await getManufacturadosPorSucursal(1);
+      const productosStock = await getManufacturadosPorSucursal(sucursalId);
       console.log("productosStock: ", productosStock);
       const insumos = await getArticulosInsumo();
       console.log("insumos: ", insumos);
@@ -48,7 +49,7 @@ const Productos: React.FC = () => {
     }
 
     void cargarProductos();
-  }, []);
+  }, [sucursalId]);
 
   useEffect(() => {
     setIsLoggingOut(false);

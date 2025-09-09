@@ -13,7 +13,7 @@ function handleInvalidResponse(response: AxiosResponse, errorMessage: string): b
     return false;
 }
 
-export async function getStockInsumos(): Promise<StockInsumo[]> {
+export async function getStockInsumos(id: number): Promise<StockInsumo[]> {
     try {
         const idSucursal = useSucursalStore.getState().idSucursal;
 
@@ -21,7 +21,7 @@ export async function getStockInsumos(): Promise<StockInsumo[]> {
             throw new Error("No hay sucursal seleccionada.");
         }
 
-        const API_URL = `${import.meta.env.VITE_API_URL}/sucursal/${idSucursal}/stock`;
+        const API_URL = `${import.meta.env.VITE_API_URL}/sucursal/${id}/stock`;
         console.log("ID SUCURSAL EN SERVICIO:", idSucursal);
         console.log("API URL EN SERVICIO:", API_URL);
         const response = await axiosInstance.get<StockInsumo[]>(`${API_URL}`);

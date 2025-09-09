@@ -7,6 +7,7 @@ import type { ArticuloInsumo } from "../../models/articuloInsumo";
 import type { StockInsumo } from "../../models/stockInsumo";
 import React, { useEffect, useState } from "react";
 import { getStockInsumos } from "../../services/stockInsumoService";
+import { useSucursal } from "../../context/SucursalContext";
 
 export const ModuloProductoHome = (props: {
   item: Promocion | ArticuloManufacturadoDisponible | ArticuloInsumo;
@@ -14,6 +15,7 @@ export const ModuloProductoHome = (props: {
   const { addToCart } = useCart();
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
+
 
     const cartItem = {
       ...props.item,
@@ -28,11 +30,11 @@ export const ModuloProductoHome = (props: {
     addToCart(cartItem as any);
   };
   const [stockInsumo, setStockInsumo] = useState<StockInsumo[]>([]);
-
+  const { sucursalId } = useSucursal();
   useEffect(() => {
     const cargarStock = async () => {
       try {
-        const stock = await getStockInsumos();
+        const stock = await getStockInsumos(sucursalId);
         setStockInsumo(stock);
       } catch (error) {
         console.error("Error cargando stock de insumos:", error);
@@ -40,7 +42,7 @@ export const ModuloProductoHome = (props: {
     };
 
     cargarStock();
-  }, []);
+  }, [sucursalId]);
 
   function esPromocion(
     item: Promocion | ArticuloManufacturadoDisponible | ArticuloInsumo

@@ -1,4 +1,10 @@
-import React, { type RefObject, useContext, useEffect, useState } from "react";
+import React, {
+  type RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import styles from "./NavbarCliente.module.css";
@@ -10,6 +16,10 @@ import { useOutsideClick } from "../../hooks/useOutsideClick.ts";
 import Logo from "../Logo/Logo.tsx";
 import { UserRole } from "../../models/usuario/userRoles.ts";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { SlArrowDown } from "react-icons/sl";
+import type { Sucursal } from "../../models/sucursal.ts";
+import { getSucursal } from "../../services/sucursalService.ts";
+import { useSucursal } from "../../context/SucursalContext";
 
 export interface NavLink {
   label: string;
@@ -44,7 +54,6 @@ const NavbarCliente: React.FC<NavbarProps> = ({
   loginRef,
   userIconRef,
 }) => {
-  console.log("Datos del usuario en Navbar:", usuario);
   const { cart } = useContext(CartContext);
   const existeCarrito = cart.length > 0;
 
@@ -56,6 +65,8 @@ const NavbarCliente: React.FC<NavbarProps> = ({
   });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+  const { sucursalId, setSucursalId } = useSucursal();
 
   const { handleLogin, handleUserLogout } = useAuthHandlers(username, password);
   const toggleLogin = () => {
@@ -106,11 +117,67 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     onOutsideClick: cartOptions?.handleHideCart || (() => {}),
   });
 
+  useEffect(() => {
+    async function obtenerDatos() {
+      const sucursales = await getSucursal();
+      setSucursales(sucursales);
+    }
+
+    void obtenerDatos();
+  }, [sucursalId]);
+
+  const [isSucursalDropdownOpen, setIsSucursalDropdownOpen] = useState(false);
+  const sucursalRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick({
+    refs: [sucursalRef],
+    enabled: isSucursalDropdownOpen,
+    onOutsideClick: () => setIsSucursalDropdownOpen(false),
+  });
+
+  const selectedSucursal = sucursales.find((s) => s.id === sucursalId);
   return (
     <header className={styles.navbar}>
       <Logo />
+
       <div className={styles.navbarRight}>
-        <nav style={{marginRight: "20px"}} className={styles.navLinks}>
+        {(usuario?.rol) && (
+          <div className={styles.sucursalSelectWrapper} ref={sucursalRef}>
+            <button
+              className={styles.sucursalDisplay}
+              onClick={() => setIsSucursalDropdownOpen(!isSucursalDropdownOpen)}
+            >
+              {selectedSucursal
+                ? selectedSucursal.nombre
+                : "Selecciona sucursal"}
+              <SlArrowDown
+                className={`${styles.arrowIcon} ${
+                  isSucursalDropdownOpen ? styles.open : ""
+                }`}
+              />
+            </button>
+
+            {isSucursalDropdownOpen && (
+              <ul className={styles.sucursalOptions}>
+                {sucursales.map((sucursal) => (
+                  <li
+                    key={sucursal.id}
+                    className={`${styles.sucursalOptionItem} ${
+                      sucursal.id === sucursalId ? styles.selected : ""
+                    }`}
+                    onClick={() => {
+                      setSucursalId(sucursal.id);
+                      setIsSucursalDropdownOpen(false);
+                    }}
+                  >
+                    {sucursal.nombre}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+        <nav style={{ marginRight: "20px" }} className={styles.navLinks}>
           {usuario?.rol === "ADMIN" && (
             <Link to="/productos-abm" className={styles.navItem}>
               <span className={styles.navIcon}>
