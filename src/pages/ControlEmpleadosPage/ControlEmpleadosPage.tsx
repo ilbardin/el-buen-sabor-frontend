@@ -8,8 +8,10 @@ import {
     getEmpleados
 } from "../../services/empleadoService.ts";
 import type {Empleado} from "../../models/usuario/empleado.ts";
-import {FaEdit, FaToggleOff, FaToggleOn, FaTrash} from "react-icons/fa";
+import {FaEdit, FaToggleOff, FaToggleOn, FaTrash, FaUserPlus} from "react-icons/fa";
 import styles from "./ControlEmpleadosPage.module.css";
+import baseAbmStyles from "../../css/baseABM.module.css";
+import baseModulo from "../../css/baseModulo.module.css";
 import Swal from "sweetalert2";
 import {showCrearEmpleadoPopup, showEditarEmpleadoPopup} from "../../services/empleadoPopup.ts";
 import {mostrarAlerta, mostrarConfirmacion} from "../../utils/alerts.ts";
@@ -126,27 +128,18 @@ const ControlEmpleadosPage: React.FC = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <h1 className={styles.title}>Control de Empleados</h1>
+        <div className={baseAbmStyles.container}>
+            <h1 className={baseAbmStyles.titulo}>Control de Empleados</h1>
 
-            {/* Botón grande de Crear Empleado */}
             <button
                 onClick={handleCrearEmpleado}
-                style={{
-                    backgroundColor: "#27ae60",
-                    color: "#fff",
-                    fontSize: "16px",
-                    padding: "10px 20px",
-                    border: "none",
-                    borderRadius: "8px",
-                    cursor: "pointer",
-                    marginBottom: "20px"
-                }}
+                className={baseAbmStyles.boton}
             >
+                <FaUserPlus className={baseAbmStyles.icon}/>
                 Crear Empleado
             </button>
 
-            <table className={styles.table}>
+            <table className={baseAbmStyles.tabla}>
                 <thead>
                 <tr>
                     <th>Nombre</th>
@@ -169,17 +162,19 @@ const ControlEmpleadosPage: React.FC = () => {
                         <td>{empleado.rol}</td>
                         <td>{empleado.username}</td>
                         <td>{empleado.estaActivo ? "Sí" : "No"}</td>
-                        <td className={styles.actions}>
-                            <button onClick={() => handleEditar(empleado)} className={styles.editBtn}>
+                        <td className={baseModulo.botonera}>
+                            <div className={baseModulo.botonesAcciones}>
+                            <button onClick={() => handleEditar(empleado)}>
                                 <FaEdit/> Editar
                             </button>
                             <button onClick={() => handleToggleActivo(empleado)} className={styles.toggleBtn}>
                                 {empleado.estaActivo ? <FaToggleOff/> : <FaToggleOn/>}
                                 {empleado.estaActivo ? " Dar de baja" : " Dar de alta"}
                             </button>
-                            <button onClick={() => handleEliminar(empleado)} className={styles.deleteBtn}>
+                            <button onClick={() => handleEliminar(empleado)}>
                                 <FaTrash/> Eliminar
                             </button>
+                            </div>
                         </td>
                     </tr>
                 ))}
