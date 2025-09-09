@@ -9,7 +9,7 @@ import { useAuth } from "../../context/auth/useAuth.ts";
 import { ROUTES } from "../../constants/routes.ts";
 import styles from "./BarraSuperior.module.css";
 import { BiSolidLogOut } from "react-icons/bi";
-import { alertaCarrito } from "../../utils/funcionesReutilizables.ts";
+import { alertaCarrito } from "../../utils/alerts.ts";
 import { CartContext } from "../../context/carrito/cartContext.ts";
 import { useSucursal } from "../../context/SucursalContext.tsx";
 
