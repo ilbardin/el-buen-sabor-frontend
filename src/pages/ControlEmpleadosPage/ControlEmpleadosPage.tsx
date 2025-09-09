@@ -154,7 +154,10 @@ const ControlEmpleadosPage: React.FC = () => {
                 </thead>
                 <tbody>
                 {empleados.map((empleado) => (
-                    <tr key={empleado.id}>
+                    <tr
+                        key={empleado.id}
+                        className={!empleado.estaActivo ? styles.filaInactiva : ""}
+                    >
                         <td>{empleado.nombre}</td>
                         <td>{empleado.apellido}</td>
                         <td>{empleado.telefono}</td>
@@ -164,16 +167,19 @@ const ControlEmpleadosPage: React.FC = () => {
                         <td>{empleado.estaActivo ? "Sí" : "No"}</td>
                         <td className={baseModulo.botonera}>
                             <div className={baseModulo.botonesAcciones}>
-                            <button onClick={() => handleEditar(empleado)}>
-                                <FaEdit/> Editar
-                            </button>
-                            <button onClick={() => handleToggleActivo(empleado)} className={styles.toggleBtn}>
-                                {empleado.estaActivo ? <FaToggleOff/> : <FaToggleOn/>}
-                                {empleado.estaActivo ? " Dar de baja" : " Dar de alta"}
-                            </button>
-                            <button onClick={() => handleEliminar(empleado)}>
-                                <FaTrash/> Eliminar
-                            </button>
+                                <button onClick={() => handleEditar(empleado)}>
+                                    <FaEdit/> Editar
+                                </button>
+                                <button
+                                    onClick={() => handleToggleActivo(empleado)}
+                                    className={styles.toggleBtn}
+                                >
+                                    {empleado.estaActivo ? <FaToggleOff/> : <FaToggleOn/>}
+                                    {empleado.estaActivo ? " Dar de baja" : " Dar de alta"}
+                                </button>
+                                <button onClick={() => handleEliminar(empleado)}>
+                                    <FaTrash/> Eliminar
+                                </button>
                             </div>
                         </td>
                     </tr>
