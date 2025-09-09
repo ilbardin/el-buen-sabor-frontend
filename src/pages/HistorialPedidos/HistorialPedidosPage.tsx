@@ -46,10 +46,18 @@ export const HistorialPedidosPage: React.FC = () => {
     };
 
     useEffect(() => {
-        if (usuario?.cliente.id) {
-            getHistorial(page, usuario.cliente.id);
+        const getUsuarioId = (): number | undefined => {
+            if (usuario?.cliente?.id) return usuario.cliente.id;
+            if (usuario?.empleado?.id) return usuario.empleado.id;
+            return undefined;
+        };
+
+        const usuarioId = getUsuarioId();
+
+        if (usuarioId !== undefined) {
+            getHistorial(page, usuarioId);
         }
-    }, [usuario?.cliente.id, page]);
+    }, [usuario, page]);
 
     const descargarFacturaPdf = async (idFactura: number) => {
         try {
