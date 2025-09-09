@@ -123,8 +123,10 @@ const NavbarCliente: React.FC<NavbarProps> = ({
             setSucursales(sucursales);
         }
 
-        void obtenerDatos();
-    }, [sucursalId]);
+        if (usuario) {
+            void obtenerDatos();
+        }
+    }, [sucursalId, usuario]);
 
     const [isSucursalDropdownOpen, setIsSucursalDropdownOpen] = useState(false);
     const sucursalRef = useRef<HTMLDivElement>(null);
