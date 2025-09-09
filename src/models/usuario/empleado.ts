@@ -1,4 +1,4 @@
-import type {UserRole} from "./userRoles.ts";
+import {EmpleadoRole} from "./userRoles.ts";
 
 export type Empleado = {
     id?: number;
@@ -6,7 +6,7 @@ export type Empleado = {
     apellido: string;
     telefono: string;
     email: string;
-    rol: UserRole;
+    rol: EmpleadoRole;
     username?: string;
     estaActivo?: boolean;
 }

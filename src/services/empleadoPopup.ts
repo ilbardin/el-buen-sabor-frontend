@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import type {Empleado} from "../models/usuario/empleado.ts";
-import {EmpleadoRole, UserRole} from "../models/usuario/userRoles.ts";
+import {EmpleadoRole} from "../models/usuario/userRoles.ts";
 import {soloNumeros} from "../utils/funcionesReutilizables.ts";
 
 export async function showEditarEmpleadoPopup(empleado: Empleado) {
@@ -15,19 +15,19 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
             <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Nombre:</span>
-                    <input id="nombre" class="swal2-input" style="flex:1;" value="${empleado.nombre}" />
+                    <input id="nombre" class="swal2-input" maxlength="50" style="flex:1;" value="${empleado.nombre}" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Apellido:</span>
-                    <input id="apellido" class="swal2-input" style="flex:1;" value="${empleado.apellido}" />
+                    <input id="apellido" class="swal2-input" maxlength="50" style="flex:1;" value="${empleado.apellido}" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Teléfono:</span>
-                    <input id="telefono" class="swal2-input" style="flex:1;" value="${empleado.telefono}" />
+                    <input id="telefono" class="swal2-input" maxlength="11" style="flex:1;" value="${empleado.telefono}" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Email:</span>
-                    <input id="email" class="swal2-input" style="flex:1;" value="${empleado.email}" />
+                    <input id="email" class="swal2-input" maxlength="50" style="flex:1;" value="${empleado.email}" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Rol:</span>
@@ -37,19 +37,23 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Username:</span>
-                    <input id="username" class="swal2-input" style="flex:1;" value="${empleado.username ?? ""}" />
+                    <input id="username" class="swal2-input" maxlength="50" style="flex:1;" value="${empleado.username ?? ""}" />
                 </label>
             </div>
         `,
+        didOpen: () => {
+            const telInput = document.getElementById("telefono") as HTMLInputElement;
+            telInput.addEventListener("input", soloNumeros);
+        },
         focusConfirm: false,
         preConfirm: () => {
             const updated = {
-                nombre: (document.getElementById("nombre") as HTMLInputElement).value,
-                apellido: (document.getElementById("apellido") as HTMLInputElement).value,
-                telefono: (document.getElementById("telefono") as HTMLInputElement).value,
-                email: (document.getElementById("email") as HTMLInputElement).value,
-                rol: (document.getElementById("rol") as HTMLSelectElement).value,
-                username: (document.getElementById("username") as HTMLInputElement).value,
+                nombre: (document.getElementById("nombre") as HTMLInputElement).value.trim(),
+                apellido: (document.getElementById("apellido") as HTMLInputElement).value.trim(),
+                telefono: (document.getElementById("telefono") as HTMLInputElement).value.trim(),
+                email: (document.getElementById("email") as HTMLInputElement).value.trim(),
+                rol: (document.getElementById("rol") as HTMLSelectElement).value as EmpleadoRole,
+                username: (document.getElementById("username") as HTMLInputElement).value.trim(),
             };
 
             const iguales =
@@ -65,7 +69,7 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
                 return;
             }
 
-            const error = validarEmpleado(empleado);
+            const error = validarEmpleado(updated);
 
             if (error) {
                 Swal.showValidationMessage(error);
@@ -135,7 +139,7 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 apellido: (document.getElementById("apellido") as HTMLInputElement).value.trim(),
                 telefono: (document.getElementById("telefono") as HTMLInputElement).value.trim(),
                 email: (document.getElementById("email") as HTMLInputElement).value.trim(),
-                rol: (document.getElementById("rol") as HTMLSelectElement).value as UserRole,
+                rol: (document.getElementById("rol") as HTMLSelectElement).value as EmpleadoRole,
                 username: (document.getElementById("username") as HTMLInputElement).value.trim(),
                 password: (document.getElementById("password") as HTMLInputElement).value,
             };
@@ -177,8 +181,8 @@ function validarEmpleado(empleado: Empleado & { password?: string }, iguales?: b
         return "El apellido debe tener al menos 4 caracteres.";
     }
 
-    if (empleado.telefono.length < 10 || empleado.telefono.length > 11) {
-        return "El teléfono debe tener entre 10 y 11 dígitos.";
+    if (empleado.telefono.length !== 11) {
+        return "El teléfono debe tener 11 dígitos.";
     }
 
     if (empleado.username && empleado.username.length < 4) {
