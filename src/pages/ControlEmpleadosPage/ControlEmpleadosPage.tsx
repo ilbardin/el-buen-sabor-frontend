@@ -69,7 +69,7 @@ const ControlEmpleadosPage: React.FC = () => {
                 await fetchEmpleados();
             } catch (error: any) {
                 console.error(error);
-                await mostrarAlerta("Error", "error", error.message);
+                await mostrarAlerta("Error", "error", error.response.data.message);
             }
         }
     };

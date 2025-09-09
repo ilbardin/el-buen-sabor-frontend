@@ -86,15 +86,15 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
             <div style="text-align:left; display:flex; flex-direction:column; gap:10px;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Nombre:</span>
-                    <input id="nombre" class="swal2-input" style="flex:1;" />
+                    <input id="nombre" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Apellido:</span>
-                    <input id="apellido" class="swal2-input" style="flex:1;" />
+                    <input id="apellido" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Teléfono:</span>
-                    <input id="telefono" class="swal2-input" style="flex:1;" />
+                    <input id="telefono" class="swal2-input" minlength="10" maxlength="10" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Email:</span>

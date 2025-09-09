@@ -19,11 +19,11 @@ export async function getEmpleados(empleadoId: number): Promise<Empleado[]> {
 }
 
 export async function crearEmpleado(empleado: Empleado): Promise<ServiceResponse> {
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await axiosInstance.post(URL_EMPLEADOS, empleado);
         return response.data;
     } catch (error) {
-        console.error("Error al crear el empleado:", error);
         throw error;
     }
 }
