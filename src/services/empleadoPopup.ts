@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import type {Empleado} from "../models/usuario/empleado.ts";
 import {EmpleadoRole, UserRole} from "../models/usuario/userRoles.ts";
+import {soloNumeros} from "../utils/funcionesReutilizables.ts";
 
 export async function showEditarEmpleadoPopup(empleado: Empleado) {
     const opcionesRol = Object.values(EmpleadoRole)
@@ -94,11 +95,11 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Teléfono:</span>
-                    <input id="telefono" class="swal2-input" minlength="10" maxlength="10" style="flex:1;" />
+                    <input id="telefono" type="tel" class="swal2-input" maxlength="11" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Email:</span>
-                    <input id="email" class="swal2-input" maxlength="50" style="flex:1;" />
+                    <input id="email" type="email" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Rol:</span>
@@ -116,15 +117,19 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 </label>
             </div>
         `,
+        didOpen: () => {
+            const telInput = document.getElementById("telefono") as HTMLInputElement;
+            telInput.addEventListener("input", soloNumeros);
+        },
         focusConfirm: false,
         preConfirm: () => {
             const empleado: Empleado & { password?: string } = {
-                nombre: (document.getElementById("nombre") as HTMLInputElement).value,
-                apellido: (document.getElementById("apellido") as HTMLInputElement).value,
-                telefono: (document.getElementById("telefono") as HTMLInputElement).value,
-                email: (document.getElementById("email") as HTMLInputElement).value,
+                nombre: (document.getElementById("nombre") as HTMLInputElement).value.trim(),
+                apellido: (document.getElementById("apellido") as HTMLInputElement).value.trim(),
+                telefono: (document.getElementById("telefono") as HTMLInputElement).value.trim(),
+                email: (document.getElementById("email") as HTMLInputElement).value.trim(),
                 rol: (document.getElementById("rol") as HTMLSelectElement).value as UserRole,
-                username: (document.getElementById("username") as HTMLInputElement).value,
+                username: (document.getElementById("username") as HTMLInputElement).value.trim(),
                 password: (document.getElementById("password") as HTMLInputElement).value,
             };
 
@@ -133,6 +138,37 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                     Swal.showValidationMessage(`El campo ${key} es obligatorio.`);
                     return;
                 }
+            }
+
+            if (empleado.nombre.length < 4) {
+                Swal.showValidationMessage("El nombre debe tener al menos 4 caracteres.");
+                return;
+            }
+
+            if (empleado.apellido.length < 4) {
+                Swal.showValidationMessage("El apellido debe tener al menos 4 caracteres.");
+                return;
+            }
+
+            if (empleado.telefono.length < 10 || empleado.telefono.length > 11) {
+                Swal.showValidationMessage("El teléfono debe tener entre 10 y 11 dígitos.");
+                return;
+            }
+
+            if (empleado.username && empleado.username.length < 4) {
+                Swal.showValidationMessage("El nombre de usuario debe tener al menos 4 caracteres.");
+            }
+
+            if (empleado.password) {
+                if (empleado.password?.length > 0 && empleado.password?.length < 6) {
+                    Swal.showValidationMessage("La contraseña debe tener al menos 6 caracteres.");
+                }
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(empleado.email)) {
+                Swal.showValidationMessage("El email no tiene un formato válido.");
+                return;
             }
 
             return empleado;

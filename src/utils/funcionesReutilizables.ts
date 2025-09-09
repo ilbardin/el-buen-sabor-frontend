@@ -22,6 +22,11 @@ export const mapCartItemsToMpItems = (cartItems: ItemCarrito[]): ItemCarritoMp[]
     }));
 };
 
+export function soloNumeros(event: any): void {
+    const inputValue = event.target.value;
+    event.target.value = inputValue.replace(/\D/g, '');
+}
+
 export function formatHora(fecha?: string | Date): string {
     if (!fecha) return "-";
 
