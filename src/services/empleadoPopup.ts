@@ -98,7 +98,7 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Email:</span>
-                    <input id="email" class="swal2-input" style="flex:1;" />
+                    <input id="email" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Rol:</span>
@@ -108,11 +108,11 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Usuario:</span>
-                    <input id="username" class="swal2-input" style="flex:1;" />
+                    <input id="username" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
                 <label style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="width:100px;">Password:</span>
-                    <input type="password" id="password" class="swal2-input" style="flex:1;" />
+                    <input type="password" id="password" class="swal2-input" maxlength="50" style="flex:1;" />
                 </label>
             </div>
         `,
