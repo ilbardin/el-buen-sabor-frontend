@@ -40,13 +40,8 @@ export async function getStockInsumos(id: number): Promise<StockInsumo[]> {
 
 export async function editarStockInsumo(stock: StockInsumo): Promise<void> {
     try {
-        const idSucursal = useSucursalStore.getState().idSucursal;
-
-        if (!idSucursal) {
-            throw new Error("No hay sucursal seleccionada.");
-        }
-
-        const API_URL = `${import.meta.env.VITE_API_URL}/sucursal/${idSucursal}/stock`;
+        const sucursalId = localStorage.getItem("sucursalId");
+        const API_URL = `${import.meta.env.VITE_API_URL}/sucursal/${sucursalId}/stock`;
         await axiosInstance.put(API_URL, stock);
         await mostrarAlerta("Éxito", "success", "Stock de insumos actualizado correctamente.");
     } catch (error) {
