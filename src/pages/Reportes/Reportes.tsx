@@ -29,7 +29,7 @@ export default function Reportes() {
 
     const descargarExcel = () => {
         try{
-            
+
         } catch (error) {
             console.error("Error al descargar el excel:", error);
         }
@@ -86,9 +86,12 @@ export default function Reportes() {
                 <button onClick={() => obtenerReportes()}>Generar reporte</button>
                 <button onClick={() => descargarExcel()}>Descargar Excel</button>
             </div>
+
             <div className={styles.contenedorGraficos}>
+
                 <div className={styles.cardChart}>
                     <h2 className={styles.cardTitle}>{reporteVentas?.tipoReporte || "Ventas"}</h2>
+                    {reporteVentas?.detalles && reporteVentas.detalles.length > 0 ? (
                     <Chart
                         chartType="ColumnChart"
                         data={dataCargada && dataVentas.length > 1 ? dataVentas : dataPorDefectoVentas}
@@ -104,10 +107,11 @@ export default function Reportes() {
                         }}
                         width="100%"
                         height="100%"
-                    />
+                    />) : (<p>No hay datos para mostrar</p>)}
                 </div>
                 <div className={styles.cardChart}>
                     <h2 className={styles.cardTitle}>{reporteProductos?.tipoReporte || "Productos"}</h2>
+                    {reporteProductos?.detalles && reporteProductos.detalles.length > 0 ? (
                     <Chart
                         chartType="PieChart"
                         data={dataCargada && dataProductos.length > 1 ? dataProductos : dataPorDefectoProductos}
@@ -116,7 +120,7 @@ export default function Reportes() {
                         }}
                         width="100%"
                         height="100%"
-                    />
+                    />) : (<p>No hay datos para mostrar</p>)}
                 </div>
             </div>
         </div>
