@@ -148,7 +148,7 @@ const Productos: React.FC = () => {
               <button
                 className={styles.categoriaButton}
                 onClick={() => {
-                  const section = document.getElementById("Empanadas");
+                  const section = document.getElementById("empanada");
                   section?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
@@ -222,7 +222,7 @@ const Productos: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 id="sandwich" className={styles.title}>EMPANADAS</h3>
+                  <h3 id="empanada" className={styles.title}>EMPANADAS</h3>
                   <ProductosHome
                     key={"empanada"}
                     item={filtrarPorCategoria("Empanadas")}
