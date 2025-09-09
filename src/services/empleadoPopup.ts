@@ -65,6 +65,13 @@ export async function showEditarEmpleadoPopup(empleado: Empleado) {
                 return;
             }
 
+            const error = validarEmpleado(empleado);
+
+            if (error) {
+                Swal.showValidationMessage(error);
+                return;
+            }
+
             return updated;
         },
         showCancelButton: true,
@@ -140,34 +147,10 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
                 }
             }
 
-            if (empleado.nombre.length < 4) {
-                Swal.showValidationMessage("El nombre debe tener al menos 4 caracteres.");
-                return;
-            }
+            const error = validarEmpleado(empleado);
 
-            if (empleado.apellido.length < 4) {
-                Swal.showValidationMessage("El apellido debe tener al menos 4 caracteres.");
-                return;
-            }
-
-            if (empleado.telefono.length < 10 || empleado.telefono.length > 11) {
-                Swal.showValidationMessage("El teléfono debe tener entre 10 y 11 dígitos.");
-                return;
-            }
-
-            if (empleado.username && empleado.username.length < 4) {
-                Swal.showValidationMessage("El nombre de usuario debe tener al menos 4 caracteres.");
-            }
-
-            if (empleado.password) {
-                if (empleado.password?.length > 0 && empleado.password?.length < 6) {
-                    Swal.showValidationMessage("La contraseña debe tener al menos 6 caracteres.");
-                }
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(empleado.email)) {
-                Swal.showValidationMessage("El email no tiene un formato válido.");
+            if (error) {
+                Swal.showValidationMessage(error);
                 return;
             }
 
@@ -180,3 +163,33 @@ export async function showCrearEmpleadoPopup(): Promise<Empleado | undefined> {
 
     return formValues;
 }
+
+function validarEmpleado(empleado: Empleado & { password?: string }, iguales?: boolean): string | null {
+    if (iguales) {
+        return "Debes modificar al menos un campo para continuar.";
+    }
+
+    if (empleado.nombre.length < 4) {
+        return "El nombre debe tener al menos 4 caracteres.";
+    }
+
+    if (empleado.apellido.length < 4) {
+        return "El apellido debe tener al menos 4 caracteres.";
+    }
+
+    if (empleado.telefono.length < 10 || empleado.telefono.length > 11) {
+        return "El teléfono debe tener entre 10 y 11 dígitos.";
+    }
+
+    if (empleado.username && empleado.username.length < 4) {
+        return "El nombre de usuario debe tener al menos 4 caracteres.";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(empleado.email)) {
+        return "El email no tiene un formato válido.";
+    }
+
+    return null;
+}
+
