@@ -4,15 +4,18 @@ import type { ArticuloManufacturadoDisponible } from "../../models/articuloManuf
 import styles from "./ModuloProductoHome.module.css";
 import { MdAddShoppingCart } from "react-icons/md";
 import type { ArticuloInsumo } from "../../models/articuloInsumo";
-import React from "react";
+import type { StockInsumo } from "../../models/stockInsumo";
+import React, { useEffect, useState } from "react";
+import { getStockInsumos } from "../../services/stockInsumoService";
+import { useSucursal } from "../../context/SucursalContext";
 
 export const ModuloProductoHome = (props: {
   item: Promocion | ArticuloManufacturadoDisponible | ArticuloInsumo;
 }) => {
   const { addToCart } = useCart();
-
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
+
 
     const cartItem = {
       ...props.item,
@@ -26,6 +29,20 @@ export const ModuloProductoHome = (props: {
 
     addToCart(cartItem as any);
   };
+  const [stockInsumo, setStockInsumo] = useState<StockInsumo[]>([]);
+  const { sucursalId } = useSucursal();
+  useEffect(() => {
+    const cargarStock = async () => {
+      try {
+        const stock = await getStockInsumos(sucursalId);
+        setStockInsumo(stock);
+      } catch (error) {
+        console.error("Error cargando stock de insumos:", error);
+      }
+    };
+
+    cargarStock();
+  }, [sucursalId]);
 
   function esPromocion(
     item: Promocion | ArticuloManufacturadoDisponible | ArticuloInsumo
@@ -43,9 +60,15 @@ export const ModuloProductoHome = (props: {
     return "listaImagenes" in item;
   }
 
+  function tieneStockInsumo(insumo: ArticuloInsumo): boolean {
+    const stock = stockInsumo.find((s) => s.idInsumo === insumo.id);
+    return stock ? stock.cantidadActual > 0 : false;
+  }
+
   const isOutOfStock =
-    esManufacturadoDisponible(props.item) &&
-    props.item.cantidadDisponible === 0;
+    (esManufacturadoDisponible(props.item) &&
+      props.item.cantidadDisponible === 0) ||
+    (esInsumo(props.item) && !tieneStockInsumo(props.item));
 
   return (
     <div

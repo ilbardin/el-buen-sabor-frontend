@@ -94,3 +94,90 @@
     color: var(--color-primario);
 }
 
+.BotonAdmin{
+    margin-right: 30px;
+}
+
+
+.sucursalSelectWrapper {
+  position: relative;
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.sucursalSelectWrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: var(--color-primario);
+  transition: width 0.3s ease;
+}
+
+.sucursalSelectWrapper:hover::after {
+  width: 100%;
+}
+
+.sucursalDisplay {
+  appearance: none;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-terciario);
+  cursor: pointer;
+  padding: 0.2rem 0;
+  display: flex; 
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.arrowIcon {
+  font-size: 0.8rem;
+  color: var(--color-primario);
+  transition: transform 0.3s ease;
+}
+
+.arrowIcon.open {
+  transform: rotate(180deg);
+}
+
+
+.sucursalOptions {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.sucursalOptionItem {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-terciario);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap; 
+}
+
+.sucursalOptionItem:hover {
+  background-color: var(--color-primario);
+  color: #fff;
+}
+
+.sucursalOptionItem.selected {
+  background-color: rgba(255, 0, 0, 0.05); 
+  color: var(--color-primario);
+  font-weight: 700;
+}

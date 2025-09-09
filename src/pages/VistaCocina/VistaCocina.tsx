@@ -3,6 +3,7 @@ import { ModuloCocina } from "../../components/ModuloCocina/ModuloCocina";
 import type { PedidoRequest } from "../../models/pedido/pedidoRequest.ts";
 import { useEffect, useState } from "react";
 import { getPedidos } from "../../services/pedidosService";
+import { GrUpdate } from "react-icons/gr";
 
 export const VistaCocina = () => {
   const [pedidos, setPedidos] = useState<PedidoRequest[]>([]);
@@ -12,13 +13,16 @@ export const VistaCocina = () => {
   const [muyDemorado, setMuyDemorado] = useState<boolean>(true);
 
   useEffect(() => {
-    const obtenerPedidos = async () => {
-      const pedidosData = await getPedidos();
-      console.log(pedidosData)
-      setPedidos(pedidosData.content);
-    };
     obtenerPedidos();
+    const interval = setInterval(obtenerPedidos, 8000);
+    return () => clearInterval(interval);
   }, []);
+
+  const obtenerPedidos = async () => {
+    const pedidosData = await getPedidos();
+    console.log(pedidosData);
+    setPedidos(pedidosData.content);
+  };
 
   const calcularDemora = (pedido: PedidoRequest) => {
     if (pedido.estadoPedido === "entregado") return "finalizado";
@@ -49,9 +53,13 @@ export const VistaCocina = () => {
     <div className={styles.contenedor}>
       <div className={styles.filtroEntregados}>
         <button
-          className={`${styles.botonesDemora} ${
-            normal ? styles.normal : ""
-          }`}
+          className={`${styles.botonesDemora} ${normal ? styles.recargar : ""}`}
+          onClick={() => obtenerPedidos()}
+        >
+          <GrUpdate />
+        </button>
+        <button
+          className={`${styles.botonesDemora} ${normal ? styles.normal : ""}`}
           onClick={() => setNormal(!normal)}
         >
           Normal

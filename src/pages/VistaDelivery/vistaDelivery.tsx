@@ -3,12 +3,15 @@ import type { PedidoRequest } from "../../models/pedido/pedidoRequest";
 import { getPedidos } from "../../services/pedidosService";
 import styles from "./vistaDelivery.module.css";
 import { ModuloDelivery } from "../../components/ModuloDelivery/ModuloDelivery";
+import { GrUpdate } from "react-icons/gr";
 
 export default function VistaDelivery() {
   const [pedidos, setPedidos] = useState<PedidoRequest[]>([]);
   const [mostrarEntregados, setMostrarEntregados] = useState<boolean>(false);
   useEffect(() => {
     obtenerPedidos();
+    const interval = setInterval(obtenerPedidos, 8000);
+    return () => clearInterval(interval);
   }, []);
 
   const obtenerPedidos = async () => {
@@ -34,6 +37,13 @@ export default function VistaDelivery() {
   return (
     <div className={styles.contenedor}>
       <div className={styles.filtroEntregados}>
+        <button
+          className={`${styles.botonesDemora} ${styles.recargar}`}
+          onClick={() => obtenerPedidos()}
+        >
+          <GrUpdate />
+        </button>
+
         <button
           className={`${styles.botonesDemora} ${
             mostrarEntregados ? styles.entregado : ""
