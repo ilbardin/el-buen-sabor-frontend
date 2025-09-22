@@ -1,12 +1,12 @@
 import React, {type ReactNode, useCallback, useEffect, useState} from 'react';
 import type {ArticuloManufacturado} from '../../models/articuloManufacturado.ts';
 import {savePedido} from '../../services/articuloManufacturadoService.ts';
-import {showAlert, showLoading} from '../../utils/alerts.ts';
+import {mostrarAlerta, mostrarCargando} from '../../utils/alerts.ts';
 import {CartContext} from './cartContext.ts';
 import {useAuth} from "../auth/useAuth.ts";
 import {CARRITO_EXPIRATION_TIME} from "../../constants/constants.ts";
 import {tipoEnvio} from "../../components/TipoEnvio/TipoEnvio.tsx";
-import type {PedidoRequest} from "../../models/pedidoRequest.ts";
+import type {PedidoRequest} from "../../models/pedido/pedidoRequest.ts";
 import Swal from "sweetalert2";
 import {crearPeticionMP} from "../../services/mercadoPagoService.ts";
 import {mapCartItemsToMpItems} from "../../utils/funcionesReutilizables.ts";
@@ -29,7 +29,9 @@ export interface CartContextProps {
     isItemInCart: (id: number) => boolean;
 }
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+                                                                    children,
+                                                                }) => {
     const {usuario} = useAuth();
     const clienteId = usuario?.cliente?.id || 1; // seteo en 1 para el caso del usuario admin
 
@@ -82,7 +84,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     const saveCartToLocalStorage = (updatedCart: CartItem[]) => {
         localStorage.setItem(`cart_${clienteId}`, JSON.stringify(updatedCart));
-        localStorage.setItem(`cart_${clienteId}_expires`, (Date.now() + CARRITO_EXPIRATION_TIME).toString());
+        localStorage.setItem(
+            `cart_${clienteId}_expires`,
+            (Date.now() + CARRITO_EXPIRATION_TIME).toString()
+        );
     };
 
     const addToCart = (producto: ArticuloManufacturado) => {
@@ -90,12 +95,17 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             const found = prev.find((item) => item.id === producto.id);
             if (found) {
                 const updatedCart = prev.map((item) =>
-                    item.id === producto.id ? {...item, cantidad: item.cantidad + 1} : item
+                    item.id === producto.id
+                        ? {...item, cantidad: item.cantidad + 1}
+                        : item
                 );
                 saveCartToLocalStorage(updatedCart);
                 return updatedCart;
             }
-            const newCart = [...prev, {...producto, precio: Number(producto.precioVenta), cantidad: 1}];
+            const newCart = [
+                ...prev,
+                {...producto, precio: Number(producto.precioVenta), cantidad: 1},
+            ];
             saveCartToLocalStorage(newCart);
             return newCart;
         });
@@ -142,22 +152,33 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
     const checkoutCart = async () => {
         if (!clienteId) {
-            await showAlert("Error", "error", "No ha iniciado sesión.");
+            await mostrarAlerta("Error", "error", "No ha iniciado sesión.");
             return;
         }
 
         const tipoEnvioSeleccionado = await tipoEnvio();
         if (!tipoEnvioSeleccionado) return;
 
-        const subtotal = cart.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+        const subtotal = cart.reduce(
+            (sum, item) => sum + item.precio * item.cantidad,
+            0
+        );
         const gastosEnvio = tipoEnvioSeleccionado === "delivery" ? 500 : null;
         const total = subtotal + (gastosEnvio ?? 0);
 
-        const detalles = cart.map((item) => ({
-            cantidad: item.cantidad,
-            subtotal: item.precio * item.cantidad,
-            articuloManufacturado: {id: item.id!},
-        }));
+        const detalles = cart
+            .filter((item) => item.id !== undefined)
+            .map((item) => ({
+                itemId: item.id as number,
+                cantidad: item.cantidad,
+                subtotal: item.precio * item.cantidad,
+                tipoItem:
+                    "detalle" in item
+                        ? "Promocion"
+                        : "esParaElaborar" in item
+                            ? "ArticuloInsumo"
+                            : "ArticuloManufacturado",
+            }));
 
         const pedido: PedidoRequest = {
             subtotal,
@@ -165,8 +186,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
             total,
             tipoEnvio: tipoEnvioSeleccionado,
             detalles,
-            cliente: {id: clienteId},
-            sucursalEmpresa: {id: 1} // TODO: ajustar
+            idCliente: clienteId,
+            idSucursal: 1, // TODO: ajustar
         };
 
         try {
@@ -175,7 +196,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
 
             const mpItems = mapCartItemsToMpItems(cart);
 
-            showLoading('Cargando Mercado Pago...');
+            mostrarCargando("Cargando Mercado Pago...");
 
             const mpResponse = await crearPeticionMP({
                 items: mpItems,
@@ -187,30 +208,39 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({children}) => {
                 window.location.href = mpResponse.initPoint;
                 clearCart(); // TODO: despues limpiar carrito si el pago fue exitoso
             } else {
-                await showAlert('Error', 'error', 'No se pudo obtener el link de pago.');
+                await mostrarAlerta(
+                    "Error",
+                    "error",
+                    "No se pudo obtener el link de pago."
+                );
             }
-
-        } catch (error) {
+        } catch (error: any) {
             Swal.close();
-            console.error('Error en el checkout:', error);
-            await showAlert('Error', 'error', 'Ocurrió un error al procesar el checkout.');
+            console.error("Error en el checkout:", error);
+            await mostrarAlerta(
+                "Error",
+                "error",
+                error.response.data.message
+            );
         }
     };
 
-
     return (
-        <CartContext.Provider
-            value={{
-                cart,
-                addToCart,
-                removeFromCart,
-                increaseQuantity,
-                decreaseQuantity,
-                clearCart,
-                checkoutCart,
-                isItemInCart
-            }}>
-            {children}
-        </CartContext.Provider>
+        <div>
+            <CartContext.Provider
+                value={{
+                    cart,
+                    addToCart,
+                    removeFromCart,
+                    increaseQuantity,
+                    decreaseQuantity,
+                    clearCart,
+                    checkoutCart,
+                    isItemInCart,
+                }}
+            >
+                {children}
+            </CartContext.Provider>
+        </div>
     );
 };

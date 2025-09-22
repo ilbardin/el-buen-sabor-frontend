@@ -1,3 +1,4 @@
+// TODO: agrupar las rutas por tipo de usuario (ejemplo: /admin/control-empleados)
 export const ROUTES = {
     HOME: '/home',
     HOME_ADMIN: '/home-admin',
@@ -13,4 +14,10 @@ export const ROUTES = {
     EMPRESA_ABM: '/empresa-abm',
     SUCURSAL_ABM: '/sucursal-abm',
     PRUEBA: '/prueba',
+    ESTADO_PEDIDO: '/estado-pedido',
+    COCINA: '/cocina',
+    HISTORIAL_PEDIDOS: '/historial-pedidos',
+    DELIVERY: '/delivery',
+    CONTROL_EMPLEADOS: '/control-empleados',
+    REPORTES: '/reportes',
 };

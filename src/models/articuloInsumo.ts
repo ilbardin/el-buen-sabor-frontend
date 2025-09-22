@@ -51,8 +51,22 @@ export interface ArticuloInsumo {
     fechaBaja: string | null;
     precioVenta: number;
     precioCompra: number;
-    categorias: string[];          // 🔹 array de strings
-    nombreUnidadMedida: string;    // 🔹 string
+    categorias: string[];          
+    nombreUnidadMedida: string;    
     esParaElaborar: boolean;
-    nombreImagen: string | null;   // 🔹 string o null
+    nombreImagen: string | null;   
+    imagenes: string[];
+}
+
+export interface ArticuloInsumo {
+    id?: number;
+    denominacion: string;
+    fechaBaja: string | null;
+    precioVenta: number;
+    precioCompra: number;
+    categorias: string[];          
+    nombreUnidadMedida: string;    
+    esParaElaborar: boolean;
+    nombreImagen: string | null;   
+    imagenes: string[];
 }

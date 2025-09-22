@@ -5,7 +5,7 @@ import {LOGIN_URL} from "../../constants/constants.ts";
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../context/auth/useAuth.ts";
 import Swal from "sweetalert2";
-import {showAlert, showLoading} from "../../utils/alerts.ts";
+import {mostrarAlerta, mostrarCargando} from "../../utils/alerts.ts";
 import axiosInstance from "../../api/axiosInstance.ts";
 import type {GenericError} from "../../models/errorResponseModel.ts";
 import styles from './Login.module.css';
@@ -44,11 +44,11 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
         if ((err as GenericError).response?.data) {
             const backendError = err as GenericError;
             console.error(backendError.response.data);
-            await showAlert('Error', 'error', backendError.response.data);
+            await mostrarAlerta('Error', 'error', backendError.response.data);
         } else {
             console.error(err);
             if (err.isAxiosError) {
-                await showAlert('Error', 'error', 'Error de red.');
+                await mostrarAlerta('Error', 'error', 'Error de red.');
             }
         }
     };
@@ -78,7 +78,7 @@ const Login: React.FC<LoginProps> = ({onLoginSuccess}) => {
         e.preventDefault();
 
         try {
-            showLoading('Iniciando sesión...');
+            mostrarCargando('Iniciando sesión...');
             const response = await axiosInstance.post<UserData>(LOGIN_URL, {username, password});
             handleSuccess(response.data);
         } catch (err: unknown) {

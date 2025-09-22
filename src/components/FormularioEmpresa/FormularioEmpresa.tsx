@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styles from "./FormularioEmpresa.module.css";
-import { crearEmpresa, editarEmpresa } from "../../services/empresaService";
-import type { Empresa } from "../../models/empresa.ts";
+import React, {useEffect, useState} from "react";
+import {crearEmpresa, editarEmpresa} from "../../services/empresaService";
+import type {Empresa} from "../../models/empresa.ts";
+import baseFormulario from "../../css/baseFormulario.module.css";
 
 export const FormularioEmpresa = ({
   onClose,
@@ -43,16 +43,18 @@ export const FormularioEmpresa = ({
   };
   return (
     <div>
-      <div className={styles.divContenedor}>
-        <form className={styles.formulario} onSubmit={handleSubmit}>
-          <h2 className="titulo">Crear Empresa</h2>
+      <div className={baseFormulario.divContenedor}>
+        <form className={baseFormulario.formulario} onSubmit={handleSubmit}>
+          <h2 className={baseFormulario.tituloFormulario}> 
+          {empresa?.id ? "Modificar" : "Nueva"} Empresa
+        </h2>
           <div>
-            <label className={styles.formArticuloLabel}>Cuil:</label>
+            <label className={baseFormulario.formArticuloLabel}>Cuil:</label>
 
             {formularioValidado && Number.isNaN(cuil) && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="number"
                 placeholder="Cuil"
@@ -60,17 +62,17 @@ export const FormularioEmpresa = ({
                 onChange={(e) => setCuil(Number(e.target.value))}
               />
               {formularioValidado && Number.isNaN(cuil) && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
           </div>
           <div>
-            <label className={styles.formArticuloLabel}>Nombre:</label>
+            <label className={baseFormulario.formArticuloLabel}>Nombre:</label>
 
             {formularioValidado && nombre === "" && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="text"
                 placeholder="Nombre"
@@ -78,17 +80,17 @@ export const FormularioEmpresa = ({
                 onChange={(e) => setNombre(e.target.value)}
               />
               {formularioValidado && nombre === "" && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
           </div>
           <div>
-            <label className={styles.formArticuloLabel}>Razon Social:</label>
+            <label className={baseFormulario.formArticuloLabel}>Razon Social:</label>
 
             {formularioValidado && razonSocial === "" && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="text"
                 placeholder="Razon Social"
@@ -96,20 +98,20 @@ export const FormularioEmpresa = ({
                 onChange={(e) => setRazonSocial(e.target.value)}
               />
               {formularioValidado && razonSocial === "" && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
           </div>
-          <div className={styles.botones}>
+          <div className={baseFormulario.botones}>
             <button
-              className={`${styles.boton} ${styles.botonCancelar}`}
+              className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
               type="button"
               onClick={onClose}
             >
               Cancelar
             </button>
             <button
-              className={`${styles.boton} ${styles.botonGuardar}`}
+              className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
               type="submit"
             >
               Guardar

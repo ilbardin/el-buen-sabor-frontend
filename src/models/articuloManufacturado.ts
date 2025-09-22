@@ -1,13 +1,24 @@
 export interface ArticuloManufacturado {
     id?: number;
-    estaActivo?: boolean;
+    fechaBaja?: string | null;
     denominacion: string;
     descripcion: string;
     precioVenta: number;
     precioCosto: number;
     tiempoEstimado: number;
-    categoriaArticulo: string;
+    categoria: string;
     imagenes?: ImagenManofacturado[];
+}
+
+export interface ArticuloManufacturadoDisponible {
+    id: number;
+    fechaBaja: Date | null;
+    denominacion: string;
+    precioVenta: number;
+    nombreCategoria: string;
+    listaImagenes: string[];
+    ingredientes: string[];
+    cantidadDisponible: number;
 }
 
 export interface ArticuloManufacturadoCreacion {

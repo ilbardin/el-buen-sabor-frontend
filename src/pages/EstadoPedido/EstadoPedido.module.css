@@ -1,0 +1,291 @@
+.container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem 2rem 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+    max-width: 800px;
+    width: 100%;
+    z-index: 1;
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.header .icon {
+    margin-right: 0.3rem;
+    font-size: 2rem;
+}
+
+.logoCircle {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orderInfo {
+    margin-top: 1rem;
+}
+
+.orderInfo p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.orderInfo .icon {
+    margin-right: 0.3rem;
+    font-size: 1.4rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.entrega {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 0.5rem;
+}
+
+.label {
+    white-space: nowrap;
+}
+
+.address {
+    display: block;
+    max-width: 25ch;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+
+.address:hover {
+    text-decoration: underline;
+}
+
+.entrega .icon {
+    margin-right: 0.3rem;
+    font-size: 1.5rem;
+}
+
+.detalles {
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.detalles h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detalles .icon {
+    font-size: 1.4rem;
+}
+
+.tablaDetalles {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.tablaDetalles th {
+    text-align: left;
+    padding: 0.75rem;
+    background-color: #f8f8f8;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+}
+
+.tablaDetalles th:nth-child(2),
+.tablaDetalles th:nth-child(3) {
+    text-align: right;
+}
+
+.tablaDetalles td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.tablaDetalles tbody tr:nth-child(even) {
+    background-color: #fdfdfd;
+}
+
+.tablaDetalles tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.tablaDetalles td:nth-child(1) {
+    text-align: left;
+}
+
+.tablaDetalles td:nth-child(2),
+.tablaDetalles td:nth-child(3) {
+    text-align: right;
+}
+
+.tablaDetalles tbody tr.gastosEnvio {
+    font-weight: 600;
+    background-color: #f8f8f8;
+}
+
+.progressBar {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+}
+
+.step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background: #ccc;
+    z-index: -1;
+}
+
+.circle {
+    background: #ccc;
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active .circle {
+    background: red;
+}
+
+.finalMessage {
+    margin-top: 2rem;
+}
+
+.finalMessage h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.finalMessage .icon {
+    margin-left: 0.3rem;
+    font-size: 1.8rem;
+}
+
+.btnActualizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btnActualizar .icon {
+    margin-right: 0.3rem;
+    font-size: 1.5rem;
+}
+
+.btnActualizar:hover {
+    background-color: var(--color-secundario);
+}
+
+.bgPizza {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@media (max-width: 600px) {
+    .infoGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .progressBar {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .step:not(:last-child)::after {
+        width: 2px;
+        height: 50px;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .bgPizza {
+        max-width: 200px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+}

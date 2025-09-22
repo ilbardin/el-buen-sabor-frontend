@@ -1,0 +1,85 @@
+.vistaCocina {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 90%;
+  width: 95%;
+  padding: 20px;
+  margin: 0 auto; 
+  align-items: stretch;
+}
+
+.contenedor{
+  gap: 20px; 
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+  height: 90%;
+  width: 95%;
+  padding: 20px;
+  margin: 0 auto; 
+}
+
+.filtroEntregados {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto;
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--color-primario);
+  cursor: pointer;
+  user-select: none;
+}
+
+.filtroEntregados input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primario);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.filtroEntregados input[type="checkbox"]:hover {
+  transform: scale(1.2);
+}
+
+.entregado{
+  background-color: var(--finalizado);
+  border: 1px solid var(--color-terciario);
+  color: white;
+}
+
+.botonesDemora {
+  border-radius: 10px;
+}
+
+
+.recargar {
+  background-color: var(--color-primario);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.recargar:hover {
+  background-color: var(--color-secundario);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.recargar:active {
+  transform: rotate(180deg) scale(0.95);
+  background-color: var(--color-terciario);
+}

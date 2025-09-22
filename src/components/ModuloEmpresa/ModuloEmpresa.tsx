@@ -1,6 +1,6 @@
-import type { Empresa } from "../../models/empresa.ts";
-import { deleteEmpresa } from "../../services/empresaService.ts";
-import styles from "./ModuloEmpresa.module.css";
+import type {Empresa} from "../../models/empresa.ts";
+import {deleteEmpresa} from "../../services/empresaService.ts";
+import baseModulo from "../../css/baseModulo.module.css";
 
 export function ModuloEmpresa(props: {
   empresa: Empresa;
@@ -27,8 +27,8 @@ export function ModuloEmpresa(props: {
         {props.empresa.fechaBaja ? String(props.empresa.fechaBaja) : "Activo"}
       </td>
 
-      <td>
-        <div className={styles.botonesAcciones}>
+      <td className={baseModulo.tdBotonera}>
+        <div className={baseModulo.botonesAcciones}>
           <button onClick={() => props.onModificar(props.empresa)}>
             Modificar
           </button>

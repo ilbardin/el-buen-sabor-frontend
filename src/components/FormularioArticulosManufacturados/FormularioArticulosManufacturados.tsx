@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { MdAttachMoney } from "react-icons/md";
 import {
   crearArticuloManufacturado,
   obtenerCategorias,
@@ -11,6 +12,7 @@ import type {
 } from "../../models/articuloManufacturado.ts";
 import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import styles from "./FormularioArticulosManufacturados.module.css";
+import baseFormulario from "../../css/baseFormulario.module.css";
 import type { CategoriaArticuloManufacturado } from "../../models/categoriaArticuloManufacturado.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 
@@ -23,7 +25,6 @@ export default function FormularioArticulosManufacturados({
   onCreateSuccess: () => void;
   articuloParaEditar?: ArticuloManufacturado | null;
 }) {
-
   const [denominacion, setDenominacion] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precioVenta, setPrecioVenta] = useState(0);
@@ -44,19 +45,23 @@ export default function FormularioArticulosManufacturados({
   );
   const [unidadMedida, setUnidadMedida] = useState("");
   const [formularioValidado, setFormularioValidado] = useState(false);
+  const [precioSugerido, setPreciSugerido] = useState<number>(0);
+  const [usarPrecioSugerido, setUsarPrecioSugerido] = useState(false);
 
-  // !Carga inicial de categorías e insumos 
+  // !Carga inicial de categorías e insumos
   useEffect(() => {
     async function cargarDatos() {
       const categorias = await obtenerCategorias();
       const insumos = await getArticulosInsumo();
+      const insumosParaElaborar = insumos.filter(
+        (insumo) => insumo.esParaElaborar
+      );
       setCategorias(categorias);
-      setInsumos(insumos);
+      setInsumos(insumosParaElaborar);
     }
 
     void cargarDatos();
   }, []);
-
 
   // !Carga de datos del artículo a editar
   useEffect(() => {
@@ -66,9 +71,11 @@ export default function FormularioArticulosManufacturados({
       setPrecioVenta(articuloParaEditar.precioVenta);
       setTiempoEstimado(articuloParaEditar.tiempoEstimado);
       setImagenesArticuloManofacturado(
-        articuloParaEditar.imagenesArticuloManofacturado || ""
+        articuloParaEditar.imagenes?.map(
+          (img) => `http://localhost:8080/uploads/images/${img.denominacion}`
+        ) || []
       );
-      setCategoriaSeleccionada(articuloParaEditar.categoria.denominacion);
+      setCategoriaSeleccionada(articuloParaEditar.categoria);
       setDetalles(
         articuloParaEditar.detalles.map((d) => ({
           insumo: d.insumo,
@@ -77,6 +84,16 @@ export default function FormularioArticulosManufacturados({
       );
     }
   }, [articuloParaEditar]);
+
+  useEffect(() => {
+    const costoTotal = detalles.reduce((total, detalle) => {
+      
+      const precioCompra = detalle.insumo?.precioCompra ?? 0;
+      const costoInsumo = precioCompra * detalle.cantidad * 4;
+      return total + costoInsumo;
+    }, 0);
+    setPreciSugerido(costoTotal);
+  }, [detalles]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,6 +169,7 @@ export default function FormularioArticulosManufacturados({
       (ins) => ins.denominacion === insumoSeleccionado
     );
 
+
     if (!insumo) {
       alert("Insumo no encontrado");
       return;
@@ -159,7 +177,7 @@ export default function FormularioArticulosManufacturados({
 
     setDetalles([...detalles, { insumo: insumo, cantidad: cantidadInsumo }]);
 
-    setInsumoSeleccionado(""); //Regresa el campo Insumo a Buscar insumo
+    setInsumoSeleccionado("");
     setCantidadInsumo(0);
   };
   /* #endregion */
@@ -180,7 +198,7 @@ export default function FormularioArticulosManufacturados({
       }
     }
     setImagenesArticuloManofacturado((prev) => [...prev, ...urls]);
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const eliminarImagen = (index: number) => {
@@ -227,88 +245,122 @@ export default function FormularioArticulosManufacturados({
   /*#endregion*/
 
   return (
-    <div className={styles.formArticuloModal}>
-      <div className={styles.formArticuloContainer}>
-        <h2>
+    <div className={baseFormulario.divContenedor}>
+      <div className={baseFormulario.formulario} style={{ width: "900px" }}>
+        <h2 className={baseFormulario.tituloFormulario}>
           {articuloParaEditar ? "Modificar" : "Nuevo"} Artículo Manufacturado
         </h2>
         <form onSubmit={handleSubmit} className={styles.formArticulo}>
           <div className={styles.formArticuloColumnas}>
             <div className={styles.formArticuloColumnaIzquierda}>
-              <label className={styles.formArticuloLabel}>
+              <label className={baseFormulario.formLabel}>
                 Nombre:
-                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                 {formularioValidado && !denominacion.trim() && (
-                  <p className={styles.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
-                <div className={styles.inputConIcono}>
+                <div className={baseFormulario.inputConIcono}>
                   <input
-                    className={styles.formArticuloInput}
+                    className={baseFormulario.formInput}
                     type="text"
                     value={denominacion}
                     onChange={(e) => setDenominacion(e.target.value)}
                   />
 
-                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                   {formularioValidado && !denominacion.trim() && (
-                    <span className={styles.iconoInput}>❗</span>
+                    <span className={baseFormulario.iconoInput}>❗</span>
                   )}
                 </div>
               </label>
 
-              <label className={styles.formArticuloLabel}>
+              <label className={baseFormulario.formLabel}>
                 Descripción:
-                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                 {formularioValidado && !descripcion.trim() && (
-                  <p className={styles.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
-                <div className={styles.inputConIcono}>
+                <div className={baseFormulario.inputConIcono}>
                   <input
-                    className={styles.formArticuloInput}
+                    className={baseFormulario.formInput}
                     type="text"
                     value={descripcion}
                     onChange={(e) => setDescripcion(e.target.value)}
                   />
-                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                   {formularioValidado && !descripcion.trim() && (
-                    <span className={styles.iconoInput}>❗</span>
+                    <span className={baseFormulario.iconoInput}>❗</span>
                   )}
                 </div>
               </label>
 
-              <label className={styles.formArticuloLabel}>
-                Precio Venta:
-                <input
-                  className={styles.formArticuloInput}
-                  type="number"
-                  value={precioVenta}
-                  onChange={(e) => setPrecioVenta(parseFloat(e.target.value))}
-                />
-              </label>
+              <div>
+                <label className={baseFormulario.formLabel}>
+                  Precio Venta:
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <MdAttachMoney style={{ height: "40px", width: "40px" }} />
+                    <input
+                      className={baseFormulario.formInput}
+                      type="number"
+                      value={usarPrecioSugerido ? precioSugerido : precioVenta}
+                      onChange={(e) =>
+                        setPrecioVenta(parseFloat(e.target.value))
+                      }
+                      disabled={usarPrecioSugerido}
+                    />
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={usarPrecioSugerido}
+                        onChange={(e) => {
+                          setUsarPrecioSugerido(e.target.checked);
+                          if (e.target.checked) {
+                            setPrecioVenta(precioSugerido);
+                          }
+                        }}
+                      />
+                      Usar precio sugerido
+                    </label>
+                  </div>
+                </label>
+              </div>
 
-              <label className={styles.formArticuloLabel}>
+              <label className={baseFormulario.formLabel}>
                 Tiempo estimado (min):
                 <input
-                  className={styles.formArticuloInput}
+                  className={baseFormulario.formInput}
                   type="number"
                   value={tiempoEstimado}
                   onChange={(e) => setTiempoEstimado(parseInt(e.target.value))}
                 />
               </label>
 
-              <div className={styles.formArticuloLabel}>
+              <div className={baseFormulario.formLabel}>
                 Categoría:
-                {/* Muestra el mensaje de error si se apreto el boton de "Guardar" y si el campo esta vacio*/}
                 {formularioValidado && !categoriaSeleccionada.trim() && (
-                  <p className={styles.error}>Este campo es obligatorio</p>
+                  <p className={baseFormulario.error}>
+                    Este campo es obligatorio
+                  </p>
                 )}
-                <div className={styles.inputConIcono}>
+                <div className={baseFormulario.inputConIcono}>
                   <div
-                    className={styles.autocompleteWrapper}
+                    className={baseFormulario.autocompleteWrapper}
                     ref={refCategoria}
                   >
                     <input
-                      className={styles.formArticuloInput}
+                      className={baseFormulario.formInput}
                       type="text"
                       placeholder="Buscar categoria"
                       value={categoriaSeleccionada}
@@ -321,18 +373,18 @@ export default function FormularioArticulosManufacturados({
                     />
 
                     {mostrarSugerenciasCategorias && (
-                      <ul className={styles.sugerenciasLista}>
+                      <ul className={baseFormulario.sugerenciasLista}>
                         {categorias
                           .filter((cat) =>
                             cat.denominacion
                               .toLowerCase()
                               .includes(categoriaSeleccionada?.toLowerCase())
                           )
-                          .slice(0, 5)
+
                           .map((cat) => (
                             <li
                               key={cat.id}
-                              className={styles.sugerenciaItem}
+                              className={baseFormulario.sugerenciaItem}
                               onClick={() => {
                                 setCategoriaSeleccionada(cat.denominacion);
                                 setMostrarSugerenciasCategorias(false);
@@ -344,31 +396,30 @@ export default function FormularioArticulosManufacturados({
                       </ul>
                     )}
                   </div>
-                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                   {formularioValidado && !categoriaSeleccionada.trim() && (
-                    <span className={styles.iconoInput}>❗</span>
+                    <span className={baseFormulario.iconoInput}>❗</span>
                   )}
                 </div>
               </div>
 
-              <label className={styles.formArticuloLabel}>
-                {/* Muestra el mensaje de error si se apretó "Guardar" y no hay imagen */}
+              <label className={baseFormulario.formLabel}>
                 {formularioValidado &&
                   imagenesArticuloManofacturado.length === 0 && (
-                    <p className={styles.error}>Este campo es obligatorio</p>
+                    <p className={baseFormulario.error}>
+                      Este campo es obligatorio
+                    </p>
                   )}
-                <div className={styles.inputConIcono}>
+                <div className={baseFormulario.inputConIcono}>
                   <label
                     htmlFor="imagenUpload"
-                    className={`${styles.formArticuloButton} ${styles.botonConMargenInferior}`}
+                    className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
                   >
                     Subir Imagen
                   </label>
 
-                  {/* Muestra el icono de advertencia si no se apreto el boton de "Guardar" y el Campo esta vacio */}
                   {formularioValidado &&
                     imagenesArticuloManofacturado.length === 0 && (
-                      <span className={styles.iconoInput}>❗</span>
+                      <span className={baseFormulario.iconoInput}>❗</span>
                     )}
                 </div>
                 <input
@@ -382,18 +433,18 @@ export default function FormularioArticulosManufacturados({
               </label>
 
               {imagenesArticuloManofacturado.length > 0 && (
-                <div className={styles.divImagenesArticulo}>
+                <div className={baseFormulario.divImagenes}>
                   {imagenesArticuloManofacturado.map((url, index) => (
                     <div key={index} style={{ position: "relative" }}>
                       <img
                         src={url}
                         alt={`Imagen ${index + 1}`}
-                        className={styles.imagenArticulo}
+                        className={baseFormulario.imagen}
                       />
                       <button
                         type="button"
                         onClick={() => eliminarImagen(index)}
-                        className={styles.botonEliminarImagen}
+                        className={baseFormulario.botonEliminarImagen}
                       >
                         X
                       </button>
@@ -404,11 +455,14 @@ export default function FormularioArticulosManufacturados({
             </div>
 
             <div className={styles.formArticuloColumnaDerecha}>
-              <div className={styles.formArticuloLabel}>
+              <div className={baseFormulario.formLabel}>
                 Insumo:
-                <div className={styles.autocompleteWrapper} ref={refInsumo}>
+                <div
+                  className={baseFormulario.autocompleteWrapper}
+                  ref={refInsumo}
+                >
                   <input
-                    className={styles.formArticuloInput}
+                    className={baseFormulario.formInput}
                     type="text"
                     placeholder="Buscar insumo..."
                     value={insumoSeleccionado}
@@ -421,7 +475,7 @@ export default function FormularioArticulosManufacturados({
                   />
 
                   {mostrarSugerencias && (
-                    <ul className={styles.sugerenciasLista}>
+                    <ul className={baseFormulario.sugerenciasLista}>
                       {insumos
                         .filter((ins) =>
                           ins.denominacion
@@ -432,7 +486,7 @@ export default function FormularioArticulosManufacturados({
                         .map((ins) => (
                           <li
                             key={ins.id}
-                            className={styles.sugerenciaItem}
+                            className={baseFormulario.sugerenciaItem}
                             onClick={() => {
                               setInsumoSeleccionado(ins.denominacion);
                               setUnidadMedida(ins.nombreUnidadMedida);
@@ -448,12 +502,12 @@ export default function FormularioArticulosManufacturados({
               </div>
 
               <div className={styles.formArticuloCantidadContainer}>
-                <label className={styles.formArticuloLabel}>
+                <label className={baseFormulario.formLabel}>
                   Cantidad de insumo:
                 </label>
                 <div className={styles.formArticuloCantidadInputGroup}>
                   <input
-                    className={styles.formArticuloInput}
+                    className={baseFormulario.formInput}
                     type="number"
                     value={cantidadInsumo}
                     onChange={(e) =>
@@ -471,7 +525,7 @@ export default function FormularioArticulosManufacturados({
               <button
                 type="button"
                 onClick={agregarInsumo}
-                className={styles.formArticuloButton}
+                className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
               >
                 Añadir Insumo
               </button>
@@ -489,7 +543,9 @@ export default function FormularioArticulosManufacturados({
                       </span>
                       <button
                         type="button"
-                        onClick={() => eliminarInsumo(index)}
+                        onClick={() =>
+                          eliminarInsumo(index, d.insumo.id, d.cantidad)
+                        }
                         className={`${styles.formArticuloButton} ${styles.formArticuloCancelarInsumo}`}
                       >
                         X
@@ -505,12 +561,15 @@ export default function FormularioArticulosManufacturados({
             <button
               type="button"
               onClick={onClose}
-              className={`${styles.formArticuloButton} ${styles.formArticuloCancelar}`}
+              className={`${baseFormulario.botonCancelar} ${baseFormulario.boton}`}
             >
               Cancelar
             </button>
 
-            <button type="submit" className={styles.formArticuloButton}>
+            <button
+              type="submit"
+              className={`${baseFormulario.botonGuardar} ${baseFormulario.boton}`}
+            >
               Guardar
             </button>
           </div>

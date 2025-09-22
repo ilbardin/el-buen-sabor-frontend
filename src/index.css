@@ -1,3 +1,7 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
 :root {
     --color-primario: #e74c3c;
     --color-secundario: #f1c40f;
@@ -13,20 +17,4 @@ body {
 
 h1, h2, h3 {
     color: var(--color-terciario);
-}
-
-.volver-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 3.3rem;
-    left: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--color-terciario);
-    transition: transform 0.2s ease, color 0.3s ease;
-}
-
-.volver-button:hover {
-    color: var(--color-secundario);
 }

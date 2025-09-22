@@ -1,9 +1,9 @@
 import axiosInstance from "../api/axiosInstance.ts";
 import type {ArticuloManufacturado, ArticuloManufacturadoCreacion} from "../models/articuloManufacturado.ts";
-import {showAlert} from "../utils/alerts.ts";
+import {mostrarAlerta} from "../utils/alerts.ts";
 import type {CategoriaArticuloManufacturado} from "../models/categoriaArticuloManufacturado.ts";
 import type {AxiosResponse} from "axios";
-import type { PedidoRequest } from "../models/pedidoRequest.ts";
+import type { PedidoRequest } from "../models/pedido/pedidoRequest.ts";
 
 const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
 const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
@@ -11,7 +11,7 @@ const API_URL_CATEGORIA = import.meta.env.VITE_API_URL + "/categoria-articulos-m
 
 function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
     if (!response || !response.data) {
-        void showAlert("Error", "error", errorMessage);
+        void mostrarAlerta("Error", "error", errorMessage);
         return true;
     }
     return false;
@@ -24,6 +24,17 @@ export async function getArticulosManufacturados(): Promise<ArticuloManufacturad
         if (handleInvalidResponse(response, "Error al obtener los artículos manufacturados.")) {
             return [];
         }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function getManufacturadosPorSucursal(idSucursal: number): Promise<any[]> {
+    try {
+        const response = await axiosInstance.get<any>(`/sucursal/${idSucursal}/productos`);
 
         return response.data;
     } catch (error) {
@@ -56,7 +67,7 @@ export async function crearCategoriaArticuloManofacturado(denominacion: string):
             return;
         }
 
-        await showAlert("Éxito", "success", "Categoría creada correctamente.");
+        await mostrarAlerta("Éxito", "success", "Categoría creada correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -87,7 +98,7 @@ export async function crearArticuloManufacturado(articulo: ArticuloManufacturado
             return;
         }
 
-        await showAlert("Éxito", "success", "Artículo manufacturado creado correctamente.");
+        await mostrarAlerta("Éxito", "success", "Artículo manufacturado creado correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -102,7 +113,7 @@ export async function editarArticuloManufacturado(articulo: ArticuloManufacturad
             return;
         }
 
-        await showAlert("Éxito", "success", "Artículo manufacturado creado correctamente.");
+        await mostrarAlerta("Éxito", "success", "Artículo manufacturado creado correctamente.");
     } catch (error) {
         console.error("Error:", error);
         throw error;
@@ -112,7 +123,7 @@ export async function editarArticuloManufacturado(articulo: ArticuloManufacturad
 export async function eliminarArticuloManufacturado(id: number): Promise<void> {
     if (id === undefined) {
         console.error("El ID no puede ser undefined.");
-        await showAlert("Error", "error", "El ID del artículo es inválido.");
+        await mostrarAlerta("Error", "error", "El ID del artículo es inválido.");
         return;
     }
 
@@ -123,7 +134,7 @@ export async function eliminarArticuloManufacturado(id: number): Promise<void> {
             return;
         }
 
-        await showAlert("Éxito", "success", response.data);
+        await mostrarAlerta("Éxito", "success", response.data);
     } catch (error) {
         console.error("Error:", error);
         throw error;

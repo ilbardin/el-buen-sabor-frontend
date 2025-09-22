@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styles from "./FormularioStockInsumo.module.css"; 
-import { getArticulosInsumo } from "../../services/ingredientesService";
-import { editarStockInsumo } from "../../services/stockInsumoService";
-import type { ArticuloInsumo } from "../../models/articuloInsumo";
+import React, {useEffect, useState} from "react";
+import {getArticulosInsumo} from "../../services/ingredientesService";
+import {editarStockInsumo} from "../../services/stockInsumoService";
+import type {ArticuloInsumo} from "../../models/articuloInsumo";
+import baseFormulario from "../../css/baseFormulario.module.css";
 
 export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
   const [insumoSeleccionado, setInsumoSeleccionado] = useState<string>("");
@@ -57,15 +57,15 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
 
   return (
     <div>
-      <div className={styles.divContenedor}>
-        <div className={styles.formulario}>
-          <h2 style={{ marginTop: "0px" }}>Nuevo Stock de Insumo</h2>
+      <div className={baseFormulario.divContenedor}>
+        <div className={baseFormulario.formulario}>
+          <h2 className={baseFormulario.titulo} style={{ marginTop: "0px" }}>Nuevo Stock de Insumo</h2>
           <form onSubmit={handleSubmit}>
-            <label className={styles.formArticuloLabel}>Buscar insumo:</label>
+            <label className={baseFormulario.formArticuloLabel}>Buscar insumo:</label>
             {formularioValidado && !insumoSeleccionado?.trim() && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 list="lista-insumos"
                 placeholder="Selecciona un insumo"
@@ -81,11 +81,11 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
             </div>
 
             {/* Cantidad mínima */}
-            <label className={styles.formArticuloLabel}>Cantidad mínima:</label>
+            <label className={baseFormulario.formArticuloLabel}>Cantidad mínima:</label>
             {formularioValidado && cantidadMinima === "" && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="number"
                 placeholder="Cantidad mínima"
@@ -93,16 +93,16 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
                 onChange={(e) => setCantidadMinima(Number(e.target.value))}
               />
               {formularioValidado && cantidadMinima === "" && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
 
             {/* Cantidad máxima */}
-            <label className={styles.formArticuloLabel}>Cantidad máxima:</label>
+            <label className={baseFormulario.formArticuloLabel}>Cantidad máxima:</label>
             {formularioValidado && cantidadMaxima === "" && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="number"
                 placeholder="Cantidad máxima"
@@ -110,16 +110,16 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
                 onChange={(e) => setCantidadMaxima(Number(e.target.value))}
               />
               {formularioValidado && cantidadMaxima === "" && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
 
             {/* Cantidad actual */}
-            <label className={styles.formArticuloLabel}>Cantidad actual:</label>
+            <label className={baseFormulario.formArticuloLabel}>Cantidad actual:</label>
             {formularioValidado && cantidadActual === "" && (
-              <p className={styles.error}>Este campo es obligatorio</p>
+              <p className={baseFormulario.error}>Este campo es obligatorio</p>
             )}
-            <div className={styles.inputConIcono}>
+            <div className={baseFormulario.inputConIcono}>
               <input
                 type="number"
                 placeholder="Cantidad actual"
@@ -127,20 +127,20 @@ export function FormularioStockInsumo({ onClose }: { onClose: () => void }) {
                 onChange={(e) => setCantidadActual(Number(e.target.value))}
               />
               {formularioValidado && cantidadActual === "" && (
-                <span className={styles.iconoInput}>❗</span>
+                <span className={baseFormulario.iconoInput}>❗</span>
               )}
             </div>
 
-            <div className={styles.botones}>
+            <div className={baseFormulario.botones}>
               <button
-                className={`${styles.boton} ${styles.botonCancelar}`}
+                className={`${baseFormulario.boton} ${baseFormulario.botonCancelar}`}
                 type="button"
                 onClick={onClose}
               >
                 Cancelar
               </button>
               <button
-                className={`${styles.boton} ${styles.botonGuardar}`}
+                className={`${baseFormulario.boton} ${baseFormulario.botonGuardar}`}
                 type="submit"
               >
                 Guardar

@@ -6,7 +6,7 @@ import type { ArticuloManufacturado } from "../../models/articuloManufacturado.t
 import FormularioArticulosManufacturados from "../../components/FormularioArticulosManufacturados/FormularioArticulosManufacturados.tsx";
 import { AgregarCategoriaArticuloManufacturado } from "../../components/AgregarCategoriaArticuloManufacturado/AgregarCategoriaArticuloManufacturado.tsx";
 import styles from "./ProductosABM.module.css";
-import baseABM from "../../css/abmBase.module.css";
+import baseABM from "../../css/baseABM.module.css";
 import ModuloArticuloManofacturado from "../../components/ModuloArticuloManofacturado/ModuloArticuloManofacturado.tsx";
 
 export const ProductosABM = () => {
@@ -61,16 +61,16 @@ export const ProductosABM = () => {
       <div className={baseABM.container}>
         <h1 className={baseABM.titulo}>Productos Manufacturados</h1>
 
-        <div className={styles.botonesContainer}>
+        <div className={baseABM.botonesContainer}>
           <button
-            className={styles.boton}
+            className={baseABM.boton}
             onClick={() => setMostrarModal(true)}
           >
             Añadir nuevo Producto
           </button>
 
           <button
-            className={`${styles.boton} ${styles.botonSecundario}`}
+            className={`${baseABM.boton} ${baseABM.botonSecundario}`}
             onClick={() => setMostrarModalCategoria(true)}
           >
             Añadir nueva Categoria
@@ -87,7 +87,7 @@ export const ProductosABM = () => {
           />
         </div>
 
-        <table className={styles.tabla}>
+        <table className={baseABM.tabla}>
           <thead>
             <tr>
               <th>Nombre</th>

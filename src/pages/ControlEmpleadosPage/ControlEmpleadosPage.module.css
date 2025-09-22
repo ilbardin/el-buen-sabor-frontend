@@ -1,0 +1,14 @@
+.filaInactiva {
+    background-color: #f0f0f0;
+    color: #888;
+}
+
+.toggleBtn {
+    background-color: var(--color-secundario);
+}
+
+.toggleBtn:hover {
+    background-color: #d4ac0d;
+    transform: translateY(-1px);
+}
+

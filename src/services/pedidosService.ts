@@ -1,0 +1,146 @@
+import axiosInstance from "../api/axiosInstance.ts";
+import type {ArticuloManufacturado} from "../models/articuloManufacturado.ts";
+import {mostrarAlerta} from "../utils/alerts.ts";
+import type {AxiosResponse} from "axios";
+import type {PedidoRequest} from "../models/pedido/pedidoRequest.ts";
+import type {HistorialPedidos} from "../models/pedido/historialPedidos.ts";
+import type {PageResponse} from "../pages/HistorialPedidos/HistorialPedidosPage.tsx";
+
+const API_URL_PEDIDOS = import.meta.env.VITE_API_URL + "/pedidos";
+const API_URL = import.meta.env.VITE_API_URL + "/articulos-manufacturados";
+
+function handleInvalidResponse(response: AxiosResponse, errorMessage: string): boolean {
+    if (!response || !response.data) {
+        void mostrarAlerta("Error", "error", errorMessage);
+        return true;
+    }
+    return false;
+}
+
+export async function getPedidos(): Promise<PedidoRequest[]> {
+    try {
+        const response = await axiosInstance.get<PedidoRequest[]>(`${API_URL_PEDIDOS}`);
+
+        if (handleInvalidResponse(response, "Error al obtener los pedidos")) {
+            return [];
+        }
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function getHistorialPedidos(
+    idCliente?: number,
+    idSucursal?: number,
+    page: number = 0,
+    size: number = 15
+): Promise<PageResponse<HistorialPedidos>> {
+    try {
+        const params = new URLSearchParams({
+            full: "false",
+            page: page.toString(),
+            size: size.toString(),
+        });
+
+        if (idCliente) params.append("idCliente", idCliente.toString());
+        if (idSucursal) params.append("idSucursal", idSucursal.toString());
+
+        const url = `${API_URL_PEDIDOS}?${params.toString()}`;
+        const response = await axiosInstance.get<PageResponse<HistorialPedidos>>(url);
+
+        if (handleInvalidResponse(response, "Error al obtener el historial de pedidos.")) {
+            return {content: [], totalPages: 0, totalElements: 0, number: 0, size, first: true, last: true};
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function getEstadoPedido(id: number): Promise<PedidoRequest | undefined> {
+    try {
+        const response = await axiosInstance.get<PedidoRequest>(`${API_URL_PEDIDOS}/${id}`);
+
+        if (handleInvalidResponse(response, "Error al obtener los pedidos")) {
+            return;
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export async function getDetallesArticuloManufacturado(id: string): Promise<ArticuloManufacturado | undefined> {
+    try {
+        const response = await axiosInstance.get<ArticuloManufacturado>(`${API_URL}/${id}`);
+
+        if (handleInvalidResponse(response, "Error al obtener los artículos manufacturados.")) {
+            return;
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+
+export async function eliminarPedido(id: number): Promise<void> {
+    if (id === undefined) {
+        console.error("El ID no puede ser undefined.");
+        await mostrarAlerta("Error", "error", "El ID del pedido es inválido.");
+        return;
+    }
+
+    try {
+        const response = await axiosInstance.delete(`${API_URL_PEDIDOS}/${id}`);
+
+        if (handleInvalidResponse(response, "Error al eliminar el pedido.")) {
+            return;
+        }
+
+        await mostrarAlerta("Éxito", "success", response.data);
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+
+export async function savePedido(pedido: PedidoRequest) {
+    try {
+        const response = await axiosInstance.post(`${API_URL_PEDIDOS}`, pedido);
+
+        if (handleInvalidResponse(response, "Error al guardar el pedido.")) {
+            return;
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error al guardar el pedido:", error);
+        throw error;
+    }
+}
+
+export async function cambioEstadoPedido(id: number, estado: string) {
+    try {
+        const response = await axiosInstance.put(`${API_URL_PEDIDOS + "/" + id + "?" + "estado=" + estado}`);
+
+        if (handleInvalidResponse(response, "Error al guardar el pedido.")) {
+            return;
+        }
+
+        return response;
+    } catch (error) {
+        console.error("Error al guardar el pedido:", error);
+        throw error;
+    }
+}

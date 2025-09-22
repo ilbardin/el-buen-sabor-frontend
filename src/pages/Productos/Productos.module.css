@@ -1,81 +1,145 @@
+.contenedorProductos {
+    background: #fff;
+    border-radius: 20px;
+    min-height: 100vh;
+    padding: 0rem;
+    margin: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
 .homepageLayout {
-  display: flex;
-  flex-direction: row;
-  padding: 1rem 1rem 1rem;
-  position: relative;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
 }
 
 .mainContent {
-  flex: 1;
-  padding-right: 1rem;
+    padding-right: 1rem;
+    width: 70%;
 }
 
 .gridContainer {
-  max-width: calc(100% - 120px);
+    width: 70%;
+    max-width: 65%;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    align-items: stretch;
 }
 
 .sidebar {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1rem;
-  position: sticky;
-  top: 1rem;
-  height: fit-content;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    position: sticky;
+    top: 1rem;
+    height: fit-content;
 }
 
 .settingsDiv {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 .agregarButton {
-  background-color: #43df46;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  align-self: flex-start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: #43df46;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .agregarButton:hover {
-  background-color: #38c13a;
+    background-color: #38c13a;
 }
 
 .statsButton {
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 4px;
-  align-self: flex-start;
-  margin-bottom: 1rem;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .statsButton:hover {
-  background-color: #0e6c83;
+    background-color: #0e6c83;
+}
+
+.title {
+    margin-bottom: 0;
+}
+
+.filtrosContainer {
+    width: 25%;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+        width: 50%;
+    }
+}
+
+.filtroInput {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: var(--color-terciario);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Poppins", sans-serif;
+}
+
+
+.categoriaButton {
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.categoriaButton:hover {
+  background-color: var(--color-secundario);
+  transform: scale(1.05);
+}
+
+.categoriaButton:active {
+  background-color: var(--color-terciario);
+  transform: scale(0.95);
 }

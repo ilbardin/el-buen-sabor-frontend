@@ -3,8 +3,7 @@ import { getArticulosInsumo } from "../../services/ingredientesService.ts";
 import type { ArticuloInsumo } from "../../models/articuloInsumo.ts";
 import { FormularioArticulosInsumo } from "../../components/FormularioArticuloInsumo/FormularioArticuloInsumo.tsx";
 import { AgregarCategoriaArticulo } from "../../components/AgregarCategoriaArticulo/AgregarCategoriaArticulo.tsx";
-import styles from "./IngredientesABM.module.css";
-import baseABM from "../../css/abmBase.module.css"
+import baseABM from "../../css/baseABM.module.css"
 import ModuloArticuloInsumo from "../../components/ModuloArticuloInsumo/ModuloArticuloInsumo.tsx";
 
 export const IngredientesABM = () => {
@@ -39,12 +38,7 @@ export const IngredientesABM = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <p>
-        {articuloParaEditar
-          ? JSON.stringify(articuloParaEditar)
-          : null}
-      </p>
+    <div className={baseABM.container}>
       {mostrarModal && (
         <FormularioArticulosInsumo
           onClose={async () => {
@@ -63,11 +57,11 @@ export const IngredientesABM = () => {
         />
       )}
 
-      <h1 className={styles.titulo}>Insumos</h1>
+      <h1 className={baseABM.titulo}>Insumos</h1>
 
-      <div className={styles.botonesContainer}>
+      <div className={baseABM.botonesContainer}>
         <button
-          className={styles.boton}
+          className={baseABM.boton}
           onClick={() => {
             setMostrarModal(true);
             setArticuloParaEditar(null);
@@ -76,7 +70,7 @@ export const IngredientesABM = () => {
           Añadir nuevo Insumo
         </button>
         <button
-          className={`${styles.boton} ${styles.botonSecundario}`}
+          className={`${baseABM.boton} ${baseABM.botonSecundario}`}
           onClick={() => setMostrarModalCategoria(true)}
         >
           Añadir nueva Categoría
@@ -93,7 +87,7 @@ export const IngredientesABM = () => {
         />
       </div>
 
-      <table className={styles.tabla}>
+      <table className={baseABM.tabla}>
         <thead>
           <tr>
             <th>Nombre</th>
