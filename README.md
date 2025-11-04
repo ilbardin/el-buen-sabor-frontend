@@ -36,7 +36,7 @@ Sigue los pasos a continuación para crear los certificados necesarios:
 
 #### a. Instalar Chocolatey
 
-Si no tienes Chocolatey instalado, abre **PowerShell** como administrador y ejecuta el siguiente comando:
+Si no tienes Chocolatey instalado, abre **PowerShell como _administrador_** y ejecuta el siguiente comando:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
