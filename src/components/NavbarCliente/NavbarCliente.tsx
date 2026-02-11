@@ -67,7 +67,7 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     const {sucursalId, setSucursalId} = useSucursal();
     const {clearCart} = useCart();
 
-    const {handleLogin} = useAuthHandlers(username, password);
+    const {handleLogin} = useAuthHandlers();
     const toggleLogin = () => {
         if (showLogin) {
             setIsClosing(true);

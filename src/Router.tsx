@@ -1,7 +1,6 @@
 import React from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {RegistroUsuario} from "./pages/RegistroUsuario/RegistroUsuario";
-import Login from "./pages/Login/Login";
 import {useAuth} from "./context/auth/useAuth.ts";
 import {ProductosABM} from "./pages/ProductosABM/ProductosABM";
 import {IngredientesABM} from "./pages/IngredientesABM/IngredientesABM";
@@ -26,9 +25,10 @@ import VistaDelivery from "./pages/VistaDelivery/vistaDelivery.tsx";
 import ControlEmpleadosPage from "./pages/ControlEmpleadosPage/ControlEmpleadosPage.tsx";
 import {HistorialPedidosPage} from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
 import Reportes from "./pages/Reportes/Reportes.tsx";
+import Login from "./pages/Login/Login.tsx";
 
 const Router = () => {
-    const {usuario, login} = useAuth();
+    const {usuario} = useAuth();
 
     const BarraWrapper: React.FC = () => {
         return (
@@ -37,8 +37,7 @@ const Router = () => {
             </>
         );
     };
-  
-    const LoginWrapper: React.FC = () => <Login onLoginSuccess={login}/>;
+
     const LandingLoginWrapper: React.FC = () => <LandingPage/>;
 
     return (
@@ -153,7 +152,7 @@ const Router = () => {
                 }
             />
 
-            <Route path={ROUTES.LOGIN} element={<LoginWrapper/>}/>
+            <Route path={ROUTES.LOGIN} element={<Login/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
             <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
 

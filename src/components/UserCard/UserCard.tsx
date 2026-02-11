@@ -1,4 +1,4 @@
-import React, {forwardRef, useContext} from 'react';
+import {forwardRef, useContext} from 'react';
 import {AuthContext} from "../../context/auth/authContext.ts";
 import styles from './UserCard.module.css';
 import {Link, useNavigate} from "react-router-dom";
@@ -10,7 +10,7 @@ type LoginCardProps = {
     showLogin: boolean;
     isClosing: boolean;
     loginCardPosition: { top: number; left: number };
-    handleLogin: (e: React.FormEvent) => void;
+    handleLogin: (username: string, password: string) => void | Promise<void>;
     username: string;
     password: string;
     setUsername: (value: string) => void;
@@ -81,7 +81,8 @@ const UserCard = forwardRef<HTMLDivElement, LoginCardProps>(
                         <h3 className={styles.cardTitle}>Iniciar sesión</h3>
                         <form
                             onSubmit={(e) => {
-                                handleLogin(e);
+                                e.preventDefault();
+                                handleLogin(username, password);
                                 onHide();
                             }}
                         >
