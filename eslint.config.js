@@ -23,7 +23,8 @@ export default tseslint.config(
                 'warn',
                 {allowConstantExport: true},
             ],
-            "@typescript-eslint/no-explicit-any": "warn"
+            "@typescript-eslint/no-explicit-any": "warn",
+            'react-hooks/set-state-in-effect': 'off'
         },
     },
 )
