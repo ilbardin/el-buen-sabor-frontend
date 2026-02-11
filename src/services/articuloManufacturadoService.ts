@@ -121,8 +121,7 @@ export async function editarArticuloManufacturado(articulo: ArticuloManufacturad
 }
 
 export async function eliminarArticuloManufacturado(id: number): Promise<void> {
-    if (id === undefined) {
-        console.error("El ID no puede ser undefined.");
+    if (id == null) {
         await mostrarAlerta("Error", "error", "El ID del artículo es inválido.");
         return;
     }

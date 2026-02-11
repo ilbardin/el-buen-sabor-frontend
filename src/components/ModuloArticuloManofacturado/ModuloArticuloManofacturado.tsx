@@ -1,18 +1,25 @@
 import type {ArticuloManufacturado} from "../../models/articuloManufacturado";
 import {eliminarArticuloManufacturado} from "../../services/articuloManufacturadoService";
 import baseModulo from "../../css/baseModulo.module.css";
+import {mostrarAlerta} from "../../utils/alerts.ts";
 
 export default function ModuloArticuloManofacturado(props: {
   articulo: ArticuloManufacturado;
   onModificar: (articulo: ArticuloManufacturado) => void;
 }) {
-  async function eliminarManofacturado() {
-    if (props.articulo.id) {
-      await eliminarArticuloManufacturado(props.articulo.id);
-    }
-  }
+    async function eliminarManofacturado() {
+        const id = props.articulo?.id;
+        console.log(id);
 
-  return (
+        if (id == null) {
+            await mostrarAlerta("Error", "error", "El ID del artículo es inválido.");
+            return;
+        }
+
+        await eliminarArticuloManufacturado(id);
+    }
+
+    return (
     <tr className={baseModulo.filaTabla}>
       <td>{props.articulo.denominacion}</td>
       <td>{props.articulo.descripcion}</td>
