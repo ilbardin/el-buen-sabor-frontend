@@ -1,7 +1,5 @@
-import React from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {RegistroUsuario} from "./pages/RegistroUsuario/RegistroUsuario";
-import {useAuth} from "./context/auth/useAuth.ts";
 import {ProductosABM} from "./pages/ProductosABM/ProductosABM";
 import {IngredientesABM} from "./pages/IngredientesABM/IngredientesABM";
 import {HomeAdmin} from "./pages/Home/HomeAdmin.tsx";
@@ -17,7 +15,6 @@ import GestionEmpresa from "./pages/GestionEmpresa/GestionEmpresa.tsx";
 import {PromocionesABM} from "./pages/PromocionesABM/PromocionesABM.tsx";
 import EmpresaABM from "./pages/EmpresaABM/empresaABM.tsx";
 import SucursalABM from "./pages/SucursalABM/SucursalABM.tsx";
-import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 import {EstadoPedidoPage} from "./pages/EstadoPedido/EstadoPedidoPage.tsx";
 import Prueba from "./pages/Prueba/Prueba.tsx";
 import {VistaCocina} from "./pages/VistaCocina/VistaCocina.tsx";
@@ -26,23 +23,12 @@ import ControlEmpleadosPage from "./pages/ControlEmpleadosPage/ControlEmpleadosP
 import {HistorialPedidosPage} from "./pages/HistorialPedidos/HistorialPedidosPage.tsx";
 import Reportes from "./pages/Reportes/Reportes.tsx";
 import Login from "./pages/Login/Login.tsx";
+import {LandingPage} from "./pages/LandingPage/LandingPage.tsx";
 
 const Router = () => {
-    const {usuario} = useAuth();
-
-    const BarraWrapper: React.FC = () => {
-        return (
-            <>
-                {usuario && <BarraSuperior/>}
-            </>
-        );
-    };
-
-    const LandingLoginWrapper: React.FC = () => <LandingPage/>;
-
     return (
         <Routes>
-            <Route element={<BarraWrapper/>}>
+            <Route element={<BarraSuperior/>}>
                 <Route
                     path={ROUTES.HOME_ADMIN}
                     element={
@@ -154,7 +140,7 @@ const Router = () => {
 
             <Route path={ROUTES.LOGIN} element={<Login/>}/>
             <Route path={ROUTES.REGISTRO_USUARIO} element={<RegistroUsuario/>}/>
-            <Route path={ROUTES.HOME} element={<LandingLoginWrapper/>}/>
+            <Route path={ROUTES.HOME} element={<LandingPage/>}/>
 
             <Route
                 path={`${ROUTES.ESTADO_PEDIDO}/:idPedido`}
