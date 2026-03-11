@@ -67,7 +67,16 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     const {sucursalId, setSucursalId} = useSucursal();
     const {clearCart} = useCart();
 
+    const showCart = cartOptions?.showCart ?? false;
+    const isCartClosing = cartOptions?.isCartClosing ?? false;
+    const cartPosition = cartOptions?.cartPosition ?? { top: 0, left: 0 };
+    const toggleCart = cartOptions?.toggleCart;
+    const handleHideCart = cartOptions?.handleHideCart;
+    const cartRef = cartOptions?.cartRef;
+    const cartIconRef = cartOptions?.cartIconRef;
+
     const {handleLogin} = useAuthHandlers();
+
     const toggleLogin = () => {
         if (showLogin) {
             setIsClosing(true);
@@ -111,10 +120,9 @@ const NavbarCliente: React.FC<NavbarProps> = ({
     });
 
     useOutsideClick({
-        refs: cartOptions ? [cartOptions.cartRef, cartOptions.cartIconRef] : [],
-        enabled: !!cartOptions && cartOptions.showCart,
-        onOutsideClick: cartOptions?.handleHideCart || (() => {
-        }),
+        refs: cartRef && cartIconRef ? [cartRef, cartIconRef] : [],
+        enabled: !!cartOptions && showCart,
+        onOutsideClick: handleHideCart || (() => {}),
     });
 
     useEffect(() => {
@@ -222,8 +230,8 @@ const NavbarCliente: React.FC<NavbarProps> = ({
                         <>
               <span
                   className={styles.icon}
-                  onClick={cartOptions.toggleCart}
-                  ref={cartOptions.cartIconRef}
+                  onClick={toggleCart}
+                  ref={cartIconRef}
                   style={{position: "relative"}}
               >
                 <FaShoppingCart/>
@@ -244,11 +252,11 @@ const NavbarCliente: React.FC<NavbarProps> = ({
               </span>
 
                             <CarritoCard
-                                showCart={cartOptions.showCart}
-                                isClosing={cartOptions.isCartClosing}
-                                position={cartOptions.cartPosition}
-                                onHide={cartOptions.handleHideCart}
-                                ref={cartOptions.cartRef}
+                                showCart={showCart}
+                                isClosing={isCartClosing}
+                                position={cartPosition}
+                                onHide={handleHideCart!}
+                                ref={cartRef}
                             />
                         </>
                     )}
